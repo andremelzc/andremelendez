@@ -34,7 +34,7 @@ El portafolio está desarrollado con las siguientes tecnologías:
 ```
 
 # Clonar el repositorio
-git clone https://github.com/tu-usuario/tu-repo.git
+git clone https://github.com/andremelzc/andremelendez.git
 
 # Instalar dependencias
 npm install
