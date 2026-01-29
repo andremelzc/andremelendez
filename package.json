@@ -15,7 +15,7 @@
     "@sanity/vision": "^4.5.0",
     "groq": "^4.5.0",
     "keen-slider": "^6.8.6",
-    "next": "15.4.6",
+    "next": "15.4.10",
     "next-sanity": "^10.0.13",
     "react": "19.1.0",
     "react-dom": "19.1.0",
