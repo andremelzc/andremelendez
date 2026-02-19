@@ -23,6 +23,9 @@ export default function ProjectCard({
     codeUrl,
     role,
     teamSize,
+    year,
+    hasDetails = false,
+    slug,
   },
 }: ProjectCardProps) {
   // La imagen primaria siempre es la principal que se muestra
@@ -46,7 +49,7 @@ export default function ProjectCard({
             {(featured ? technologies : technologies.slice(0, 2)).map(
               (tech) => (
                 <TechTag key={tech} tech={tech} variant="badge" />
-              )
+              ),
             )}
             {!featured && technologies.length > 2 && (
               <div className="bg-midnight-700/60 backdrop-blur-sm text-midnight-200 text-xs font-medium px-2 md:px-3 py-1 md:py-1.5 rounded-full border border-midnight-600/50">
@@ -92,11 +95,13 @@ export default function ProjectCard({
               : "min-h-[120px] max-h-[160px] md:min-h-[160px] md:max-h-[200px]"
           } ${featured ? "p-4 pb-3 md:p-8 md:pb-6" : "p-3 pb-2 md:p-4 md:pb-4"}`}
         >
-          <div className={`relative ${
-            featured 
-              ? "w-48 h-24 md:w-72 md:h-40" 
-              : "w-48 h-24 md:w-64 md:h-32"
-          }`}>
+          <div
+            className={`relative ${
+              featured
+                ? "w-48 h-24 md:w-72 md:h-40"
+                : "w-48 h-24 md:w-64 md:h-32"
+            }`}
+          >
             {/* Imagen secundaria - solo en featured y solo en pantallas md+ - Se renderiza PRIMERO para estar atrás */}
             {featured && overlayImage && (
               <div className="absolute top-0 transform translate-x-1/4 translate-y-1/4 w-full h-full hover:scale-105 transition-transform duration-300 hidden md:block z-10">
@@ -197,7 +202,9 @@ export default function ProjectCard({
         </div>
 
         {/* Spacer flexible CONDICIONAL - solo en featured para mejor distribución */}
-        {featured && <div className="flex-grow min-h-[10px] md:min-h-[20px]"></div>}
+        {featured && (
+          <div className="flex-grow min-h-[10px] md:min-h-[20px]"></div>
+        )}
 
         {/* Footer */}
         <div
@@ -209,12 +216,20 @@ export default function ProjectCard({
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0">
             {/* Botones a la izquierda */}
             <div className="flex gap-2 md:gap-3 flex-wrap">
+              {hasDetails && slug && (
+                <a href={`/projects/${slug}`}>
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    iconPosition="left"
+                    className="text-xs md:text-sm px-2 md:px-3 py-1.5 md:py-2"
+                  >
+                    <span>Ver detalle</span>
+                  </Button>
+                </a>
+              )}
               {demoUrl && (
-                <a
-                  href={demoUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a href={demoUrl} target="_blank" rel="noopener noreferrer">
                   <Button
                     variant="secondary"
                     size="sm"
@@ -228,11 +243,7 @@ export default function ProjectCard({
                 </a>
               )}
               {codeUrl && (
-                <a
-                  href={codeUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a href={codeUrl} target="_blank" rel="noopener noreferrer">
                   <Button
                     variant="secondary"
                     size="sm"
@@ -252,6 +263,11 @@ export default function ProjectCard({
               <div className="flex items-center gap-2 text-xs text-midnight-400 self-end sm:self-auto">
                 <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
                 <span className="font-medium">{role}</span>
+                {year && (
+                  <span>
+                    ·{""} {year}
+                  </span>
+                )}
               </div>
             ) : null}
           </div>

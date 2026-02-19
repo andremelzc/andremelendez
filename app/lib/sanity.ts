@@ -1,6 +1,11 @@
 import { groq } from "next-sanity";
 import { client } from "@/sanity/lib/client";
-import { Project, ProjectCategory, ProjectRole, TeamSize } from "@/app/types/projects";
+import {
+  Project,
+  ProjectCategory,
+  ProjectRole,
+  TeamSize,
+} from "@/app/types/projects";
 
 // Query para obtener todos los proyectos
 const projectsQuery = groq`
@@ -10,6 +15,7 @@ const projectsQuery = groq`
     description,
     "primaryImage": primaryImage.asset->url,
     "secondaryImage": secondaryImage.asset->url,
+    "slug": slug.current,
     featured,
     technologies,
     demoUrl,
@@ -17,6 +23,8 @@ const projectsQuery = groq`
     category,
     role,
     teamSize,
+    hasDetails,
+    year,
     publishedAt
   }
 `;
@@ -29,6 +37,7 @@ const featuredProjectsQuery = groq`
     description,
     "primaryImage": primaryImage.asset->url,
     "secondaryImage": secondaryImage.asset->url,
+    "slug": slug.current,
     featured,
     technologies,
     demoUrl,
@@ -36,6 +45,8 @@ const featuredProjectsQuery = groq`
     category,
     role,
     teamSize,
+    hasDetails,
+    year,
     publishedAt
   }
 `;
@@ -48,6 +59,7 @@ const projectsByCategoryQuery = groq`
     description,
     "primaryImage": primaryImage.asset->url,
     "secondaryImage": secondaryImage.asset->url,
+    "slug": slug.current,
     featured,
     technologies,
     demoUrl,
@@ -55,6 +67,8 @@ const projectsByCategoryQuery = groq`
     category,
     role,
     teamSize,
+    hasDetails,
+    year,
     publishedAt
   }
 `;
@@ -67,6 +81,7 @@ const projectByIdQuery = groq`
     description,
     "primaryImage": primaryImage.asset->url,
     "secondaryImage": secondaryImage.asset->url,
+    "slug": slug.current,
     featured,
     technologies,
     demoUrl,
@@ -74,6 +89,34 @@ const projectByIdQuery = groq`
     category,
     role,
     teamSize,
+    hasDetails,
+    "gallery": gallery[].asset->url,
+    longDescription,
+    year,
+    publishedAt
+  }
+`;
+
+// Query para obtener un proyecto por slug
+const projectBySlugQuery = groq`
+  *[_type == "project" && slug.current == $slug][0] {
+    _id,
+    title,
+    description,
+    "primaryImage": primaryImage.asset->url,
+    "secondaryImage": secondaryImage.asset->url,
+    "slug": slug.current,
+    featured,
+    technologies,
+    demoUrl,
+    codeUrl,
+    category,
+    role,
+    teamSize,
+    hasDetails,
+    "gallery": gallery[].asset->url,
+    longDescription,
+    year,
     publishedAt
   }
 `;
@@ -86,7 +129,9 @@ const skillsQuery = `*[_type == "skills"][0]{
 }`;
 
 // Función para transformar datos de Sanity al formato esperado
-function transformSanityProject(sanityProject: Record<string, unknown>): Project {
+function transformSanityProject(
+  sanityProject: Record<string, unknown>,
+): Project {
   return {
     id: sanityProject._id as string,
     title: sanityProject.title as string,
@@ -100,6 +145,11 @@ function transformSanityProject(sanityProject: Record<string, unknown>): Project
     category: sanityProject.category as ProjectCategory,
     role: sanityProject.role as ProjectRole | undefined,
     teamSize: sanityProject.teamSize as TeamSize | undefined,
+    year: sanityProject.year as number | undefined,
+    hasDetails: sanityProject.hasDetails as boolean | undefined,
+    slug: sanityProject.slug as string | undefined,
+    longDescription: sanityProject.longDescription as any,
+    gallery: (sanityProject.gallery as string[]) || [],
   };
 }
 
@@ -135,7 +185,7 @@ export async function getRegularProjects(): Promise<Project[]> {
 }
 
 export async function getProjectsByCategory(
-  category: string
+  category: string,
 ): Promise<Project[]> {
   try {
     const projects = await client.fetch(projectsByCategoryQuery, { category });
@@ -156,6 +206,16 @@ export async function getProjectById(id: string): Promise<Project | null> {
   }
 }
 
+export async function getProjectBySlug(slug: string): Promise<Project | null> {
+  try {
+    const project = await client.fetch(projectBySlugQuery, { slug });
+    return project ? transformSanityProject(project) : null;
+  } catch (error) {
+    console.error("Error fetching project by slug:", error);
+    return null;
+  }
+}
+
 // Función para obtener todas las categorías disponibles
 export async function getAvailableCategories(): Promise<string[]> {
   try {
@@ -166,7 +226,11 @@ export async function getAvailableCategories(): Promise<string[]> {
     `;
     const result = await client.fetch(categoriesQuery);
     const categories = [
-      ...new Set(result.map((item: { category: string }) => item.category).filter(Boolean)),
+      ...new Set(
+        result
+          .map((item: { category: string }) => item.category)
+          .filter(Boolean),
+      ),
     ];
     return categories as string[];
   } catch (error) {
