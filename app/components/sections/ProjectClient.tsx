@@ -12,7 +12,7 @@ interface ProjectClientProps {
 }
 
 export default function ProjectClient({ initialProjects }: ProjectClientProps) {
-  const [projects, setProjects] = useState<Project[]>(initialProjects);
+  const [projects, setProjects] = useState<Project[]>(initialProjects)
   const [activeFilter, setActiveFilter] = useState<string>("Todos");
   const [loading, setLoading] = useState(false);
 

@@ -56,6 +56,7 @@ import {
   // Cloud & Deployment  
   SiVercel,
   SiNetlify,
+  SiCloudflare,
   SiAmazon,
   SiGooglecloud,
   SiHeroku,
@@ -114,7 +115,6 @@ export const techIcons: Record<string, IconType> = {
   // Frontend Frameworks
   'React': SiReact,
   'Next.js': SiNextdotjs,
-  'Vue.js': SiVuedotjs,
   'Vue': SiVuedotjs,
   'Angular': SiAngular,
   'Svelte': SiSvelte,
@@ -134,7 +134,6 @@ export const techIcons: Record<string, IconType> = {
   // Backend Frameworks
   'Node.js': SiNodedotjs,
   'Express': SiExpress,
-  'Express.js': SiExpress,
   'NestJS': SiNestjs,
   'Django': SiDjango,
   'FastAPI': SiFastapi,
@@ -155,13 +154,13 @@ export const techIcons: Record<string, IconType> = {
 
   // CSS & Styling
   'Tailwind CSS': SiTailwindcss,
-  'TailwindCSS': SiTailwindcss,
+  
   'Bootstrap': SiBootstrap,
   'Sass': SiSass,
-  'SCSS': SiSass,
+  
   'Styled Components': SiStyledcomponents,
   'CSS': SiCss3,
-  'CSS3': SiCss3,
+  
   'HTML': SiHtml5,
   'HTML5': SiHtml5,
 
@@ -175,7 +174,8 @@ export const techIcons: Record<string, IconType> = {
   'Netlify': SiNetlify,
   'AWS': SiAmazon,
   'Google Cloud': SiGooglecloud,
-  'GCP': SiGooglecloud,
+  
+  'Cloudflare': SiCloudflare,
   'Heroku': SiHeroku,
   'DigitalOcean': SiDigitalocean,
 
@@ -228,17 +228,71 @@ export const techIcons: Record<string, IconType> = {
   'Discord': SiDiscord,
 }
 
-// Helper function para obtener ícono con fallback
+// Aliases para normalizar variantes comunes (minúsculas keys)
+const techAliases: Record<string, string> = {
+  // React / Next
+  'reactjs': 'React',
+  'react.js': 'React',
+  'nextjs': 'Next.js',
+
+  // Vue
+  'vue.js': 'Vue',
+  'vuejs': 'Vue',
+
+  // Tailwind / CSS
+  'tailwindcss': 'Tailwind CSS',
+  'tailwind': 'Tailwind CSS',
+  'css3': 'CSS',
+
+  // JS / TS
+  'js': 'JavaScript',
+  'javascript': 'JavaScript',
+  'ts': 'TypeScript',
+  'typescript': 'TypeScript',
+
+  // Express
+  'express.js': 'Express',
+  'expressjs': 'Express',
+
+  // Sass/SCSS
+  'scss': 'Sass',
+
+  // Cloud
+  'gcp': 'Google Cloud',
+  'google cloud platform': 'Google Cloud',
+  'aws': 'AWS',
+  'amazon': 'AWS',
+  'amazon web services': 'AWS',
+  'azure': 'Azure',
+  'microsoft azure': 'Azure',
+  'cloudflare': 'Cloudflare',
+
+  // Misc
+  'github actions': 'GitHub Actions',
+  'intellij': 'IntelliJ IDEA',
+  'webstorm': 'WebStorm',
+}
+
+const findIconByKey = (key: string): IconType | null => {
+  if (!key) return null
+  if (techIcons[key]) return techIcons[key]
+  const found = Object.keys(techIcons).find(k => k.toLowerCase() === key.toLowerCase())
+  return found ? techIcons[found] : null
+}
+
+// Obtiene el ícono normalizando aliases y mayúsculas
 export const getTechIcon = (tech: string): IconType | null => {
-  return techIcons[tech] || null
+  if (!tech) return null
+  const normalizedKey = tech.trim().toLowerCase()
+  const canonical = techAliases[normalizedKey]
+  if (canonical) return findIconByKey(canonical)
+  return findIconByKey(tech)
 }
 
-// Helper para verificar si una tecnología tiene ícono
+// Verifica existencia considerando aliases
 export const hasTechIcon = (tech: string): boolean => {
-  return tech in techIcons
+  return getTechIcon(tech) !== null
 }
 
-// Obtener todas las tecnologías disponibles
-export const getAvailableTechs = (): string[] => {
-  return Object.keys(techIcons)
-}
+// Obtener todas las tecnologías disponibles (claves canónicas)
+export const getAvailableTechs = (): string[] => Object.keys(techIcons)

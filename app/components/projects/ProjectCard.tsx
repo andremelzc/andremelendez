@@ -24,8 +24,8 @@ export default function ProjectCard({
     role,
     teamSize,
     year,
-    hasDetails = false,
-    slug,
+    hasDetails = true,
+    slug = "hola",
   },
 }: ProjectCardProps) {
   // La imagen primaria siempre es la principal que se muestra
