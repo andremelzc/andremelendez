@@ -148,7 +148,7 @@ function transformSanityProject(
     year: sanityProject.year as number | undefined,
     hasDetails: sanityProject.hasDetails as boolean | undefined,
     slug: sanityProject.slug as string | undefined,
-    longDescription: sanityProject.longDescription as any,
+    longDescription: sanityProject.longDescription as unknown,
     gallery: (sanityProject.gallery as string[]) || [],
   };
 }

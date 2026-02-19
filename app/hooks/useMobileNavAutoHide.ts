@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
 interface UseMobileNavAutoHideOptions {
   hideDelay?: number; // Time in ms before auto-hiding
@@ -10,37 +10,37 @@ export function useMobileNavAutoHide(options: UseMobileNavAutoHideOptions = {}) 
   const { hideDelay = 10000, scrollThreshold = 10 } = options; // 10 seconds default
   
   const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const lastScrollYRef = useRef(0);
   
   const hideTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // Clear existing timer
-  const clearHideTimer = () => {
+  const clearHideTimer = useCallback(() => {
     if (hideTimerRef.current) {
-      clearTimeout(hideTimerRef.current);
+      clearTimeout(hideTimerRef.current as unknown as number);
       hideTimerRef.current = null;
     }
-  };
+  }, []);
 
   // Start hide timer
-  const startHideTimer = () => {
+  const startHideTimer = useCallback(() => {
     clearHideTimer();
     hideTimerRef.current = setTimeout(() => {
       setIsVisible(false);
-    }, hideDelay);
-  };
+    }, hideDelay) as unknown as NodeJS.Timeout;
+  }, [hideDelay, clearHideTimer]);
 
   // Show navbar and start timer
-  const showAndStartTimer = () => {
+  const showAndStartTimer = useCallback(() => {
     setIsVisible(true);
     startHideTimer();
-  };
+  }, [startHideTimer]);
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-      const scrollDifference = currentScrollY - lastScrollY;
-      
+      const scrollDifference = currentScrollY - lastScrollYRef.current;
+
       // Only react to significant scroll changes
       if (Math.abs(scrollDifference) > scrollThreshold) {
         if (scrollDifference > 0) {
@@ -51,13 +51,13 @@ export function useMobileNavAutoHide(options: UseMobileNavAutoHideOptions = {}) 
           // Scrolling up - show and start timer
           showAndStartTimer();
         }
-        
-        setLastScrollY(currentScrollY);
+
+        lastScrollYRef.current = currentScrollY;
       }
     };
 
     // Initialize
-    setLastScrollY(window.scrollY);
+    lastScrollYRef.current = window.scrollY;
     startHideTimer();
 
     // Add event listener
@@ -68,7 +68,7 @@ export function useMobileNavAutoHide(options: UseMobileNavAutoHideOptions = {}) 
       window.removeEventListener('scroll', handleScroll);
       clearHideTimer();
     };
-  }, [hideDelay, scrollThreshold, lastScrollY]);
+  }, [scrollThreshold, showAndStartTimer, startHideTimer, clearHideTimer]);
 
   // Manual show/hide functions
   const show = () => {

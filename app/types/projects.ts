@@ -24,7 +24,7 @@ export interface Project {
   year?: number;
   hasDetails?: boolean;
   slug?: string;
-  longDescription?: any; // Portable Text (array of blocks)
+  longDescription?: unknown; // Portable Text (array of blocks)
   gallery?: string[]; // URLs of images
 }
 
