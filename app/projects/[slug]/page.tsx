@@ -17,19 +17,19 @@ import { SiFigma, SiLoom } from "react-icons/si";
 // Serializadores personalizados para PortableText
 const portableTextComponents: PortableTextComponents = {
   block: {
-    normal: ({ children }: { children: React.ReactNode }) => (
+    normal: ({ children }: { children?: React.ReactNode }) => (
       <p className="text-foreground/80 leading-relaxed mb-4 text-sm md:text-base">
         {children}
       </p>
     ),
-    h3: ({ children }: { children: React.ReactNode }) => (
+    h3: ({ children }: { children?: React.ReactNode }) => (
       <h3 className="text-lg md:text-xl font-bold text-foreground mt-6 mb-3">
         {children}
       </h3>
     ),
   },
   list: {
-    bullet: ({ children }: { children: React.ReactNode }) => (
+    bullet: ({ children }: { children?: React.ReactNode }) => (
       <ul className="list-disc pl-5 mb-4 text-foreground/80 flex flex-col gap-2 text-sm md:text-base">
         {children}
       </ul>
@@ -104,7 +104,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                   Sobre el proyecto
                 </h2>
                 <PortableText
-                  value={project.longDescription as unknown as Array<Record<string, unknown>>}
+                  value={project.longDescription as unknown as Parameters<typeof PortableText>[0]["value"]}
                   components={portableTextComponents}
                 />
               </div>
