@@ -2,10 +2,20 @@
 import React from "react";
 import Image from "next/image";
 import Button from "@/app/components/ui/Button";
-import { downloadCV } from "@/app/lib/downloads";
 import { scrollToContact } from "@/app/lib/utils";
+import { Profile } from "@/app/types/profile";
 
-export default function HomeSection() {
+interface HomeSectionProps {
+  profile: Profile;
+}
+
+export default function HomeSection({ profile }: HomeSectionProps) {
+  const handleDownloadCV = () => {
+    // Descarga la versión en español si existe, si no la de inglés, o la local
+    const cvUrl = profile.cvSpanish || profile.cvEnglish || "/cv_andre_melendez_español.pdf";
+    window.open(cvUrl, "_blank");
+  };
+
   return (
     <section
       id="home"
@@ -24,10 +34,10 @@ export default function HomeSection() {
           {/* Títulos */}
           <div className="flex flex-col gap-1 sm:gap-2 lg:gap-1">
             <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-3xl text-accent font-semibold">
-              Desarrollador Full-Stack
+              {profile.title}
             </h2>
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-5xl font-bold leading-tight">
-              Andre Ivan Melendez Cava
+              {profile.fullName}
             </h1>
           </div>
         </div>
@@ -36,8 +46,8 @@ export default function HomeSection() {
           <div className="absolute -inset-2 sm:-inset-3 md:-inset-4 lg:-inset-3 bg-gradient-to-r from-accent/10 group-hover:from-accent/15 via-cherry-300/10 group-hover:via-cherry-300/15 to-accent/10 group-hover:to-accent/15 rounded-full blur-lg group-hover:blur-xl transition-all duration-500 opacity-60 group-hover:opacity-100" />
           <div className="relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 lg:w-56 lg:h-56 xl:w-64 xl:h-64 mx-auto">
             <Image
-              src="/profile.jpg"
-              alt="Andre Melendez Cava"
+              src={profile.profileImage || "/profile.jpg"}
+              alt={profile.fullName}
               fill
               className="rounded-full object-cover object-[center_60%] group-hover:scale-105 transition-transform duration-500"
               priority
@@ -53,24 +63,22 @@ export default function HomeSection() {
           <div className="relative">
             <div className="backdrop-blur-md bg-background/20 border border-border/30 rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 lg:p-6 shadow-lg hover:shadow-xl hover:bg-background/25 transition-all duration-300 group">
               <p className="text-sm sm:text-base md:text-lg lg:text-base xl:text-lg leading-relaxed text-foreground/90 group-hover:text-foreground/95 transition-colors duration-300">
-                Estudiante de{" "}
-                <span className="font-semibold text-accent">
-                  Ingeniería de Software
-                </span>{" "}
-                en la Universidad Nacional Mayor de San Marcos, especializado en
-                el desarrollo de aplicaciones web modernas.
+                {profile.bio}
               </p>
-              <div className="h-px w-16 sm:w-20 md:w-24 lg:w-20 bg-gradient-to-r from-transparent via-accent/50 to-transparent mx-auto mt-3 sm:mt-4 lg:mt-3 group-hover:via-accent/70 transition-all duration-300" />
-              <p className="mt-3 sm:mt-4 lg:mt-3 text-sm sm:text-base lg:text-sm xl:text-base text-foreground/70 group-hover:text-foreground/80 transition-colors duration-300">
-                Enfocado en crear impacto a través de la tecnología y participar
-                en proyectos innovadores.
-              </p>
+              {profile.subBio && (
+                <>
+                  <div className="h-px w-16 sm:w-20 md:w-24 lg:w-20 bg-gradient-to-r from-transparent via-accent/50 to-transparent mx-auto mt-3 sm:mt-4 lg:mt-3 group-hover:via-accent/70 transition-all duration-300" />
+                  <p className="mt-3 sm:mt-4 lg:mt-3 text-sm sm:text-base lg:text-sm xl:text-base text-foreground/70 group-hover:text-foreground/80 transition-colors duration-300">
+                    {profile.subBio}
+                  </p>
+                </>
+              )}
               {/* Botones dentro del contenedor */}
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 lg:gap-3 justify-center mt-6 sm:mt-8 lg:mt-5">
                 <Button
                   variant="primary"
                   size="md"
-                  onClick={downloadCV}
+                  onClick={handleDownloadCV}
                   icon={
                     <svg
                       className="w-4 h-4 sm:w-5 sm:h-5"
