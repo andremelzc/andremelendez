@@ -1,4 +1,5 @@
 import { defineType, defineField } from "sanity";
+import { getAvailableTechs } from "../../app/data/techIcons";
 
 export default defineType({
   name: "project",
@@ -55,113 +56,41 @@ export default defineType({
         {
           type: "string",
           options: {
-            list: [
-              // Frontend Frameworks
-              "React",
-              "Next.js",
-              "Vue.js",
-              "Vue",
-              "Angular",
-              "Svelte",
-              "Nuxt.js",
-              // Languages
-              "JavaScript",
-              "TypeScript",
-              "Python",
-              "C++",
-              "PHP",
-              "Rust",
-              "Go",
-              "Swift",
-              "Kotlin",
-              // Backend Frameworks
-              "Node.js",
-              "Express",
-              "Express.js",
-              "NestJS",
-              "Django",
-              "FastAPI",
-              "Flask",
-              "Spring Boot",
-              "Laravel",
-              "Ruby on Rails",
-              // Databases
-              "MongoDB",
-              "PostgreSQL",
-              "MySQL",
-              "Redis",
-              "SQLite",
-              "Firebase",
-              "Supabase",
-              "Prisma",
-              // CSS & Styling
-              "Tailwind CSS",
-              "TailwindCSS",
-              "Bootstrap",
-              "Sass",
-              "SCSS",
-              "Styled Components",
-              "CSS",
-              "CSS3",
-              "HTML",
-              "HTML5",
-              // Build Tools
-              "Webpack",
-              "Vite",
-              "esbuild",
-              // Cloud & Deployment
-              "Vercel",
-              "Netlify",
-              "AWS",
-              "Google Cloud",
-              "GCP",
-              "Heroku",
-              "DigitalOcean",
-              // Developer Tools
-              "Git",
-              "GitHub",
-              "GitLab",
-              "Docker",
-              "Kubernetes",
-              "Jenkins",
-              "GitHub Actions",
-              // Testing
-              "Jest",
-              "Cypress",
-              "Vitest",
-              // State Management
-              "Redux",
-              "MobX",
-              // Mobile Development
-              "Flutter",
-              "Ionic",
-              // APIs & Communication
-              "GraphQL",
-              "Apollo",
-              "Socket.io",
-              // Package Managers
-              "npm",
-              "Yarn",
-              "pnpm",
-              // IDEs & Editors
-              "IntelliJ IDEA",
-              "WebStorm",
-              // OS
-              "macOS",
-              "Linux",
-              "Ubuntu",
-              // Other Tools
-              "Figma",
-              "Postman",
-              "Notion",
-              "Slack",
-              "Discord",
-            ],
+            list: getAvailableTechs(),
           },
         },
       ],
       validation: (Rule) =>
         Rule.min(1).max(8).error("Please select 1-8 technologies"),
+    }),
+    defineField({
+      name: "client",
+      title: "Client / Organization",
+      type: "string",
+      description: "e.g. UNMSM, Personal, Freelance",
+    }),
+    defineField({
+      name: "duration",
+      title: "Duration",
+      type: "string",
+      description: "e.g. 2 months, 3 weeks",
+    }),
+    defineField({
+      name: "highlights",
+      title: "Highlights / Key Achievements",
+      type: "array",
+      of: [{ type: "string" }],
+      description: "Bullet points of key accomplishments (e.g. Optimized load times by 40%)",
+    }),
+    defineField({
+      name: "designUrl",
+      title: "Design URL (Figma)",
+      type: "url",
+    }),
+    defineField({
+      name: "videoUrl",
+      title: "Video Demo URL",
+      type: "url",
     }),
     defineField({
       name: "longDescription",

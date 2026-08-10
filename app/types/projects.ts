@@ -18,6 +18,11 @@ export interface Project {
   technologies: string[];
   demoUrl?: string;
   codeUrl?: string;
+  designUrl?: string;
+  videoUrl?: string;
+  client?: string;
+  duration?: string;
+  highlights?: string[];
   category: ProjectCategory;
   role?: ProjectRole;
   teamSize?: TeamSize;

@@ -1,9 +1,13 @@
+export interface SkillItem {
+  name: string;
+  category: string;
+  isFeatured: boolean;
+}
+
 export interface Skills {
-  frontend: string[]
-  backend: string[]
-  tools: string[]
+  skillsList: SkillItem[];
 }
 
 export interface SkillGridProps {
-  skills: string[]
+  skills: SkillItem[];
 }
