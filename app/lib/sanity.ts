@@ -6,6 +6,40 @@ import {
   ProjectRole,
   TeamSize,
 } from "@/app/types/projects";
+import { sampleProjects } from "@/app/data/projects";
+
+const fallbackSkills = {
+  frontend: [
+    "HTML",
+    "CSS",
+    "JavaScript",
+    "TypeScript",
+    "React",
+    "Next.js",
+    "Tailwind CSS",
+    "Bootstrap"
+  ],
+  backend: [
+    "Node.js",
+    "Express",
+    "NestJS",
+    "Python",
+    "PostgreSQL",
+    "MongoDB",
+    "Prisma",
+    "GraphQL"
+  ],
+  tools: [
+    "Git",
+    "GitHub",
+    "Docker",
+    "Vercel",
+    "npm",
+    "pnpm",
+    "Figma",
+    "Postman"
+  ]
+};
 
 // Query para obtener todos los proyectos
 const projectsQuery = groq`
@@ -157,20 +191,27 @@ function transformSanityProject(
 export async function getAllProjects(): Promise<Project[]> {
   try {
     const projects = await client.fetch(projectsQuery);
+    if (!projects || projects.length === 0) {
+      console.warn("No projects found in Sanity. Falling back to local sample projects.");
+      return sampleProjects;
+    }
     return projects.map(transformSanityProject);
   } catch (error) {
-    console.error("Error fetching projects:", error);
-    return [];
+    console.error("Error fetching projects from Sanity, falling back to local sample projects:", error);
+    return sampleProjects;
   }
 }
 
 export async function getFeaturedProjects(): Promise<Project[]> {
   try {
     const projects = await client.fetch(featuredProjectsQuery);
+    if (!projects || projects.length === 0) {
+      return sampleProjects.filter((project) => project.featured);
+    }
     return projects.map(transformSanityProject);
   } catch (error) {
-    console.error("Error fetching featured projects:", error);
-    return [];
+    console.error("Error fetching featured projects, falling back to local sample projects:", error);
+    return sampleProjects.filter((project) => project.featured);
   }
 }
 
@@ -189,30 +230,39 @@ export async function getProjectsByCategory(
 ): Promise<Project[]> {
   try {
     const projects = await client.fetch(projectsByCategoryQuery, { category });
+    if (!projects || projects.length === 0) {
+      return sampleProjects.filter((project) => project.category === category);
+    }
     return projects.map(transformSanityProject);
   } catch (error) {
-    console.error("Error fetching projects by category:", error);
-    return [];
+    console.error("Error fetching projects by category, falling back to local sample projects:", error);
+    return sampleProjects.filter((project) => project.category === category);
   }
 }
 
 export async function getProjectById(id: string): Promise<Project | null> {
   try {
     const project = await client.fetch(projectByIdQuery, { id });
-    return project ? transformSanityProject(project) : null;
+    if (!project) {
+      return sampleProjects.find((p) => p.id === id) || null;
+    }
+    return transformSanityProject(project);
   } catch (error) {
-    console.error("Error fetching project by id:", error);
-    return null;
+    console.error("Error fetching project by id, falling back to local sample projects:", error);
+    return sampleProjects.find((p) => p.id === id) || null;
   }
 }
 
 export async function getProjectBySlug(slug: string): Promise<Project | null> {
   try {
     const project = await client.fetch(projectBySlugQuery, { slug });
-    return project ? transformSanityProject(project) : null;
+    if (!project) {
+      return sampleProjects.find((p) => p.slug === slug) || null;
+    }
+    return transformSanityProject(project);
   } catch (error) {
-    console.error("Error fetching project by slug:", error);
-    return null;
+    console.error("Error fetching project by slug, falling back to local sample projects:", error);
+    return sampleProjects.find((p) => p.slug === slug) || null;
   }
 }
 
@@ -241,9 +291,14 @@ export async function getAvailableCategories(): Promise<string[]> {
 
 export async function getSkills() {
   try {
-    return await client.fetch(skillsQuery);
+    const skills = await client.fetch(skillsQuery);
+    if (!skills || (!skills.frontend && !skills.backend && !skills.tools)) {
+      console.warn("No skills found in Sanity. Falling back to local skills.");
+      return fallbackSkills;
+    }
+    return skills;
   } catch (error) {
-    console.error("Error fetching skills from Sanity:", error);
-    return { frontend: [], backend: [], tools: [] };
+    console.error("Error fetching skills from Sanity, falling back to local skills:", error);
+    return fallbackSkills;
   }
 }
