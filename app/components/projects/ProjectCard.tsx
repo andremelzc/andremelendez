@@ -52,9 +52,11 @@ export default function ProjectCard({
               ),
             )}
             {!featured && technologies.length > 2 && (
-              <div className="bg-muted/60 backdrop-blur-sm text-foreground/80 text-xs font-medium px-2 md:px-3 py-1 md:py-1.5 rounded-full border border-border/50">
-                +{technologies.length - 2}
-              </div>
+              <Tooltip content={technologies.slice(2).join(", ")}>
+                <div className="bg-muted/60 backdrop-blur-sm text-foreground/80 text-xs font-medium px-2 md:px-3 py-1 md:py-1.5 rounded-full border border-border/50 cursor-help">
+                  +{technologies.length - 2}
+                </div>
+              </Tooltip>
             )}
           </div>
           {/* Teamsize Badge */}
