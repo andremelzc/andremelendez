@@ -35,10 +35,10 @@ export default function ProjectCard({
 
   return (
     <div className="group relative h-full">
-      <div className="relative bg-gradient-to-br from-midnight-800 via-midnight-900 to-midnight-800 border border-midnight-600/50 rounded-2xl md:rounded-3xl shadow-2xl text-background flex flex-col w-full h-full hover:shadow-3xl transition-all duration-500 hover:border-accent/30 transform-gpu group-hover:scale-[1.02] group-hover:-translate-y-1">
+      <div className="relative bg-gradient-to-br from-muted/50 via-background/30 to-muted/50 border border-border/50 rounded-2xl md:rounded-3xl shadow-2xl text-foreground flex flex-col w-full h-full hover:shadow-3xl transition-all duration-500 hover:border-accent/30 transform-gpu group-hover:scale-[1.02] group-hover:-translate-y-1">
         {/* Efectos internos sutiles */}
-        <div className="absolute inset-0 bg-gradient-to-br from-foreground/10 via-transparent to-foreground/5 rounded-2xl md:rounded-3xl pointer-events-none" />
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-midnight-500/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-br from-foreground/5 via-transparent to-foreground/5 rounded-2xl md:rounded-3xl pointer-events-none" />
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />
         {/* Efecto de brillo sutil en hover */}
         <div className="absolute inset-0 bg-gradient-to-tr from-accent/5 via-transparent to-accent/10 rounded-2xl md:rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
@@ -52,13 +52,13 @@ export default function ProjectCard({
               ),
             )}
             {!featured && technologies.length > 2 && (
-              <div className="bg-midnight-700/60 backdrop-blur-sm text-midnight-200 text-xs font-medium px-2 md:px-3 py-1 md:py-1.5 rounded-full border border-midnight-600/50">
+              <div className="bg-muted/60 backdrop-blur-sm text-foreground/80 text-xs font-medium px-2 md:px-3 py-1 md:py-1.5 rounded-full border border-border/50">
                 +{technologies.length - 2}
               </div>
             )}
           </div>
           {/* Teamsize Badge */}
-          <div className="bg-midnight-700/60 backdrop-blur-sm border border-midnight-600/50 text-midnight-200 text-xs font-medium px-2 md:px-3 py-1 md:py-1.5 rounded-full shadow-lg self-end sm:self-auto">
+          <div className="bg-muted/60 backdrop-blur-sm border border-border/50 text-foreground/80 text-xs font-medium px-2 md:px-3 py-1 md:py-1.5 rounded-full shadow-lg self-end sm:self-auto">
             <Tooltip content={teamSize}>
               <span className="inline-flex">
                 {teamSize === "Solo" ? (
@@ -211,7 +211,7 @@ export default function ProjectCard({
           className={`relative px-4 md:px-6 pb-4 md:pb-6 flex-shrink-0 ${!featured ? "mt-2 md:mt-4" : "mt-4 md:mt-8"}`}
         >
           {/* Separador */}
-          <div className="h-px bg-gradient-to-r from-transparent via-midnight-600/40 to-transparent mb-4 md:mb-6" />
+          <div className="h-px bg-gradient-to-r from-transparent via-border/40 to-transparent mb-4 md:mb-6" />
           {/* Botones e Indicador */}
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0">
             {/* Botones a la izquierda */}
@@ -260,7 +260,7 @@ export default function ProjectCard({
 
             {/* Indicador de role a la derecha */}
             {role ? (
-              <div className="flex items-center gap-2 text-xs text-midnight-400 self-end sm:self-auto">
+              <div className="flex items-center gap-2 text-xs text-foreground/60 self-end sm:self-auto">
                 <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
                 <span className="font-medium">{role}</span>
                 {year && (
