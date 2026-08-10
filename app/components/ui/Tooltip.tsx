@@ -10,6 +10,7 @@ export default function Tooltip({ content, children }: TooltipProps) {
   const [show, setShow] = useState(false);
   return (
     <span
+      className="relative inline-flex"
       onMouseEnter={() => setShow(true)}
       onMouseLeave={() => setShow(false)}
     >
