@@ -11,8 +11,36 @@ interface SkillsClientProps {
 }
 
 export default function SkillsClient({ initialSkills }: SkillsClientProps) {
-  const [skills, setSkills] = useState(initialSkills.frontend);
-  const [activeFilter, setActiveFilter] = useState<string>("Frontend");
+  // Obtener categorías únicas presentes en la lista de habilidades
+  const availableCategories = Array.from(
+    new Set((initialSkills.skillsList || []).map((skill) => skill.category))
+  );
+
+  const preferredCategoryOrder = [
+    "Frontend",
+    "Backend y DB",
+    "Cloud & DevOps",
+    "Mobile Development",
+    "Herramientas y Gestión",
+    "Diseño & UI/UX"
+  ];
+
+  // Ordenar categorías disponibles según el orden preferido
+  const categories = availableCategories.sort((a, b) => {
+    const indexA = preferredCategoryOrder.indexOf(a);
+    const indexB = preferredCategoryOrder.indexOf(b);
+    if (indexA === -1 && indexB === -1) return 0;
+    if (indexA === -1) return 1;
+    if (indexB === -1) return -1;
+    return indexA - indexB;
+  });
+
+  const defaultCategory = categories.includes("Frontend") ? "Frontend" : (categories[0] || "");
+
+  const [skills, setSkills] = useState(() =>
+    (initialSkills.skillsList || []).filter((s) => s.category === defaultCategory)
+  );
+  const [activeFilter, setActiveFilter] = useState<string>(defaultCategory);
   const [loading, setLoading] = useState(false);
 
   const handleFilter = (category: string) => {
@@ -20,16 +48,13 @@ export default function SkillsClient({ initialSkills }: SkillsClientProps) {
     setActiveFilter(category);
 
     try {
-      if (category === "Frontend") {
-        setSkills(initialSkills.frontend);
-      } else if (category === "Backend y DB") {
-        setSkills(initialSkills.backend);
-      } else if (category === "Herramientas y Gestión") {
-        setSkills(initialSkills.tools);
-      }
+      const filtered = (initialSkills.skillsList || []).filter(
+        (s) => s.category === category
+      );
+      setSkills(filtered);
     } catch (error) {
       console.error("Error filtering skills:", error);
-      setSkills(initialSkills.frontend);
+      setSkills([]);
     } finally {
       setLoading(false);
     }
@@ -48,29 +73,16 @@ export default function SkillsClient({ initialSkills }: SkillsClientProps) {
           {/* Efecto hover sutil */}
           <div className="absolute inset-0 rounded-xl sm:rounded-2xl bg-gradient-to-r from-white/0 via-white/8 to-white/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
-          <div className="relative flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-4 lg:gap-4 justify-center">
-            <Button
-              variant={activeFilter === "Frontend" ? "primary" : "outline"}
-              onClick={() => handleFilter("Frontend")}
-            >
-              Frontend
-            </Button>
-            <Button
-              variant={activeFilter === "Backend y DB" ? "primary" : "outline"}
-              onClick={() => handleFilter("Backend y DB")}
-            >
-              Backend y DB
-            </Button>
-            <Button
-              variant={
-                activeFilter === "Herramientas y Gestión"
-                  ? "primary"
-                  : "outline"
-              }
-              onClick={() => handleFilter("Herramientas y Gestión")}
-            >
-              Herramientas y Gestión
-            </Button>
+          <div className="relative flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center flex-wrap">
+            {categories.map((category) => (
+              <Button
+                key={category}
+                variant={activeFilter === category ? "primary" : "outline"}
+                onClick={() => handleFilter(category)}
+              >
+                {category}
+              </Button>
+            ))}
           </div>
         </div>
       </div>

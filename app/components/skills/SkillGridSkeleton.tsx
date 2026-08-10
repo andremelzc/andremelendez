@@ -7,9 +7,9 @@ export default function SkillGridSkeleton() {
         {Array.from({ length: 8 }).map((_, i) => (
           <div
             key={i}
-            className="h-16 sm:h-20 bg-midnight-700/60 rounded-xl border border-midnight-600/40 flex items-cen<ter justify-center"
+            className="h-16 sm:h-20 bg-muted/20 rounded-xl border border-border/20 flex items-center justify-center"
           >
-            <div className="w-16 h-4 sm:w-20 sm:h-5 bg-midnight-600/40 rounded-full" />
+            <div className="w-16 h-4 sm:w-20 sm:h-5 bg-muted/40 rounded-full" />
           </div>
         ))}
       </div>
