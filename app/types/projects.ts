@@ -17,6 +17,7 @@ export interface Project {
   featured: boolean;
   technologies: string[];
   demoUrl?: string;
+  liveUrl?: string;
   codeUrl?: string;
   designUrl?: string;
   videoUrl?: string;

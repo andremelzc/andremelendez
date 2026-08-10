@@ -113,6 +113,13 @@ export default defineType({
       name: "demoUrl",
       title: "Demo URL",
       type: "url",
+      description: "URL to a demo or prototype of the project",
+    }),
+    defineField({
+      name: "liveUrl",
+      title: "Live Project URL",
+      type: "url",
+      description: "URL to the real, production version of the project",
     }),
     defineField({
       name: "codeUrl",

@@ -61,6 +61,8 @@ import {
   SiGooglecloud,
   SiHeroku,
   SiDigitalocean,
+  SiAwslambda,
+  SiAwssecretsmanager,
 
   // Developer Tools
   SiGit,
@@ -109,6 +111,8 @@ import {
   SiNotion,
   SiSlack,
   SiDiscord,
+  SiZod,
+  SiLangchain,
 } from 'react-icons/si'
 
 export const techIcons: Record<string, IconType> = {
@@ -149,6 +153,8 @@ export const techIcons: Record<string, IconType> = {
   'Redis': SiRedis,
   'SQLite': SiSqlite,
   'Firebase': SiFirebase,
+  'Firebase Auth': SiFirebase,
+  'Firestore': SiFirebase,
   'Supabase': SiSupabase,
   'Prisma': SiPrisma,
 
@@ -173,6 +179,8 @@ export const techIcons: Record<string, IconType> = {
   'Vercel': SiVercel,
   'Netlify': SiNetlify,
   'AWS': SiAmazon,
+  'AWS Lambda': SiAwslambda,
+  'AWS Secrets Manager': SiAwssecretsmanager,
   'Google Cloud': SiGooglecloud,
   
   'Cloudflare': SiCloudflare,
@@ -226,6 +234,8 @@ export const techIcons: Record<string, IconType> = {
   'Notion': SiNotion,
   'Slack': SiSlack,
   'Discord': SiDiscord,
+  'Zod': SiZod,
+  'LangChain': SiLangchain,
 }
 
 // Aliases para normalizar variantes comunes (minúsculas keys)
@@ -263,6 +273,8 @@ const techAliases: Record<string, string> = {
   'aws': 'AWS',
   'amazon': 'AWS',
   'amazon web services': 'AWS',
+  'lambda': 'AWS Lambda',
+  'secrets manager': 'AWS Secrets Manager',
   'azure': 'Azure',
   'microsoft azure': 'Azure',
   'cloudflare': 'Cloudflare',
@@ -295,4 +307,4 @@ export const hasTechIcon = (tech: string): boolean => {
 }
 
 // Obtener todas las tecnologías disponibles (claves canónicas)
-export const getAvailableTechs = (): string[] => Object.keys(techIcons)
+export const getAvailableTechs = (): string[] => Object.keys(techIcons).sort()

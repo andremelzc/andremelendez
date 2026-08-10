@@ -20,6 +20,7 @@ export default function ProjectCard({
     featured,
     technologies,
     demoUrl,
+    liveUrl,
     codeUrl,
     role,
     teamSize,
@@ -230,8 +231,32 @@ export default function ProjectCard({
                   </Button>
                 </a>
               )}
-              {demoUrl && (
-                <a href={demoUrl} target="_blank" rel="noopener noreferrer">
+              {liveUrl && (
+                <a
+                  href={liveUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    icon={<HiOutlineExternalLink />}
+                    iconPosition="left"
+                    className="text-xs md:text-sm px-2 md:px-3 py-1.5 md:py-2"
+                  >
+                    <span className="hidden xs:inline">Visitar Sitio Real</span>
+                    <span className="xs:hidden">Sitio</span>
+                  </Button>
+                </a>
+              )}
+              {demoUrl && !liveUrl && (
+                <a
+                  href={demoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   <Button
                     variant="secondary"
                     size="sm"

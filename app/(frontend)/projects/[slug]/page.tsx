@@ -191,9 +191,9 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
               {/* Enlaces de Acción */}
               <div className="flex flex-col gap-3">
-                {project.demoUrl && (
+                {project.liveUrl && (
                   <a
-                    href={project.demoUrl}
+                    href={project.liveUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-full"
@@ -203,7 +203,23 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                       icon={<HiOutlineExternalLink />}
                       className="w-full justify-center"
                     >
-                      Ver Demo en Vivo
+                      Sitio en Producción
+                    </Button>
+                  </a>
+                )}
+                {project.demoUrl && !project.liveUrl && (
+                  <a
+                    href={project.demoUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full"
+                  >
+                    <Button
+                      variant="outline"
+                      icon={<HiOutlineExternalLink />}
+                      className="w-full justify-center"
+                    >
+                      Ver Demo
                     </Button>
                   </a>
                 )}
