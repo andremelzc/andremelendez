@@ -5,6 +5,8 @@ import Navbar from "@/app/components/layout/Navbar";
 import Divisor from "./components/ui/Divisor";
 import Footer from "./components/layout/Footer";
 
+import { Providers } from "./providers";
+
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -28,13 +30,16 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} overflow-x-hidden`}
     >
       <body className="antialiased">
-        <Navbar />
-        <main className="mx-auto max-w-7xl">{children}</main>
-        <Divisor />
-        <Footer />
+        <Providers>
+          <Navbar />
+          <main className="mx-auto max-w-7xl">{children}</main>
+          <Divisor />
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

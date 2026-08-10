@@ -6,7 +6,7 @@ export default async function SkillsSection() {
   const initialSkills = await getSkills();
 
   return (
-    <section id="habilidades" className="overflow-hidden px-4 sm:px-6 lg:px-8">
+    <section id="habilidades" className="relative px-4 sm:px-6 lg:px-8 py-12 md:py-20">
       <div className="flex flex-col gap-12 sm:gap-14 md:gap-16 lg:gap-12 xl:gap-10 text-center items-center max-w-7xl mx-auto">
         <div className="flex flex-col gap-6 sm:gap-8 lg:gap-6">
           {/* Header */}

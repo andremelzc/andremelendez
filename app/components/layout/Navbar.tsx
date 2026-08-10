@@ -6,6 +6,7 @@ import { useActiveSection } from "@/app/hooks/useActiveSection";
 import { useIndicatorPosition } from "@/app/hooks/useIndicatorPosition";
 import { useNavbarShrink } from "@/app/hooks/useNavbarShrink";
 import { useMobileNavAutoHide } from "@/app/hooks/useMobileNavAutoHide";
+import ThemeToggle from "../ThemeToggle";
 
 export default function Navbar() {
   const activeSection = useActiveSection();
@@ -142,6 +143,9 @@ export default function Navbar() {
                 Contacto
               </Link>
             </li>
+            <li className="ml-1 pl-1 sm:ml-2 sm:pl-2 border-l border-foreground/15 flex items-center">
+              <ThemeToggle />
+            </li>
           </ul>
         </nav>
       </div>
@@ -210,6 +214,10 @@ export default function Navbar() {
             >
               Contacto
             </Link>
+            <div className="mt-2 pt-2 border-t border-foreground/15 px-4 flex justify-between items-center">
+              <span className="text-sm font-medium text-foreground/80">Tema</span>
+              <ThemeToggle />
+            </div>
           </nav>
         </div>
       </div>

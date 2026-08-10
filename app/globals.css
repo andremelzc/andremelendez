@@ -133,7 +133,7 @@ section[id] {
   --color-cream-900: var(--color-cream-900);
 }
 
-@media (prefers-color-scheme: dark) {
+.dark {
   :root {
     --background: var(--color-midnight-900);
     --foreground: var(--color-cream-50);
