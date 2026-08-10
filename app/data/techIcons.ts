@@ -34,6 +34,7 @@ import {
   SiMongodb,
   SiPostgresql,
   SiMysql,
+  SiOracle,
   SiRedis,
   SiSqlite,
   SiFirebase,
@@ -150,6 +151,7 @@ export const techIcons: Record<string, IconType> = {
   'MongoDB': SiMongodb,
   'PostgreSQL': SiPostgresql,
   'MySQL': SiMysql,
+  'Oracle': SiOracle,
   'Redis': SiRedis,
   'SQLite': SiSqlite,
   'Firebase': SiFirebase,
@@ -236,6 +238,7 @@ export const techIcons: Record<string, IconType> = {
   'Discord': SiDiscord,
   'Zod': SiZod,
   'LangChain': SiLangchain,
+  'NextAuth.js': SiNextdotjs,
 }
 
 // Aliases para normalizar variantes comunes (minúsculas keys)
@@ -244,6 +247,8 @@ const techAliases: Record<string, string> = {
   'reactjs': 'React',
   'react.js': 'React',
   'nextjs': 'Next.js',
+  'nextauth': 'NextAuth.js',
+  'next-auth': 'NextAuth.js',
 
   // Vue
   'vue.js': 'Vue',

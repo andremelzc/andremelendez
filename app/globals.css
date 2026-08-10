@@ -134,12 +134,11 @@ section[id] {
 }
 
 .dark {
-  :root {
-    --background: var(--color-midnight-900);
-    --foreground: var(--color-cream-50);
-    --accent: var(--color-cherry-500);
-    --muted: var(--color-midnight-700);
-    --border: var(--color-midnight-600);
+  --background: var(--color-midnight-900);
+  --foreground: var(--color-cream-50);
+  --accent: var(--color-cherry-500);
+  --muted: var(--color-midnight-700);
+  --border: var(--color-midnight-600);
 
     /* Cherry */
   --color-cherry-50: #fdf4f4;
@@ -188,7 +187,6 @@ section[id] {
   --color-cream-700: #c78f4d;
   --color-cream-800: #9e6e38;
   --color-cream-900: #6b4b26;
-  }
 }
 
 body {
