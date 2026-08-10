@@ -41,14 +41,14 @@ export default function Navbar() {
 
   const getLinkClass = (sectionId: string): string => {
     return activeSection === sectionId
-      ? "text-background font-medium px-6 py-2.5 rounded-xl transition-all duration-300 relative z-10 text-sm"
+      ? "text-midnight-900 font-medium px-6 py-2.5 rounded-xl transition-all duration-300 relative z-10 text-sm"
       : "text-foreground/80 hover:text-foreground font-medium px-6 py-2.5 rounded-xl transition-all duration-300 relative z-10 text-sm tracking-wide hover:scale-105 hover:bg-white/5";
   };
 
   const getMobileLinkClass = (sectionId: string): string => {
     return activeSection === sectionId
-      ? "block w-full text-left px-4 py-3 text-white font-medium bg-white/20 rounded-lg transition-all duration-300"
-      : "block w-full text-left px-4 py-3 text-white/80 hover:text-white hover:bg-white/10 font-medium rounded-lg transition-all duration-300";
+      ? "block w-full text-left px-4 py-3 text-foreground font-medium bg-foreground/15 rounded-lg transition-all duration-300"
+      : "block w-full text-left px-4 py-3 text-foreground/80 hover:text-foreground hover:bg-foreground/10 font-medium rounded-lg transition-all duration-300";
   };
 
   const toggleMobileMenu = () => {
@@ -152,27 +152,21 @@ export default function Navbar() {
       }`}>
         <button
           onClick={toggleMobileMenu}
-          className="relative w-12 h-12 rounded-xl backdrop-blur-2xl border border-white/20 flex items-center justify-center transition-all duration-300 hover:scale-105"
-          style={{
-            background: `
-              linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.05) 100%),
-              radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.2) 0%, transparent 50%)
-            `,
-          }}
+          className="relative w-12 h-12 rounded-xl backdrop-blur-2xl border border-foreground/15 bg-background/25 flex items-center justify-center transition-all duration-300 hover:scale-105"
         >
           <div className="flex flex-col space-y-1.5">
             <span 
-              className={`block w-5 h-0.5 bg-white transition-all duration-300 ${
+              className={`block w-5 h-0.5 bg-foreground transition-all duration-300 ${
                 isMobileMenuOpen ? 'rotate-45 translate-y-2' : ''
               }`}
             />
             <span 
-              className={`block w-5 h-0.5 bg-white transition-all duration-300 ${
+              className={`block w-5 h-0.5 bg-foreground transition-all duration-300 ${
                 isMobileMenuOpen ? 'opacity-0' : ''
               }`}
             />
             <span 
-              className={`block w-5 h-0.5 bg-white transition-all duration-300 ${
+              className={`block w-5 h-0.5 bg-foreground transition-all duration-300 ${
                 isMobileMenuOpen ? '-rotate-45 -translate-y-2' : ''
               }`}
             />
@@ -181,17 +175,11 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         <div 
-          className={`absolute top-16 right-0 w-48 rounded-2xl backdrop-blur-2xl border border-white/20 overflow-hidden transition-all duration-300 ${
+          className={`absolute top-16 right-0 w-48 rounded-2xl backdrop-blur-2xl border border-foreground/15 overflow-hidden transition-all duration-300 bg-background/80 ${
             isMobileMenuOpen 
               ? 'opacity-100 translate-y-0 pointer-events-auto' 
               : 'opacity-0 -translate-y-4 pointer-events-none'
           }`}
-          style={{
-            background: `
-              linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0.05) 100%),
-              radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.2) 0%, transparent 50%)
-            `,
-          }}
         >
           <nav className="p-2">
             <Link
