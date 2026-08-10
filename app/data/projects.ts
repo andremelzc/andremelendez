@@ -24,6 +24,8 @@ export const sampleProjects: Project[] = [
     category: "Desarrollo Web",
     role: "Full Stack Developer",
     teamSize: "Solo",
+    slug: "techstore",
+    hasDetails: true,
   },
   {
     id: "2",
@@ -44,6 +46,8 @@ export const sampleProjects: Project[] = [
     demoUrl: "https://taskapp-demo.com",
     codeUrl: "https://github.com/andremelzc/task-manager",
     category: "Desarrollo Web",
+    slug: "task-manager",
+    hasDetails: true,
   },
 
   // Proyectos Regulares
@@ -58,6 +62,8 @@ export const sampleProjects: Project[] = [
     demoUrl: "https://weather-app-demo.com",
     codeUrl: "https://github.com/andremelzc/weather-app",
     category: "Desarrollo Web",
+    slug: "weather-app",
+    hasDetails: true,
   },
   {
     id: "4",
@@ -70,6 +76,8 @@ export const sampleProjects: Project[] = [
     demoUrl: "https://andremelez.dev",
     codeUrl: "https://github.com/andremelzc/portfolio",
     category: "Desarrollo Web",
+    slug: "portfolio",
+    hasDetails: true,
   },
   {
     id: "5",
@@ -81,6 +89,8 @@ export const sampleProjects: Project[] = [
     technologies: ["Node.js", "Express", "MongoDB", "JWT", "Swagger"],
     codeUrl: "https://github.com/andremelzc/blog-api",
     category: "Desarrollo Web",
+    slug: "blog-api",
+    hasDetails: true,
   },
   {
     id: "6",
@@ -92,6 +102,8 @@ export const sampleProjects: Project[] = [
     demoUrl: "https://calculator-demo.com",
     codeUrl: "https://github.com/andremelzc/calculator",
     category: "Desarrollo Web",
+    slug: "calculator",
+    hasDetails: true,
   },
 ];
 

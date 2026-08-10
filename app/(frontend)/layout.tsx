@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import "@/app/globals.css";
 import Navbar from "@/app/components/layout/Navbar";
-import Divisor from "./components/ui/Divisor";
-import Footer from "./components/layout/Footer";
-
-import { Providers } from "./providers";
+import Divisor from "@/app/components/ui/Divisor";
+import Footer from "@/app/components/layout/Footer";
+import { Providers } from "@/app/providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,11 +21,11 @@ export const metadata: Metadata = {
   description: "Portafolio de Andre Ivan Melendez Cava, estudiante de Ingeniería de Software en la UNMSM, especializado en desarrollo web moderno con React, Next.js, TypeScript y tecnologías full-stack.",
 };
 
-export default function RootLayout({
+export default function FrontendLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html
       lang="en"
