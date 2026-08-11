@@ -254,7 +254,7 @@ function transformSanityProject(
 // Funciones principales para obtener datos
 export async function getAllProjects(): Promise<Project[]> {
   try {
-    const projects = await client.fetch(projectsQuery);
+    const projects = await client.fetch(projectsQuery, {}, { next: { tags: ["project"] } });
     if (!projects || projects.length === 0) {
       console.warn("No projects found in Sanity. Falling back to local sample projects.");
       return sampleProjects;
@@ -268,7 +268,7 @@ export async function getAllProjects(): Promise<Project[]> {
 
 export async function getFeaturedProjects(): Promise<Project[]> {
   try {
-    const projects = await client.fetch(featuredProjectsQuery);
+    const projects = await client.fetch(featuredProjectsQuery, {}, { next: { tags: ["project"] } });
     if (!projects || projects.length === 0) {
       return sampleProjects.filter((project) => project.featured);
     }
@@ -293,7 +293,11 @@ export async function getProjectsByCategory(
   category: string,
 ): Promise<Project[]> {
   try {
-    const projects = await client.fetch(projectsByCategoryQuery, { category });
+    const projects = await client.fetch(
+      projectsByCategoryQuery,
+      { category },
+      { next: { tags: ["project"] } },
+    );
     if (!projects || projects.length === 0) {
       return sampleProjects.filter((project) => project.category === category);
     }
@@ -306,7 +310,7 @@ export async function getProjectsByCategory(
 
 export async function getProjectById(id: string): Promise<Project | null> {
   try {
-    const project = await client.fetch(projectByIdQuery, { id });
+    const project = await client.fetch(projectByIdQuery, { id }, { next: { tags: ["project"] } });
     if (!project) {
       return sampleProjects.find((p) => p.id === id) || null;
     }
@@ -319,7 +323,11 @@ export async function getProjectById(id: string): Promise<Project | null> {
 
 export async function getProjectBySlug(slug: string): Promise<Project | null> {
   try {
-    const project = await client.fetch(projectBySlugQuery, { slug });
+    const project = await client.fetch(
+      projectBySlugQuery,
+      { slug },
+      { next: { tags: ["project"] } },
+    );
     if (!project) {
       return sampleProjects.find((p) => p.slug === slug) || null;
     }
@@ -338,7 +346,7 @@ export async function getAvailableCategories(): Promise<string[]> {
         category
       }
     `;
-    const result = await client.fetch(categoriesQuery);
+    const result = await client.fetch(categoriesQuery, {}, { next: { tags: ["project"] } });
     const categories = [
       ...new Set(
         result
@@ -355,7 +363,7 @@ export async function getAvailableCategories(): Promise<string[]> {
 
 export async function getSkills(): Promise<Skills> {
   try {
-    const skills = await client.fetch(skillsQuery);
+    const skills = await client.fetch(skillsQuery, {}, { next: { tags: ["skills"] } });
     if (!skills || !skills.skillsList || skills.skillsList.length === 0) {
       console.warn("No skills found in Sanity. Falling back to local skills.");
       return { skillsList: fallbackSkillsList };
@@ -375,7 +383,7 @@ export async function getSkills(): Promise<Skills> {
 
 export async function getProfile(): Promise<Profile> {
   try {
-    const profile = await client.fetch(profileQuery);
+    const profile = await client.fetch(profileQuery, {}, { next: { tags: ["profile"] } });
     if (!profile) {
       console.warn("No profile found in Sanity. Falling back to local profile.");
       return fallbackProfile;
