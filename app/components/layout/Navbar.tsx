@@ -66,13 +66,13 @@ export default function Navbar() {
     <>
       {/* Desktop Navbar */}
       <div
-        className={`hidden md:flex fixed left-0 right-0 z-50 justify-center ${containerClasses.position} ${containerClasses.transition}`}
+        className={`hidden md:flex fixed left-0 right-0 z-50 justify-center pointer-events-none ${containerClasses.position} ${containerClasses.transition}`}
       >
         <nav
           ref={navRef}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
-          className={`relative rounded-2xl backdrop-blur-2xl border border-white/20 overflow-hidden group ${navClasses.scale} ${navClasses.shadow} ${navClasses.transition}`}
+          className={`relative pointer-events-auto rounded-2xl backdrop-blur-2xl border border-white/20 overflow-hidden group ${navClasses.scale} ${navClasses.shadow} ${navClasses.transition}`}
           style={{
             background: `
               linear-gradient(135deg, rgba(255, 255, 255, ${backgroundOpacity.primary}) 0%, rgba(255, 255, 255, ${backgroundOpacity.secondary}) 50%, rgba(255, 255, 255, ${backgroundOpacity.tertiary}) 100%),

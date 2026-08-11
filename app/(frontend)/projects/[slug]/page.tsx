@@ -52,7 +52,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
   }
 
   return (
-    <div className="relative font-sans min-h-screen p-6 sm:p-12 md:p-16 lg:p-20 pb-32">
+    <div className="relative font-sans min-h-screen px-6 sm:px-12 md:px-16 lg:px-20 pt-28 sm:pt-32 md:pt-36 pb-32">
       <ModernBackground />
 
       {/* Botón de retroceso */}
