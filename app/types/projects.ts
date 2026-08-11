@@ -40,4 +40,5 @@ export interface ProjectCardProps {
 
 export interface ProjectGridProps {
   projects: Project[];
+  limit?: number;
 }

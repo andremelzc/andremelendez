@@ -2,14 +2,23 @@ import React from "react";
 import { ProjectGridProps } from "@/app/types/projects";
 import ProjectCard from "@/app/components/projects/ProjectCard";
 import ComingSoonCard from "@/app/components/projects/ComingSoonCard";
+import Link from "next/link";
+import Button from "@/app/components/ui/Button";
 
-export default function ProjectGrid({ projects }: ProjectGridProps) {
-  const featuredProjects = projects
-    .filter((project) => project.featured)
-    .slice(0, 2);
-  const regularProjects = projects
-    .filter((project) => !project.featured)
-    .slice(0, 4);
+export default function ProjectGrid({ projects, limit }: ProjectGridProps) {
+  // Lógica de balanceo dinámico
+  const featuredAll = projects.filter((project) => project.featured);
+  const regularAll = projects.filter((project) => !project.featured);
+
+  let featuredProjects = featuredAll;
+  let regularProjects = regularAll;
+
+  if (limit) {
+    const maxFeatured = 3;
+    featuredProjects = featuredAll.slice(0, maxFeatured);
+    const remainingSlots = limit - featuredProjects.length;
+    regularProjects = regularAll.slice(0, remainingSlots);
+  }
   return (
     <div className="flex flex-col gap-6 sm:gap-8 lg:gap-8 w-full">
       {projects.length > 0 ? (
@@ -31,13 +40,14 @@ export default function ProjectGrid({ projects }: ProjectGridProps) {
               {/* Por si la cantidad de proyectos regulares es impar */}
               {regularProjects.length % 2 === 1 && <ComingSoonCard />}
             </div>
-            {/* Botón "Ver más proyectos" solo si hay 4 regulares */}
-            {/* ----- DESCOMENTAR CUANDO TENGA MÁS PROYECTOS Y CUANDO /PROYECTOS ESTÉ TERMINADO 
-            regularProjects.length === 4 && (
+            {/* Botón "Ver más proyectos" si hay más de los que muestra el límite */}
+            {limit && projects.length > limit && (
               <div className="flex justify-center mt-16">
-                <Button>Ver más proyectos</Button>
+                <Link href="/proyectos">
+                  <Button variant="outline">Ver más proyectos</Button>
+                </Link>
               </div>
-            )*/}
+            )}
           </div>
         </>
       ) : (

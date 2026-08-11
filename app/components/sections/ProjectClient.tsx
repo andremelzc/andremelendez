@@ -94,7 +94,7 @@ export default function ProjectClient({ initialProjects }: ProjectClientProps) {
         {loading ? (
           <ProjectGridSkeleton count={4} featuredCount={2} />
         ) : (
-          <ProjectGrid projects={projects} />
+          <ProjectGrid projects={projects} limit={6} />
         )}
       </div>
     </>
