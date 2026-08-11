@@ -56,8 +56,8 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
       <ModernBackground />
 
       {/* Botón de retroceso */}
-      <div className="max-w-6xl mx-auto mb-8 sm:mb-12">
-        <Link href="/#proyectos">
+      <div className="max-w-6xl mx-auto mb-8 sm:mb-12 relative z-10">
+        <Link href="/#proyectos" className="inline-block">
           <Button
             variant="outline"
             size="sm"
@@ -70,7 +70,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
         </Link>
       </div>
 
-      <article className="max-w-6xl mx-auto flex flex-col gap-8 sm:gap-12">
+      <article className="max-w-6xl mx-auto flex flex-col gap-8 sm:gap-12 relative z-10">
         {/* Hero Section */}
         <div className="flex flex-col lg:flex-row justify-between items-start gap-6 border-b border-border/40 pb-8 sm:pb-12">
           <div className="flex flex-col gap-3">
