@@ -218,9 +218,9 @@ export default function ProjectCard({
           {/* Separador */}
           <div className="h-px bg-gradient-to-r from-transparent via-border/40 to-transparent mb-4 md:mb-6" />
           {/* Botones e Indicador */}
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 sm:gap-0">
+          <div className="flex flex-wrap justify-between items-end gap-4">
             {/* Botones a la izquierda */}
-            <div className="flex gap-2 md:gap-3 flex-wrap">
+            <div className="flex gap-2 md:gap-3 flex-wrap flex-1">
               {hasDetails && slug && (
                 <a href={`/projects/${slug}`}>
                   <Button
@@ -289,11 +289,11 @@ export default function ProjectCard({
 
             {/* Indicador de role a la derecha */}
             {role ? (
-              <div className="flex items-center gap-2 text-xs text-foreground/60 self-end sm:self-auto">
+              <div className="flex items-center gap-2 text-xs text-foreground/60 flex-shrink-0 mt-auto pb-1">
                 <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
-                <span className="font-medium">{role}</span>
+                <span className="font-medium whitespace-nowrap">{role}</span>
                 {year && (
-                  <span>
+                  <span className="whitespace-nowrap">
                     ·{""} {year}
                   </span>
                 )}
