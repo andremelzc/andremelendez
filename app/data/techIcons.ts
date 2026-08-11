@@ -8,7 +8,7 @@ import {
   SiSvelte,
   SiNuxtdotjs,
 
-  // Languages  
+  // Languages
   SiJavascript,
   SiTypescript,
   SiPython,
@@ -18,6 +18,8 @@ import {
   SiGo,
   SiSwift,
   SiKotlin,
+  SiOpenjdk,
+  SiDotnet,
 
   // Backend Frameworks
   SiNodedotjs,
@@ -40,6 +42,7 @@ import {
   SiFirebase,
   SiSupabase,
   SiPrisma,
+  SiSequelize,
 
   // CSS & Styling
   SiTailwindcss,
@@ -106,6 +109,13 @@ import {
   SiLinux,
   SiUbuntu,
 
+  // AI/ML
+  SiOpenai,
+  SiHuggingface,
+  SiPytorch,
+  SiPandas,
+  SiNumpy,
+
   // Other Tools
   SiFigma,
   SiPostman,
@@ -135,6 +145,8 @@ export const techIcons: Record<string, IconType> = {
   'Go': SiGo,
   'Swift': SiSwift,
   'Kotlin': SiKotlin,
+  'Java': SiOpenjdk,
+  'C#': SiDotnet,
 
   // Backend Frameworks
   'Node.js': SiNodedotjs,
@@ -159,6 +171,7 @@ export const techIcons: Record<string, IconType> = {
   'Firestore': SiFirebase,
   'Supabase': SiSupabase,
   'Prisma': SiPrisma,
+  'Sequelize': SiSequelize,
 
   // CSS & Styling
   'Tailwind CSS': SiTailwindcss,
@@ -230,6 +243,13 @@ export const techIcons: Record<string, IconType> = {
   'Linux': SiLinux,
   'Ubuntu': SiUbuntu,
 
+  // AI/ML
+  'OpenAI': SiOpenai,
+  'Hugging Face': SiHuggingface,
+  'PyTorch': SiPytorch,
+  'Pandas': SiPandas,
+  'NumPy': SiNumpy,
+
   // Other Tools
   'Figma': SiFigma,
   'Postman': SiPostman,
@@ -288,6 +308,20 @@ const techAliases: Record<string, string> = {
   'github actions': 'GitHub Actions',
   'intellij': 'IntelliJ IDEA',
   'webstorm': 'WebStorm',
+
+  // AI/ML
+  'openai': 'OpenAI',
+  'huggingface': 'Hugging Face',
+  'hugging-face': 'Hugging Face',
+  'pytorch': 'PyTorch',
+  'pandas': 'Pandas',
+  'numpy': 'NumPy',
+
+  // Languages / .NET
+  'csharp': 'C#',
+  'c sharp': 'C#',
+  '.net': 'C#',
+  'dotnet': 'C#',
 }
 
 const findIconByKey = (key: string): IconType | null => {
