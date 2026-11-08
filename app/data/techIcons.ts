@@ -1,5 +1,5 @@
 import { IconType } from 'react-icons'
-import { 
+import {
   // Frontend Frameworks
   SiReact,
   SiNextdotjs,
@@ -61,7 +61,6 @@ import {
   SiVercel,
   SiNetlify,
   SiCloudflare,
-  SiAmazon,
   SiGooglecloud,
   SiHeroku,
   SiDigitalocean,
@@ -72,7 +71,6 @@ import {
   SiGit,
   SiGithub,
   SiGitlab,
-  SiDocker,
   SiKubernetes,
   SiJenkins,
   SiGithubactions,
@@ -124,16 +122,40 @@ import {
   SiDiscord,
   SiZod,
   SiLangchain,
+  SiAmazonwebservices,
+  SiAmazondynamodb,
+  SiAmazons3,
+  SiAmazoncognito,
+  SiGooglegemini,
+  SiReactquery,
+  SiDocker,
+  SiAnthropic,
+  SiTerraform,
+  SiAnsible,
+  SiNeo4J,
+  SiElasticsearch,
+  SiMariadb,
+  SiRemix,
+  SiAstro,
+  SiGatsby,
+  SiInsomnia,
+  SiSwagger,
+  SiTrpc,
 } from 'react-icons/si'
 
 export const techIcons: Record<string, IconType> = {
-  // Frontend Frameworks
+  // Frontend Frameworks & Libraries
   'React': SiReact,
   'Next.js': SiNextdotjs,
   'Vue': SiVuedotjs,
   'Angular': SiAngular,
   'Svelte': SiSvelte,
   'Nuxt.js': SiNuxtdotjs,
+  'Redux': SiRedux,
+  'React Query': SiReactquery,
+  'Remix': SiRemix,
+  'Astro': SiAstro,
+  'Gatsby': SiGatsby,
 
   // Languages
   'JavaScript': SiJavascript,
@@ -158,11 +180,14 @@ export const techIcons: Record<string, IconType> = {
   'Spring Boot': SiSpringboot,
   'Laravel': SiLaravel,
   'Ruby on Rails': SiRubyonrails,
+  '.NET': SiDotnet,
+  'tRPC': SiTrpc,
 
   // Databases
   'MongoDB': SiMongodb,
   'PostgreSQL': SiPostgresql,
   'MySQL': SiMysql,
+  'MariaDB': SiMariadb,
   'Oracle': SiOracle,
   'Redis': SiRedis,
   'SQLite': SiSqlite,
@@ -171,17 +196,19 @@ export const techIcons: Record<string, IconType> = {
   'Firestore': SiFirebase,
   'Supabase': SiSupabase,
   'Prisma': SiPrisma,
+  'Neo4j': SiNeo4J,
+  'Elasticsearch': SiElasticsearch,
   'Sequelize': SiSequelize,
 
   // CSS & Styling
   'Tailwind CSS': SiTailwindcss,
-  
+
   'Bootstrap': SiBootstrap,
   'Sass': SiSass,
-  
+
   'Styled Components': SiStyledcomponents,
   'CSS': SiCss3,
-  
+
   'HTML': SiHtml5,
   'HTML5': SiHtml5,
 
@@ -193,11 +220,16 @@ export const techIcons: Record<string, IconType> = {
   // Cloud & Deployment
   'Vercel': SiVercel,
   'Netlify': SiNetlify,
-  'AWS': SiAmazon,
+  'AWS': SiAmazonwebservices,
   'AWS Lambda': SiAwslambda,
+  'AWS Bedrock': SiAmazonwebservices,
+  'AWS S3': SiAmazons3,
+  'DynamoDB': SiAmazondynamodb,
+  'AWS Cognito': SiAmazoncognito,
+  'Docker': SiDocker,
   'AWS Secrets Manager': SiAwssecretsmanager,
   'Google Cloud': SiGooglecloud,
-  
+
   'Cloudflare': SiCloudflare,
   'Heroku': SiHeroku,
   'DigitalOcean': SiDigitalocean,
@@ -206,8 +238,9 @@ export const techIcons: Record<string, IconType> = {
   'Git': SiGit,
   'GitHub': SiGithub,
   'GitLab': SiGitlab,
-  'Docker': SiDocker,
   'Kubernetes': SiKubernetes,
+  'Terraform': SiTerraform,
+  'Ansible': SiAnsible,
   'Jenkins': SiJenkins,
   'GitHub Actions': SiGithubactions,
 
@@ -217,7 +250,6 @@ export const techIcons: Record<string, IconType> = {
   'Vitest': SiVitest,
 
   // State Management
-  'Redux': SiRedux,
   'MobX': SiMobx,
 
   // Mobile Development
@@ -244,21 +276,25 @@ export const techIcons: Record<string, IconType> = {
   'Ubuntu': SiUbuntu,
 
   // AI/ML
-  'OpenAI': SiOpenai,
-  'Hugging Face': SiHuggingface,
   'PyTorch': SiPytorch,
   'Pandas': SiPandas,
   'NumPy': SiNumpy,
 
-  // Other Tools
+  // Other Tools & AI
   'Figma': SiFigma,
   'Postman': SiPostman,
+  'Insomnia': SiInsomnia,
+  'Swagger': SiSwagger,
   'Notion': SiNotion,
   'Slack': SiSlack,
   'Discord': SiDiscord,
   'Zod': SiZod,
   'LangChain': SiLangchain,
   'NextAuth.js': SiNextdotjs,
+  'OpenAI': SiOpenai,
+  'Google Gemini': SiGooglegemini,
+  'Hugging Face': SiHuggingface,
+  'Anthropic': SiAnthropic,
 }
 
 // Aliases para normalizar variantes comunes (minúsculas keys)

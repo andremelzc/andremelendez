@@ -2,6 +2,8 @@ import React from "react";
 
 interface SectionHeaderProps {
   title: string;
+  /** Nivel del título: h2 en las secciones de la portada, h1 en una página propia. */
+  as?: "h1" | "h2";
   description?: string;
 }
 
@@ -11,15 +13,19 @@ interface SectionHeaderProps {
  * al bloque que cada sección repetía (título centrado, halo, línea degradada y
  * subtítulo en cristal).
  */
-export default function SectionHeader({ title, description }: SectionHeaderProps) {
+export default function SectionHeader({
+  title,
+  as: Heading = "h2",
+  description,
+}: SectionHeaderProps) {
   return (
     <header className="flex flex-col gap-4 border-t border-foreground pt-6 sm:pt-8">
-      <h2
+      <Heading
         className="font-display font-extrabold leading-[0.95] tracking-[-0.03em] text-[clamp(2.25rem,6vw,4.5rem)]"
         style={{ fontStretch: "112%" }}
       >
         {title}
-      </h2>
+      </Heading>
       {description && (
         <p className="max-w-[52ch] text-base text-foreground/70 sm:text-lg">
           {description}
