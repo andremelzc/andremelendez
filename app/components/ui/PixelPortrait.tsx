@@ -353,7 +353,6 @@ export default function PixelPortrait({
         src={src}
         alt={alt}
         fill
-        priority
         sizes="(min-width: 1024px) 30vw, 90vw"
         className={`pixel-portrait-img object-cover transition-opacity duration-300 ${
           showImage ? "opacity-100" : "opacity-0"

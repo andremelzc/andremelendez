@@ -7,6 +7,8 @@ import { FIELD_DEFAULTS, type FieldSettings } from "@/app/lib/pixelSettings";
 interface PixelFieldProps {
   /** Elemento cuyo recuadro (más un margen) queda libre de celdas. */
   avoidRef?: RefObject<HTMLElement | null>;
+  /** Lo mismo, pero por id: permite usar el campo desde un componente de servidor. */
+  avoidId?: string;
   /** Dibuja un único fotograma: sin animación ni reacción al cursor. */
   still?: boolean;
   /** Ajustes del efecto (ver lib/pixelSettings). Lo que falte usa el valor por defecto. */
@@ -63,6 +65,7 @@ const RIPPLE_LIFE = 2.4; // segundos
  */
 export default function PixelField({
   avoidRef,
+  avoidId,
   still = false,
   settings,
   className = "",
@@ -97,6 +100,8 @@ export default function PixelField({
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     const isStatic = () => still || reduceMotion.matches;
+    const getAvoid = () =>
+      avoidRef?.current ?? (avoidId ? document.getElementById(avoidId) : null);
 
     let cell = 16;
     let cols = 0;
@@ -140,7 +145,7 @@ export default function PixelField({
 
       // Recuadro del texto, en unidades de celda.
       let box: { x0: number; y0: number; x1: number; y1: number } | null = null;
-      const avoid = avoidRef?.current;
+      const avoid = getAvoid();
       if (avoid) {
         const a = avoid.getBoundingClientRect();
         const w = wrap.getBoundingClientRect();
@@ -360,7 +365,8 @@ export default function PixelField({
       draw(lastTime, !isStatic());
     });
     resize.observe(wrap);
-    if (avoidRef?.current) resize.observe(avoidRef.current);
+    const avoidEl = getAvoid();
+    if (avoidEl) resize.observe(avoidEl);
 
     const intersection = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting;
@@ -411,7 +417,7 @@ export default function PixelField({
       document.documentElement.removeEventListener("pointerleave", onLeave);
       reduceMotion.removeEventListener("change", start);
     };
-  }, [avoidRef, still]);
+  }, [avoidRef, avoidId, still]);
 
   return (
     <div

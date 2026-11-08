@@ -1,5 +1,4 @@
-"use client";
-import React, { useRef } from "react";
+import React from "react";
 import { HiOutlineDownload, HiOutlineMail } from "react-icons/hi";
 import Button from "@/app/components/ui/Button";
 import PixelField from "@/app/components/ui/PixelField";
@@ -19,8 +18,6 @@ function splitDisplayName(fullName: string): [string, string] {
 }
 
 export default function HomeSection({ profile }: HomeSectionProps) {
-  const textRef = useRef<HTMLDivElement>(null);
-
   const cv = getCvLinks(profile);
 
   const [firstName, surname] = splitDisplayName(profile.fullName);
@@ -30,11 +27,11 @@ export default function HomeSection({ profile }: HomeSectionProps) {
       id="home"
       className="relative isolate flex min-h-[100svh] items-start overflow-hidden px-4 pb-10 pt-24 sm:px-8 lg:items-center lg:px-14 lg:pb-14 lg:pt-28"
     >
-      <PixelField avoidRef={textRef} />
+      <PixelField avoidId="hero-text" />
 
       <div className="relative z-10 flex w-full">
         <div
-          ref={textRef}
+          id="hero-text"
           className="flex w-full max-w-[64rem] flex-col gap-7 sm:gap-9"
         >
           <div className="flex flex-col gap-3 sm:gap-4">
