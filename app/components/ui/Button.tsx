@@ -48,7 +48,7 @@ export default function Button({
     "3xl": "rounded-3xl",
     full: "rounded-full",
   };
-  const baseClasses = `relative inline-flex items-center justify-center font-medium transition-colors duration-150 ease-out focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent cursor-pointer ${roundedClasses[rounded]}`;
+  const baseClasses = `relative inline-flex items-center justify-center font-medium transition-colors duration-150 ease-out focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent cursor-pointer ${roundedClasses[rounded]}`;
 
   // Controles planos: solo cambian de color al pasar el ratón.
   const variantClasses = {

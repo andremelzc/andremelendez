@@ -13,7 +13,7 @@ const NAV = [
 ];
 
 const linkClass =
-  "text-sm text-foreground/80 underline-offset-4 transition-colors duration-150 hover:text-accent hover:underline";
+  "inline-block py-1.5 text-sm text-foreground/80 underline-offset-4 transition-colors duration-150 hover:text-accent-ink hover:underline";
 
 export default async function Footer() {
   const profile = await getProfile();
@@ -38,7 +38,7 @@ export default async function Footer() {
         <div className="grid grid-cols-2 gap-8 sm:contents">
         <nav aria-label="Pie de página">
           <h2 className="mb-3 text-sm font-semibold">Navegación</h2>
-          <ul className="flex flex-col gap-2">
+          <ul className="flex flex-col">
             {NAV.map((item) => (
               <li key={item.href}>
                 <Link href={item.href} className={linkClass}>
@@ -51,7 +51,7 @@ export default async function Footer() {
 
         <div>
           <h2 className="mb-3 text-sm font-semibold">Enlaces</h2>
-          <ul className="flex flex-col gap-2">
+          <ul className="flex flex-col">
             <li>
               <a href={`mailto:${email}`} className={linkClass}>
                 Correo

@@ -77,6 +77,8 @@ section[id] {
   --accent: var(--color-cherry-600);
   --muted: var(--color-cream-200);
   --border: var(--color-midnight-300);
+  /* Acento para texto pequeño: el cereza vivo del tema oscuro rozaba 4,5:1 */
+  --accent-ink: var(--color-cherry-600);
 }
 
 .dark {
@@ -85,12 +87,14 @@ section[id] {
   --accent: var(--color-cherry-500);
   --muted: var(--color-midnight-700);
   --border: var(--color-midnight-600);
+  --accent-ink: var(--color-cherry-400);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
   --color-muted: var(--muted);
   --color-border: var(--border);
   --font-sans: var(--font-geist-sans);
@@ -102,4 +106,40 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), Arial, sans-serif;
+}
+
+/* ---- Superficies del navegador ---- */
+html {
+  accent-color: var(--accent);
+  scrollbar-color: var(--color-midnight-300) var(--background);
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--color-cream-50);
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+/* Foco visible por defecto para todo lo interactivo. Va en la capa base para
+   que las utilidades de cada componente puedan afinarlo. */
+@layer base {
+  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+}
+
+/* Amplía el área clicable de un enlace pequeño sin mover nada del diseño. */
+.hit-area {
+  position: relative;
+}
+.hit-area::after {
+  content: "";
+  position: absolute;
+  inset: -0.625rem -0.5rem;
 }

@@ -90,7 +90,7 @@ export default function ProjectRow({ project, showCategory = false }: ProjectRow
           {detailHref ? (
             <Link
               href={detailHref}
-              className="transition-colors duration-150 hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+              className="transition-colors duration-150 hover:text-accent-ink focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
             >
               {name}
             </Link>
@@ -120,7 +120,7 @@ export default function ProjectRow({ project, showCategory = false }: ProjectRow
               href={link.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 text-sm font-medium underline underline-offset-4 transition-colors duration-150 hover:text-accent"
+              className="hit-area inline-flex items-center gap-1.5 text-sm font-medium underline underline-offset-4 transition-colors duration-150 hover:text-accent-ink"
             >
               {link.icon}
               {link.label}
@@ -131,7 +131,7 @@ export default function ProjectRow({ project, showCategory = false }: ProjectRow
           <Link
             href={detailHref}
             {...duplicate}
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-accent underline-offset-4 hover:underline"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-accent-ink underline-offset-4 hover:underline"
           >
             Ver detalle
             <HiOutlineArrowRight aria-hidden="true" />

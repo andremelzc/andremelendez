@@ -45,7 +45,7 @@ export default function Navbar() {
     `relative z-10 block px-4 py-2 text-sm font-medium transition-colors duration-200 delay-100 ${
       activeSection === id
         ? "text-background"
-        : "text-foreground/80 hover:text-accent"
+        : "text-foreground/80 hover:text-accent-ink"
     }`;
 
   const mobileLinkClass = (id: string) =>

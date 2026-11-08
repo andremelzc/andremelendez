@@ -13,13 +13,13 @@ export default function ThemeToggle() {
   }, []);
 
   if (!mounted) {
-    return <div className="h-9 w-9" />;
+    return <div className="h-11 w-11 sm:h-9 sm:w-9" />;
   }
 
   return (
     <button
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      className="relative z-10 flex h-9 w-9 items-center justify-center text-foreground/80 transition-colors duration-150 hover:text-accent"
+      className="relative z-10 flex h-11 w-11 items-center sm:h-9 sm:w-9 justify-center text-foreground/80 transition-colors duration-150 hover:text-accent-ink"
       type="button"
       aria-label={theme === "dark" ? "Cambiar a tema claro" : "Cambiar a tema oscuro"}
     >

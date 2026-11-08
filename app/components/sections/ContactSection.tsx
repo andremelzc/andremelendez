@@ -12,7 +12,7 @@ interface ContactSectionProps {
 }
 
 const secondaryLink =
-  "inline-flex items-center gap-2 border-b border-foreground/40 pb-1 text-base font-medium transition-colors duration-150 hover:border-accent hover:text-accent";
+  "hit-area inline-flex items-center gap-2 border-b border-foreground/40 pb-1 text-base font-medium transition-colors duration-150 hover:border-accent hover:text-accent-ink";
 
 export default function ContactSection({ profile }: ContactSectionProps) {
   const linkedinUrl = profile.linkedin || socialUrls.linkedin;
@@ -32,7 +32,7 @@ export default function ContactSection({ profile }: ContactSectionProps) {
           {/* La acción principal: el correo, en el tamaño del titular */}
           <a
             href={`mailto:${email}`}
-            className="break-all font-display font-extrabold leading-[1.05] tracking-[-0.03em] text-[clamp(1.125rem,3.6vw,3.25rem)] underline decoration-foreground/25 decoration-2 underline-offset-[0.14em] transition-colors duration-150 hover:text-accent hover:decoration-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+            className="hit-area break-all font-display font-extrabold leading-[1.05] tracking-[-0.03em] text-[clamp(1.125rem,3.6vw,3.25rem)] underline decoration-foreground/25 decoration-2 underline-offset-[0.14em] transition-colors duration-150 hover:text-accent-ink hover:decoration-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
             style={{ fontStretch: "112%" }}
           >
             {email}
