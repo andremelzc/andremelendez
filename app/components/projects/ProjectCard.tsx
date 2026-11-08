@@ -276,7 +276,7 @@ export default function ProjectCard({
 
             {/* Indicador de role a la derecha */}
             {role ? (
-              <div className="flex items-center gap-2 text-xs text-foreground/60 self-end sm:self-auto">
+              <div className="flex items-center gap-2 text-xs text-foreground/70 self-end sm:self-auto">
                 <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
                 <span className="font-medium">{role}</span>
                 {year && (

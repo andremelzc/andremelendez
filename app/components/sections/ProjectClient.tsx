@@ -55,6 +55,7 @@ export default function ProjectClient({ initialProjects }: ProjectClientProps) {
           <div className="relative flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-4 lg:gap-4 justify-center">
             <Button
               variant={activeFilter === "Todos" ? "primary" : "outline"}
+              pressed={activeFilter === "Todos"}
               onClick={() => handleFilter("Todos")}
               disabled={loading}
             >
@@ -64,6 +65,7 @@ export default function ProjectClient({ initialProjects }: ProjectClientProps) {
               variant={
                 activeFilter === "Desarrollo Web" ? "primary" : "outline"
               }
+              pressed={activeFilter === "Desarrollo Web"}
               onClick={() => handleFilter("Desarrollo Web")}
               disabled={loading}
             >
@@ -73,6 +75,7 @@ export default function ProjectClient({ initialProjects }: ProjectClientProps) {
               variant={
                 activeFilter === "Desarrollo Móvil" ? "primary" : "outline"
               }
+              pressed={activeFilter === "Desarrollo Móvil"}
               onClick={() => handleFilter("Desarrollo Móvil")}
               disabled={loading}
             >
@@ -80,6 +83,7 @@ export default function ProjectClient({ initialProjects }: ProjectClientProps) {
             </Button>
             <Button
               variant={activeFilter === "Otros" ? "primary" : "outline"}
+              pressed={activeFilter === "Otros"}
               onClick={() => handleFilter("Otros")}
               disabled={loading}
             >

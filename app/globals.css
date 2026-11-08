@@ -6,10 +6,19 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Respeta las preferencias de movimiento del usuario */
+/* Respeta las preferencias de movimiento del usuario: sin scroll suave, sin
+   animaciones en bucle y con transiciones prácticamente instantáneas. */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 

@@ -48,7 +48,7 @@ export default function ProjectGrid({ projects }: ProjectGridProps) {
             <h3 className="text-xl text-foreground/70 font-medium">
               No hay proyectos en esta categoría
             </h3>
-            <p className="text-foreground/50 mt-2">
+            <p className="text-foreground/70 mt-2">
               Selecciona otra categoría para ver más proyectos
             </p>
           </div>

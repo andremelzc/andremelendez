@@ -7,6 +7,8 @@ interface ButtonProps {
   href?: string;
   /** Abre el enlace en una pestaña nueva (solo con href). */
   newTab?: boolean;
+  /** Estado de un botón de alternancia o filtro (aria-pressed). */
+  pressed?: boolean;
   variant?: "primary" | "secondary" | "outline" | "ghost";
   size?: "sm" | "md" | "lg" | "xl";
   disabled?: boolean;
@@ -22,6 +24,7 @@ export default function Button({
   children,
   href,
   newTab = false,
+  pressed,
   variant = "primary",
   size = "md",
   disabled = false,
@@ -147,6 +150,7 @@ export default function Button({
   return (
     <button
       type="button"
+      aria-pressed={pressed}
       className={classes}
       onClick={onClick}
       disabled={disabled || loading}

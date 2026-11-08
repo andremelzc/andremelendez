@@ -69,6 +69,7 @@ export default function Navbar() {
         className={`hidden md:flex fixed left-0 right-0 z-50 justify-center ${containerClasses.position} ${containerClasses.transition}`}
       >
         <nav
+          aria-label="Principal"
           ref={navRef}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
@@ -111,6 +112,7 @@ export default function Navbar() {
               <Link
                 href="/"
                 className={getLinkClass("home")}
+                aria-current={activeSection === "home" ? "location" : undefined}
                 ref={setLinkRef("home")}
               >
                 Inicio
@@ -120,6 +122,7 @@ export default function Navbar() {
               <Link
                 href="/#proyectos"
                 className={getLinkClass("proyectos")}
+                aria-current={activeSection === "proyectos" ? "location" : undefined}
                 ref={setLinkRef("proyectos")}
               >
                 Proyectos
@@ -129,6 +132,7 @@ export default function Navbar() {
               <Link
                 href="/#habilidades"
                 className={getLinkClass("habilidades")}
+                aria-current={activeSection === "habilidades" ? "location" : undefined}
                 ref={setLinkRef("habilidades")}
               >
                 Habilidades
@@ -138,6 +142,7 @@ export default function Navbar() {
               <Link
                 href="/#contacto"
                 className={getLinkClass("contacto")}
+                aria-current={activeSection === "contacto" ? "location" : undefined}
                 ref={setLinkRef("contacto")}
               >
                 Contacto
@@ -155,7 +160,11 @@ export default function Navbar() {
         isMobileNavVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'
       }`}>
         <button
+          type="button"
           onClick={toggleMobileMenu}
+          aria-label={isMobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
+          aria-expanded={isMobileMenuOpen}
+          aria-controls="mobile-menu"
           className="relative w-12 h-12 rounded-xl backdrop-blur-2xl border border-foreground/15 bg-background/25 flex items-center justify-center transition-all duration-300 hover:scale-105"
         >
           <div className="flex flex-col space-y-1.5">
@@ -179,16 +188,19 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         <div 
+          id="mobile-menu"
+          inert={!isMobileMenuOpen}
           className={`absolute top-16 right-0 w-48 rounded-2xl backdrop-blur-2xl border border-foreground/15 overflow-hidden transition-all duration-300 bg-background/80 ${
             isMobileMenuOpen 
               ? 'opacity-100 translate-y-0 pointer-events-auto' 
               : 'opacity-0 -translate-y-4 pointer-events-none'
           }`}
         >
-          <nav className="p-2">
+          <nav aria-label="Principal (móvil)" className="p-2">
             <Link
               href="/"
               className={getMobileLinkClass("home")}
+              aria-current={activeSection === "home" ? "location" : undefined}
               onClick={closeMobileMenu}
             >
               Inicio
@@ -196,6 +208,7 @@ export default function Navbar() {
             <Link
               href="/#proyectos"
               className={getMobileLinkClass("proyectos")}
+              aria-current={activeSection === "proyectos" ? "location" : undefined}
               onClick={closeMobileMenu}
             >
               Proyectos
@@ -203,6 +216,7 @@ export default function Navbar() {
             <Link
               href="/#habilidades"
               className={getMobileLinkClass("habilidades")}
+              aria-current={activeSection === "habilidades" ? "location" : undefined}
               onClick={closeMobileMenu}
             >
               Habilidades
@@ -210,6 +224,7 @@ export default function Navbar() {
             <Link
               href="/#contacto"
               className={getMobileLinkClass("contacto")}
+              aria-current={activeSection === "contacto" ? "location" : undefined}
               onClick={closeMobileMenu}
             >
               Contacto

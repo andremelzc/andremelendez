@@ -78,6 +78,7 @@ export default function SkillsClient({ initialSkills }: SkillsClientProps) {
               <Button
                 key={category}
                 variant={activeFilter === category ? "primary" : "outline"}
+              pressed={activeFilter === category}
                 onClick={() => handleFilter(category)}
               >
                 {category}

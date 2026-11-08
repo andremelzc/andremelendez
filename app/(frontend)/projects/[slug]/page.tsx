@@ -77,7 +77,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                 {project.category}
               </span>
               {project.year && (
-                <span className="text-xs uppercase tracking-wider font-semibold text-foreground/60 bg-muted/40 px-3 py-1 rounded-full border border-border/20">
+                <span className="text-xs uppercase tracking-wider font-semibold text-foreground/70 bg-muted/40 px-3 py-1 rounded-full border border-border/20">
                   Año {project.year}
                 </span>
               )}
@@ -143,7 +143,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
               <div className="flex flex-col gap-4 mb-6">
                 {project.client && (
                   <div className="flex justify-between items-center border-b border-border/30 pb-3">
-                    <span className="text-sm text-foreground/50">Cliente / Org</span>
+                    <span className="text-sm text-foreground/70">Cliente / Org</span>
                     <span className="text-sm font-semibold text-foreground">
                       {project.client}
                     </span>
@@ -151,7 +151,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                 )}
                 {project.role && (
                   <div className="flex justify-between items-center border-b border-border/30 pb-3">
-                    <span className="text-sm text-foreground/50">Rol</span>
+                    <span className="text-sm text-foreground/70">Rol</span>
                     <span className="text-sm font-semibold text-accent">
                       {project.role}
                     </span>
@@ -159,7 +159,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                 )}
                 {project.duration && (
                   <div className="flex justify-between items-center border-b border-border/30 pb-3">
-                    <span className="text-sm text-foreground/50">Duración</span>
+                    <span className="text-sm text-foreground/70">Duración</span>
                     <span className="text-sm font-semibold text-foreground">
                       {project.duration}
                     </span>
@@ -167,7 +167,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
                 )}
                 {project.teamSize && (
                   <div className="flex justify-between items-center border-b border-border/30 pb-3">
-                    <span className="text-sm text-foreground/50">Equipo</span>
+                    <span className="text-sm text-foreground/70">Equipo</span>
                     <span className="text-sm font-semibold text-foreground">
                       {project.teamSize === "Solo" ? "Proyecto Solo" : "Proyecto en Equipo"}
                     </span>
@@ -177,7 +177,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
               {/* Tecnologías */}
               <div className="mb-8">
-                <h3 className="text-sm font-semibold text-foreground/60 mb-3">
+                <h3 className="text-sm font-semibold text-foreground/70 mb-3">
                   Tecnologías Utilizadas
                 </h3>
                 <div className="flex flex-wrap gap-2">

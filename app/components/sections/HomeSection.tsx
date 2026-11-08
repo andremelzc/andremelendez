@@ -24,7 +24,7 @@ export default function HomeSection({ profile }: HomeSectionProps) {
           {/* Disponible para proyectos */}
           <div className="inline-flex items-center gap-1.5 sm:gap-2 bg-accent/10 backdrop-blur-md border border-accent/30 rounded-full px-3 sm:px-6 py-1.5 sm:py-2 mx-auto hover:bg-accent/15 hover:border-accent/40 transition-all duration-300 group">
             <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-accent rounded-full animate-pulse group-hover:animate-ping" />
-            <span className="text-accent font-medium text-[10px] sm:text-sm uppercase tracking-wider group-hover:tracking-widest transition-all duration-300">
+            <span className="text-accent font-medium text-xs sm:text-sm uppercase tracking-wider group-hover:tracking-widest transition-all duration-300">
               Disponible para proyectos
             </span>
           </div>

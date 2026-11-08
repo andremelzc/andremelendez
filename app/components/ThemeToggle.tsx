@@ -20,7 +20,8 @@ export default function ThemeToggle() {
     <button
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
       className="p-2 rounded-xl transition-all duration-300 text-foreground/80 hover:text-foreground hover:bg-foreground/5 dark:hover:bg-white/5 border border-transparent flex items-center justify-center relative z-10"
-      aria-label="Toggle Dark Mode"
+      type="button"
+      aria-label={theme === "dark" ? "Cambiar a tema claro" : "Cambiar a tema oscuro"}
     >
       {theme === "dark" ? <FiSun className="w-5 h-5" /> : <FiMoon className="w-5 h-5" />}
     </button>
