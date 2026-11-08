@@ -18,30 +18,15 @@ interface PixelPortraitProps {
   className?: string;
 }
 
-const SANITY_HOST = "cdn.sanity.io";
-// Recorte (x, y, ancho, alto, en px) sobre la imagen original de Sanity,
-// en proporción 4:5. Centra el encuadre en la cara y deja fuera el fondo.
-const SANITY_RECT = "540,480,500,625";
-// Encuadre vertical (0 = arriba, 1 = abajo) cuando la foto no se recorta.
-const OBJECT_POSITION_Y = 0.35;
-// Dónde está la cara dentro del recuadro (0-1). El foco en reposo gira
-// alrededor de este punto para que la cara se vaya descubriendo sola.
-const FACE = { x: 0.32, y: 0.41 };
+// Dónde está la cara dentro de la foto completa (0-1). El foco en reposo
+// gira alrededor de este punto para que la cara se vaya descubriendo sola.
+const FACE = { x: 0.57, y: 0.47 };
 
 const BAYER_4X4 = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
 
-/** URL recortada para mostrar y URL del mismo origen para leer sus píxeles. */
-function portraitSources(src: string) {
-  let shown = src;
-  if (src.includes(SANITY_HOST)) {
-    const url = new URL(src);
-    url.searchParams.set("rect", SANITY_RECT);
-    shown = url.toString();
-  }
-  // El optimizador de Next sirve la imagen desde nuestro origen, así el
-  // canvas puede leerla sin depender de CORS del CDN.
-  const sample = `/_next/image?url=${encodeURIComponent(shown)}&w=384&q=75`;
-  return { shown, sample };
+/** URL del mismo origen para leer los píxeles (el optimizador de Next). */
+function sampleUrl(src: string) {
+  return `/_next/image?url=${encodeURIComponent(src)}&w=384&q=75`;
 }
 
 /**
@@ -49,12 +34,13 @@ function portraitSources(src: string) {
  * tramado ordenado y se "enfoca" (se descubre la foto nítida de debajo)
  * alrededor del cursor. Sin cursor, el foco recorre la cara despacio.
  *
- * La foto nítida es la base accesible; el canvas es solo decoración.
+ * Se usa la foto completa, sin recortar. La foto nítida es la base
+ * accesible; el canvas es solo decoración.
  */
 export default function PixelPortrait({ src, alt, className = "" }: PixelPortraitProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { shown, sample } = portraitSources(src);
+  const sample = sampleUrl(src);
 
   useEffect(() => {
     const wrap = wrapRef.current;
@@ -99,7 +85,7 @@ export default function PixelPortrait({ src, alt, className = "" }: PixelPortrai
       const sw = cols / scale;
       const sh = rows / scale;
       const sx = (iw - sw) * 0.5;
-      const sy = (ih - sh) * OBJECT_POSITION_Y;
+      const sy = (ih - sh) * 0.5;
       octx.drawImage(source, sx, sy, sw, sh, 0, 0, cols, rows);
       const data = octx.getImageData(0, 0, cols, rows).data;
 
@@ -292,16 +278,15 @@ export default function PixelPortrait({ src, alt, className = "" }: PixelPortrai
   return (
     <div
       ref={wrapRef}
-      className={`relative aspect-[4/5] w-full overflow-hidden bg-muted ${className}`}
+      className={`relative aspect-[3/4] w-full overflow-hidden bg-muted ${className}`}
     >
       <Image
-        src={shown}
+        src={src}
         alt={alt}
         fill
         priority
         sizes="(min-width: 1024px) 30vw, 90vw"
         className="object-cover"
-        style={{ objectPosition: `50% ${OBJECT_POSITION_Y * 100}%` }}
       />
       <canvas
         ref={canvasRef}

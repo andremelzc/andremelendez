@@ -3,8 +3,6 @@ import React, { useRef } from "react";
 import { HiOutlineDownload, HiOutlineMail } from "react-icons/hi";
 import Button from "@/app/components/ui/Button";
 import PixelField from "@/app/components/ui/PixelField";
-import PixelPortrait from "@/app/components/ui/PixelPortrait";
-import { useHeroVariant } from "@/app/hooks/useHeroVariant";
 import { Profile } from "@/app/types/profile";
 
 interface HomeSectionProps {
@@ -21,29 +19,21 @@ function splitDisplayName(fullName: string): [string, string] {
 
 export default function HomeSection({ profile }: HomeSectionProps) {
   const textRef = useRef<HTMLDivElement>(null);
-  const variant = useHeroVariant();
 
   // CV en español si existe, si no el de inglés, o el local
   const cvUrl =
     profile.cvSpanish || profile.cvEnglish || "/cv_andre_melendez_español.pdf";
 
   const [firstName, surname] = splitDisplayName(profile.fullName);
-  const photo = variant === "photo";
 
   return (
     <section
       id="home"
       className="relative isolate flex min-h-[100svh] items-center overflow-hidden px-4 pb-14 pt-28 sm:px-8 lg:px-14"
     >
-      {!photo && <PixelField avoidRef={textRef} />}
+      <PixelField avoidRef={textRef} />
 
-      <div
-        className={
-          photo
-            ? "relative z-10 flex w-full flex-col gap-10 lg:flex-row lg:items-center lg:justify-between lg:gap-14"
-            : "relative z-10 flex w-full"
-        }
-      >
+      <div className="relative z-10 flex w-full">
         <div
           ref={textRef}
           className="flex w-full max-w-[64rem] flex-col gap-7 sm:gap-9"
@@ -103,15 +93,6 @@ export default function HomeSection({ profile }: HomeSectionProps) {
             <p className="text-sm text-foreground/70">Disponible para proyectos</p>
           </div>
         </div>
-
-        {photo && (
-          <div className="w-full max-w-[24rem] shrink-0 lg:w-[min(30vw,28rem)] lg:max-w-none">
-            <PixelPortrait
-              src={profile.profileImage || "/profile.jpg"}
-              alt={`Retrato de ${profile.fullName}`}
-            />
-          </div>
-        )}
       </div>
     </section>
   );
