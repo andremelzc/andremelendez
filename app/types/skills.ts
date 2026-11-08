@@ -7,7 +7,3 @@ export interface SkillItem {
 export interface Skills {
   skillsList: SkillItem[];
 }
-
-export interface SkillGridProps {
-  skills: SkillItem[];
-}

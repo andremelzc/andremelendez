@@ -11,9 +11,9 @@ export default async function Home() {
     <div className="font-sans">
       <HomeSection profile={profile} />
       <ProjectsSection />
-      {/* Hasta que se rediseñen, estas dos conservan su espaciado anterior. */}
-      <div className="mx-auto flex max-w-7xl flex-col items-center gap-32 px-8 pb-20 sm:px-20">
-        <SkillsSection />
+      <SkillsSection />
+      {/* Hasta que se rediseñe, Contacto conserva su espaciado anterior. */}
+      <div className="mx-auto flex max-w-7xl flex-col items-center px-8 pb-20 sm:px-20">
         <ContactSection profile={profile} />
       </div>
     </div>
