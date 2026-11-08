@@ -1,38 +1,34 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-08T00:00:00.000Z",
-  "title": "Design System: Andre Meléndez Portfolio (sistema heredado)",
+  "generatedAt": "2026-11-09T00:00:00.000Z",
+  "title": "Design System: Andre Meléndez Portfolio",
   "extensions": {
     "colorMeta": {
       "cherry-accent": { "role": "primary", "displayName": "Cereza", "canonical": "#b93737", "tonalRamp": ["#471212", "#6b1d1d", "#922c2c", "#b93737", "#d64545", "#e36d6d", "#ec9b9b", "#f9e1e1"] },
       "cherry-accent-dark": { "role": "primary", "displayName": "Cereza vivo", "canonical": "#d64545", "tonalRamp": ["#471212", "#6b1d1d", "#922c2c", "#b93737", "#d64545", "#e36d6d", "#ec9b9b", "#f9e1e1"] },
-      "cherry-soft": { "role": "primary", "displayName": "Cereza velado", "canonical": "#f9e1e1", "tonalRamp": ["#922c2c", "#b93737", "#d64545", "#e36d6d", "#ec9b9b", "#f4c7c7", "#f9e1e1", "#fdf4f4"] },
-      "cherry-ink": { "role": "primary", "displayName": "Cereza tinta", "canonical": "#922c2c", "tonalRamp": ["#471212", "#6b1d1d", "#922c2c", "#b93737", "#d64545", "#e36d6d", "#ec9b9b", "#f4c7c7"] },
-      "cherry-glow": { "role": "primary", "displayName": "Cereza brillo", "canonical": "#ec9b9b", "tonalRamp": ["#922c2c", "#b93737", "#d64545", "#e36d6d", "#ec9b9b", "#f4c7c7", "#f9e1e1", "#fdf4f4"] },
+      "cherry-ink-dark": { "role": "primary", "displayName": "Cereza de texto (oscuro)", "canonical": "#e36d6d", "tonalRamp": ["#471212", "#6b1d1d", "#922c2c", "#b93737", "#d64545", "#e36d6d", "#ec9b9b", "#f9e1e1"] },
+      "cherry-light": { "role": "primary", "displayName": "Cereza claro", "canonical": "#f4c7c7", "tonalRamp": ["#922c2c", "#b93737", "#d64545", "#e36d6d", "#ec9b9b", "#f4c7c7", "#f9e1e1", "#fdf4f4"] },
+      "cherry-deep": { "role": "primary", "displayName": "Cereza profundo", "canonical": "#6b1d1d", "tonalRamp": ["#471212", "#521717", "#6b1d1d", "#7d2222", "#922c2c", "#a63232", "#b93737", "#d64545"] },
       "cream-ground": { "role": "neutral", "displayName": "Crema nácar", "canonical": "#fffcf9", "tonalRamp": ["#6b4b26", "#9e6e38", "#c78f4d", "#e3af6a", "#f4c88d", "#fbe5cc", "#fff8f0", "#fffcf9"] },
       "cream-muted": { "role": "neutral", "displayName": "Crema cálida", "canonical": "#fdf0e3", "tonalRamp": ["#6b4b26", "#9e6e38", "#c78f4d", "#e3af6a", "#f8d7ad", "#fbe5cc", "#fdf0e3", "#fff8f0"] },
-      "midnight-ink": { "role": "neutral", "displayName": "Casi negro", "canonical": "#191919", "tonalRamp": ["#0b0b0b", "#141414", "#191919", "#1f1f1f", "#333333", "#666666", "#999999", "#e5e5e5"] },
-      "midnight-border": { "role": "neutral", "displayName": "Gris medio", "canonical": "#999999", "tonalRamp": ["#191919", "#333333", "#666666", "#808080", "#999999", "#cccccc", "#e5e5e5", "#f5f5f5"] },
-      "midnight-ground": { "role": "neutral", "displayName": "Negro profundo", "canonical": "#0b0b0b", "tonalRamp": ["#000000", "#0b0b0b", "#141414", "#191919", "#1f1f1f", "#333333", "#666666", "#999999"] },
-      "midnight-muted": { "role": "neutral", "displayName": "Casi negro atenuado", "canonical": "#191919", "tonalRamp": ["#0b0b0b", "#141414", "#191919", "#1f1f1f", "#333333", "#666666", "#999999", "#cccccc"] },
-      "midnight-line": { "role": "neutral", "displayName": "Negro línea", "canonical": "#1f1f1f", "tonalRamp": ["#0b0b0b", "#141414", "#191919", "#1f1f1f", "#333333", "#666666", "#999999", "#cccccc"] }
+      "ink": { "role": "neutral", "displayName": "Casi negro", "canonical": "#191919", "tonalRamp": ["#0b0b0b", "#141414", "#191919", "#1f1f1f", "#333333", "#666666", "#999999", "#e5e5e5"] },
+      "ink-line": { "role": "neutral", "displayName": "Gris línea", "canonical": "#999999", "tonalRamp": ["#191919", "#333333", "#666666", "#808080", "#999999", "#cccccc", "#e5e5e5", "#f5f5f5"] },
+      "black-ground": { "role": "neutral", "displayName": "Negro profundo", "canonical": "#0b0b0b", "tonalRamp": ["#000000", "#0b0b0b", "#141414", "#191919", "#1f1f1f", "#333333", "#666666", "#999999"] },
+      "black-line": { "role": "neutral", "displayName": "Negro línea", "canonical": "#1f1f1f", "tonalRamp": ["#0b0b0b", "#141414", "#191919", "#1f1f1f", "#333333", "#666666", "#999999", "#cccccc"] }
     },
     "typographyMeta": {
-      "display": { "displayName": "Display", "purpose": "Nombre en el hero, 700." },
-      "headline": { "displayName": "Headline", "purpose": "Rol en cereza sobre el nombre, 600." },
-      "title": { "displayName": "Title", "purpose": "Título de proyecto en tarjeta." },
-      "body": { "displayName": "Body", "purpose": "Biografía y descripciones, con opacidad /80 a /90." },
-      "label": { "displayName": "Label", "purpose": "Etiqueta de disponibilidad en mayúsculas con tracking." }
+      "display": { "displayName": "Display", "purpose": "Nombre en el hero, Archivo 800 al 112 % de ancho." },
+      "headline": { "displayName": "Headline", "purpose": "Título de cada sección." },
+      "title": { "displayName": "Title", "purpose": "Nombre de proyecto en el índice y títulos de bloque del detalle." },
+      "body": { "displayName": "Body", "purpose": "Presentación y descripciones, medida de 52 a 68 caracteres." },
+      "label": { "displayName": "Label", "purpose": "Enlaces, metadatos y botones." }
     },
-    "shadows": [
-      { "name": "card", "value": "0 25px 50px -12px rgba(0,0,0,0.25)", "purpose": "Tarjetas de proyecto en reposo (shadow-2xl)." },
-      { "name": "button-hover", "value": "0 10px 15px -3px rgba(25,25,25,0.25)", "purpose": "Botones en hover." },
-      { "name": "nav-indicator", "value": "0 4px 20px rgba(0,0,0,0.3)", "purpose": "Indicador deslizante del navbar." }
-    ],
+    "shadows": [],
     "motion": [
-      { "name": "nav-indicator-ease", "value": "cubic-bezier(0.34, 1.56, 0.64, 1)", "purpose": "Desplazamiento del indicador del navbar, 500ms." },
-      { "name": "hover-standard", "value": "300ms ease-out", "purpose": "Escala, sombra y degradado en botones." },
-      { "name": "card-hover", "value": "500ms", "purpose": "Elevación y brillo de tarjetas." }
+      { "name": "hover-color", "value": "150ms ease-out", "purpose": "Único cambio al pasar el cursor: color. Sin escala ni sombra." },
+      { "name": "nav-indicator-steps", "value": "steps(6, end) 280ms", "purpose": "Desplazamiento por pasos del bloque activo de la barra." },
+      { "name": "field-intro", "value": "~1,7 s, ola de abajo-derecha a arriba-izquierda", "purpose": "Aparición del campo de píxeles la primera vez que se ve." },
+      { "name": "cursor-trail", "value": "fade 0,94 por fotograma a 60 Hz (~0,7 s)", "purpose": "Estela de celdas bajo el ratón en toda la página." }
     ],
     "breakpoints": [
       { "name": "sm", "value": "640px" },
@@ -46,76 +42,84 @@
       "name": "Primary Button",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "Botón principal: fondo casi negro, texto crema y halo cereza en hover.",
-      "html": "<button class=\"ds-btn-primary\">Descargar CV</button>",
-      "css": ".ds-btn-primary { background: #191919; color: #fffcf9; padding: 12px 24px; border: none; border-radius: 8px; font-size: 16px; font-weight: 500; cursor: pointer; transition: all 300ms ease-out; } .ds-btn-primary:hover { transform: scale(1.05); box-shadow: 0 10px 15px -3px rgba(25,25,25,0.25); } .ds-btn-primary:focus-visible { outline: 2px solid #b93737; outline-offset: 2px; }"
+      "description": "Botón principal: tinta sobre crema, cambia a cereza al pasar el cursor.",
+      "html": "<button class=\"ds-btn-primary\">Descargar CV (ES)</button>",
+      "css": ".ds-btn-primary { background: #191919; color: #fffcf9; padding: 12px 24px; border: 0; border-radius: 0; font-size: 16px; font-weight: 500; cursor: pointer; transition: background-color 150ms ease-out, color 150ms ease-out; } .ds-btn-primary:hover { background: #b93737; color: #fffcf9; } .ds-btn-primary:focus-visible { outline: 2px solid #b93737; outline-offset: 2px; }"
     },
     {
       "name": "Outline Button",
       "kind": "button",
       "refersTo": "button-outline",
-      "description": "Botón secundario con borde translúcido y degradado suave en hover.",
-      "html": "<button class=\"ds-btn-outline\">Contacto</button>",
-      "css": ".ds-btn-outline { background: transparent; color: #191919; padding: 12px 24px; border: 1px solid rgba(153,153,153,0.5); border-radius: 8px; font-size: 16px; font-weight: 500; cursor: pointer; transition: all 300ms ease-out; } .ds-btn-outline:hover { transform: scale(1.05); border-color: #999999; background: linear-gradient(to right, rgba(253,240,227,0.2), rgba(253,240,227,0.3), rgba(253,240,227,0.2)); box-shadow: 0 10px 15px -3px rgba(185,55,55,0.1); } .ds-btn-outline:focus-visible { outline: 2px solid #b93737; outline-offset: 2px; }"
+      "description": "Botón secundario: borde y texto en tinta, se rellena al pasar el cursor.",
+      "html": "<button class=\"ds-btn-outline\">Contactar</button>",
+      "css": ".ds-btn-outline { background: transparent; color: #191919; padding: 12px 24px; border: 1px solid #191919; border-radius: 0; font-size: 16px; font-weight: 500; cursor: pointer; transition: background-color 150ms ease-out, color 150ms ease-out; } .ds-btn-outline:hover { background: #191919; color: #fffcf9; } .ds-btn-outline:focus-visible { outline: 2px solid #b93737; outline-offset: 2px; }"
     },
     {
-      "name": "Availability Pill",
-      "kind": "chip",
-      "refersTo": "cherry-accent",
-      "description": "Etiqueta de disponibilidad con punto que pulsa.",
-      "html": "<div class=\"ds-pill\"><span class=\"ds-pill-dot\"></span><span class=\"ds-pill-text\">Disponible para proyectos</span></div>",
-      "css": ".ds-pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(185,55,55,0.1); border: 1px solid rgba(185,55,55,0.3); border-radius: 9999px; padding: 8px 24px; transition: all 300ms; } .ds-pill:hover { background: rgba(185,55,55,0.15); border-color: rgba(185,55,55,0.4); } .ds-pill-dot { width: 8px; height: 8px; border-radius: 9999px; background: #b93737; animation: ds-pulse 2s cubic-bezier(0.4,0,0.6,1) infinite; } .ds-pill-text { color: #b93737; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; transition: letter-spacing 300ms; } .ds-pill:hover .ds-pill-text { letter-spacing: 0.1em; } @keyframes ds-pulse { 50% { opacity: 0.5; } }"
-    },
-    {
-      "name": "Tech Badge",
-      "kind": "chip",
-      "refersTo": "tech-badge",
-      "description": "Etiqueta de tecnología en cereza velado.",
-      "html": "<span class=\"ds-badge\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><circle cx=\"12\" cy=\"12\" r=\"9\"/></svg>Next.js</span>",
-      "css": ".ds-badge { display: inline-flex; align-items: center; gap: 8px; background: #f9e1e1; color: #922c2c; border-radius: 9999px; padding: 4px 12px; font-size: 14px; font-weight: 500; }"
-    },
-    {
-      "name": "Project Card",
-      "kind": "card",
-      "refersTo": "project-card",
-      "description": "Tarjeta de proyecto con degradado translúcido, borde que vira a cereza y elevación en hover.",
-      "html": "<div class=\"ds-card\"><h3 class=\"ds-card-title\">Nombre del proyecto</h3><p class=\"ds-card-text\">Descripción breve del proyecto y su alcance.</p></div>",
-      "css": ".ds-card { background: linear-gradient(135deg, rgba(253,240,227,0.5), rgba(255,252,249,0.3), rgba(253,240,227,0.5)); border: 1px solid rgba(153,153,153,0.5); border-radius: 24px; padding: 24px; color: #191919; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); transition: all 500ms; } .ds-card:hover { transform: translateY(-4px) scale(1.02); border-color: rgba(185,55,55,0.3); } .ds-card-title { margin: 0; font-size: 24px; font-weight: 700; } .ds-card-text { margin: 8px 0 0; font-size: 16px; line-height: 1.625; opacity: 0.8; }"
-    },
-    {
-      "name": "Glass Navbar",
+      "name": "Navbar",
       "kind": "nav",
-      "refersTo": "cream-ground",
-      "description": "Píldora de cristal con indicador blanco deslizante.",
-      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-link ds-nav-active\">Home</a><a class=\"ds-nav-link\">Proyectos</a><a class=\"ds-nav-link\">Habilidades</a><a class=\"ds-nav-link\">Contacto</a></nav>",
-      "css": ".ds-nav { display: inline-flex; gap: 8px; padding: 10px; border-radius: 16px; backdrop-filter: blur(40px); border: 1px solid rgba(255,255,255,0.2); background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1)); } .ds-nav-link { padding: 8px 16px; border-radius: 12px; color: #191919; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 500ms cubic-bezier(0.34,1.56,0.64,1); } .ds-nav-active { background: rgba(255,255,255,0.8); box-shadow: 0 4px 20px rgba(0,0,0,0.3); } .ds-nav-link:focus-visible { outline: 2px solid #b93737; }"
+      "refersTo": "navbar",
+      "description": "Píldora cuadrada, centrada y translúcida con marca de cuatro celdas y bloque activo.",
+      "html": "<nav class=\"ds-nav\"><span class=\"ds-mark\"><i></i><i></i><i></i><i></i></span><a class=\"ds-nav-link ds-nav-active\">Inicio</a><a class=\"ds-nav-link\">Proyectos</a><a class=\"ds-nav-link\">Habilidades</a><a class=\"ds-nav-link\">Contacto</a></nav>",
+      "css": ".ds-nav { display: inline-flex; align-items: center; padding: 4px; border: 1px solid rgba(25,25,25,0.25); background: rgba(255,252,249,0.75); backdrop-filter: blur(12px); } .ds-mark { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; width: 20px; height: 20px; margin: 0 8px; } .ds-mark i { display: block; } .ds-mark i:nth-child(1) { background: #f4c7c7; } .ds-mark i:nth-child(2) { background: #b93737; } .ds-mark i:nth-child(3) { background: #6b1d1d; } .ds-mark i:nth-child(4) { background: #191919; } .ds-nav-link { padding: 8px 16px; font-size: 14px; font-weight: 500; color: rgba(25,25,25,0.8); cursor: pointer; transition: color 150ms; } .ds-nav-link:hover { color: #b93737; } .ds-nav-active { background: #191919; color: #fffcf9; } .ds-nav-active:hover { color: #fffcf9; }"
+    },
+    {
+      "name": "Project Row",
+      "kind": "custom",
+      "refersTo": "project-row",
+      "description": "Fila del índice: miniatura, nombre en Archivo, descriptor, tecnologías en texto y enlaces.",
+      "html": "<div class=\"ds-row\"><div class=\"ds-thumb\"></div><div><h3 class=\"ds-row-name\">CACIF</h3><p class=\"ds-row-desc\">Chatbot de Asistencia de Consultas de Investigación</p><p class=\"ds-row-tech\">LangChain · AWS · FastAPI · Next.js</p></div><div class=\"ds-row-meta\"><span>Full Stack Developer · 2026</span><a>Ver detalle →</a></div></div>",
+      "css": ".ds-row { display: grid; grid-template-columns: 208px 1fr 224px; gap: 40px; padding: 32px 0; border-top: 1px solid rgba(25,25,25,0.25); color: #191919; } .ds-thumb { height: 130px; border: 1px solid rgba(25,25,25,0.25); background: #fdf0e3; } .ds-row-name { margin: 0; font-family: Archivo, Arial, sans-serif; font-weight: 800; font-stretch: 112%; font-size: 44px; line-height: 1; letter-spacing: -0.02em; } .ds-row-desc { margin: 12px 0 0; font-size: 18px; color: rgba(25,25,25,0.8); } .ds-row-tech { margin: 12px 0 0; font-size: 14px; color: rgba(25,25,25,0.7); } .ds-row-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 12px; font-size: 14px; color: rgba(25,25,25,0.7); } .ds-row-meta a { color: #b93737; font-weight: 500; }"
+    },
+    {
+      "name": "Skill Cell",
+      "kind": "custom",
+      "refersTo": "skill-cell",
+      "description": "Celda cuadrada de habilidad con borde de 1 px que se solapa con la vecina.",
+      "html": "<ul class=\"ds-skills\"><li><svg width=\"28\" height=\"28\" viewBox=\"0 0 24 24\" fill=\"#b93737\"><circle cx=\"12\" cy=\"12\" r=\"9\"/></svg><span>Next.js</span></li><li><svg width=\"28\" height=\"28\" viewBox=\"0 0 24 24\" fill=\"#b93737\"><rect x=\"4\" y=\"4\" width=\"16\" height=\"16\"/></svg><span>Docker</span></li></ul>",
+      "css": ".ds-skills { display: flex; margin: 0; padding: 1px 0 0 1px; list-style: none; color: #191919; } .ds-skills li { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; width: 128px; height: 96px; margin: -1px 0 0 -1px; border: 1px solid rgba(25,25,25,0.25); text-align: center; font-size: 14px; font-weight: 500; }"
+    },
+    {
+      "name": "Section Header",
+      "kind": "custom",
+      "refersTo": "headline",
+      "description": "Regla de 1 px, título en Archivo 800 alineado a la izquierda y una línea de apoyo.",
+      "html": "<header class=\"ds-section\"><h2>Proyectos</h2><p>Lo que he construido hasta ahora.</p></header>",
+      "css": ".ds-section { display: flex; flex-direction: column; gap: 16px; padding-top: 32px; border-top: 1px solid #191919; color: #191919; } .ds-section h2 { margin: 0; font-family: Archivo, Arial, sans-serif; font-weight: 800; font-stretch: 112%; font-size: 72px; line-height: 0.95; letter-spacing: -0.03em; } .ds-section p { margin: 0; font-size: 18px; color: rgba(25,25,25,0.7); }"
     }
   ],
   "narrative": {
-    "northStar": "La Vitrina Esmerilada",
-    "overview": "Todo flota detrás de cristal. La página es un fondo crema (o negro, en oscuro) con halos de color desenfocados y en movimiento detrás, y sobre ellos tarjetas, navbar y bloque de texto de presentación con backdrop-blur, bordes translúcidos y brillos que reaccionan al pasar el ratón. Un único acento, el cereza, se reparte por todas partes con luz y degradados.",
+    "northStar": "La Retícula Viva",
+    "overview": "Todo el sitio se construye sobre una retícula de celdas cuadradas. El hero la muestra como un campo que se enfría hacia el texto; el resto de la página la lleva a la estructura: reglas de 1 px entre filas, celdas con borde fino para las habilidades, viñetas que son una celda. Lo demás es plano. El movimiento tiene un solo dueño: el campo de píxeles. Fuera de eso, las interacciones cambian de color en 150 ms y nada más.",
     "keyCharacteristics": [
-      "Cristal esmerilado en navbar, tarjetas y bloque de biografía.",
-      "Nueve halos circulares desenfocados como fondo fijo, cinco de ellos animados.",
-      "Un acento cereza con resplandor y degradados accent/10 a accent/30.",
-      "Hover reactivo en casi todo: scale-105, sombra y cambio de degradado.",
-      "Composición centrada, una columna, foto circular.",
-      "Tema claro y oscuro con la misma paleta invertida."
+      "Esquinas cuadradas y reglas de 1 px en vez de tarjetas, sombras o fondos.",
+      "Titulares en Archivo 800, ancho 112 %, con tracking negativo.",
+      "Un único acento (cereza) y dos temas que invierten crema y negro.",
+      "Un campo de píxeles animado como firma; el resto, quieto.",
+      "Todo lo interactivo tiene foco visible, área táctil suficiente y respeta prefers-reduced-motion."
     ],
     "rules": [
-      { "name": "The Single Accent Rule", "body": "Todo lo que no es neutro es cereza. No hay segundo color de acento; la variedad viene de la opacidad y del degradado, no del tono.", "section": "colors" },
-      { "name": "The Weight-Not-Face Rule", "body": "La jerarquía se construye con tamaño y peso dentro de Geist; no se introduce una segunda familia.", "section": "typography" },
-      { "name": "The Frosted-Layer Rule", "body": "Toda superficie flotante lleva backdrop-blur y un borde translúcido; nada flota sobre fondo opaco.", "section": "elevation" }
+      { "name": "The Single Accent Rule", "body": "Todo lo que no es neutro es cereza. La variedad viene del paso de la paleta y de la opacidad, no de otro tono.", "section": "colors" },
+      { "name": "The Five-Step Rule", "body": "El campo, el retrato y la estela usan los mismos cinco pasos: suelo, cereza claro, cereza, cereza profundo y negro (invertidos en oscuro).", "section": "colors" },
+      { "name": "The Weight-Not-Face Rule", "body": "No se añade una tercera familia: Archivo para titulares, Geist para el resto.", "section": "typography" },
+      { "name": "The Accent-Clearance Rule", "body": "Los titulares compactos dejan margen sobre la \"É\" de \"Meléndez\" para que el acento no se recorte.", "section": "typography" },
+      { "name": "The Hairline Rule", "body": "Un límite se marca con una línea de 1 px, nunca con una caja, una sombra o un fondo.", "section": "elevation" },
+      { "name": "The Square Rule", "body": "Ninguna píldora, ningún círculo, ninguna esquina redondeada.", "section": "shapes" }
     ],
     "dos": [
-      "Do usar cereza (#b93737 en claro, #d64545 en oscuro) como único acento y mantener la inversión crema/negro entre temas.",
-      "Do respetar prefers-reduced-motion, como ya hace el scroll suave.",
-      "Do conservar la paleta cereza, crema y negro en cualquier rediseño: es el compromiso de marca."
+      "Do marcar cada límite con una línea de 1 px (foreground al 25 %) y dejar el resto sin caja.",
+      "Do usar Archivo 800 con font-stretch: 112 % y tracking negativo para nombres y títulos, alineados a la izquierda.",
+      "Do usar --accent-ink para texto pequeño en cereza y comprobar el contraste en ambos temas.",
+      "Do dar foco visible (2 px, acento) a todo lo interactivo y ampliar el área de los enlaces pequeños.",
+      "Do mantener todo el movimiento decorativo dentro del campo, la estela y el retrato, y apagarlo con prefers-reduced-motion.",
+      "Do alinear el contenido de cada sección a los márgenes laterales del hero."
     ],
     "donts": [
-      "Don't apilar cristal, degradado, halo y escala en un mismo elemento: es el exceso que este sistema ya muestra.",
-      "Don't usar los halos de fondo animados (animate-pulse, animate-bounce, animate-ping) como decoración; son cinco elementos animados de forma permanente.",
-      "Don't tomar la composición centrada con foto circular como estructura a conservar; es el estado anterior."
+      "Don't usar esquinas redondeadas, píldoras, círculos, sombras, degradados ni cristal fuera de la barra de navegación.",
+      "Don't añadir halos desenfocados, puntos pulsantes ni escalas al pasar el cursor.",
+      "Don't envolver contenido en tarjetas: filas con regla, no cajas.",
+      "Don't poner texto sobre las celdas del campo.",
+      "Don't introducir una tercera familia tipográfica ni un segundo color de acento.",
+      "Don't importar groq o createClient desde la raíz de next-sanity: arrastra el cliente de Sanity completo al navegador."
     ]
   }
 }
