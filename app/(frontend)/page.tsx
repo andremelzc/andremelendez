@@ -9,11 +9,10 @@ export default async function Home() {
 
   return (
     <div className="font-sans">
-      {/* El hero ocupa todo el ancho; el resto de secciones conserva su
-          espaciado hasta que se rediseñen. */}
       <HomeSection profile={profile} />
-      <div className="mx-auto flex max-w-7xl flex-col items-center gap-32 px-8 pb-20 pt-16 sm:px-20">
-        <ProjectsSection />
+      <ProjectsSection />
+      {/* Hasta que se rediseñen, estas dos conservan su espaciado anterior. */}
+      <div className="mx-auto flex max-w-7xl flex-col items-center gap-32 px-8 pb-20 sm:px-20">
         <SkillsSection />
         <ContactSection profile={profile} />
       </div>
