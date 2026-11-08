@@ -21,7 +21,7 @@ export default function ContactSection({ profile }: ContactSectionProps) {
     profile.cvSpanish || profile.cvEnglish || "/cv_andre_melendez_español.pdf";
 
   return (
-    <section id="contacto" className="px-4 py-20 sm:px-8 sm:py-28 lg:px-14">
+    <section id="contacto" className="px-4 py-12 sm:px-8 sm:py-20 lg:px-14 lg:py-28">
       <SectionHeader
         title="Contacto"
         description="Escríbeme si quieres trabajar conmigo."

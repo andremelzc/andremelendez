@@ -46,13 +46,13 @@ export default function ProjectRow({ project }: ProjectRowProps) {
   const meta = [project.role, project.year].filter(Boolean).join(" · ");
 
   return (
-    <li className="group relative grid gap-5 border-t border-foreground/25 py-6 sm:py-8 lg:grid-cols-[13rem_minmax(0,1fr)_14rem] lg:gap-10">
-      <div className="relative aspect-[16/10] w-full max-w-[16rem] overflow-hidden border border-foreground/25 bg-muted transition-colors duration-150 group-hover:border-accent lg:w-52">
+    <li className="group relative grid gap-5 border-t border-foreground/25 py-5 sm:py-8 lg:grid-cols-[13rem_minmax(0,1fr)_14rem] lg:gap-10">
+      <div className="relative h-36 w-full overflow-hidden sm:h-48 lg:aspect-[16/10] lg:h-auto border border-foreground/25 bg-muted transition-colors duration-150 group-hover:border-accent lg:w-52">
         <Image
           src={project.primaryImage}
           alt=""
           fill
-          sizes="(min-width: 1024px) 13rem, 90vw"
+          sizes="(min-width: 1024px) 13rem, 100vw"
           className="object-cover"
         />
       </div>

@@ -24,7 +24,7 @@ export default async function Footer() {
 
   return (
     <footer className="border-t border-foreground/25">
-      <div className="grid gap-10 px-4 py-12 sm:grid-cols-[1.4fr_1fr_1fr] sm:px-8 lg:px-14">
+      <div className="grid gap-8 px-4 py-10 sm:grid-cols-[1.4fr_1fr_1fr] sm:gap-10 sm:px-8 sm:py-12 lg:px-14">
         <div className="flex flex-col gap-2">
           <p
             className="font-display text-2xl font-extrabold tracking-[-0.02em]"
@@ -35,6 +35,7 @@ export default async function Footer() {
           <p className="max-w-[32ch] text-sm text-foreground/70">{profile.title}</p>
         </div>
 
+        <div className="grid grid-cols-2 gap-8 sm:contents">
         <nav aria-label="Pie de página">
           <h2 className="mb-3 text-sm font-semibold">Navegación</h2>
           <ul className="flex flex-col gap-2">
@@ -91,6 +92,7 @@ export default async function Footer() {
               </a>
             </li>
           </ul>
+        </div>
         </div>
       </div>
 

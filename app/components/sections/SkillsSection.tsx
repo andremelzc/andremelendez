@@ -32,7 +32,7 @@ export default async function SkillsSection() {
   const groups = groupByCategory(skillsList);
 
   return (
-    <section id="habilidades" className="px-4 py-20 sm:px-8 sm:py-28 lg:px-14">
+    <section id="habilidades" className="px-4 py-12 sm:px-8 sm:py-20 lg:px-14 lg:py-28">
       <SectionHeader
         title="Habilidades"
         description="Las herramientas con las que trabajo."
@@ -41,17 +41,17 @@ export default async function SkillsSection() {
         {groups.map(([category, skills]) => (
           <div
             key={category}
-            className="grid gap-4 border-t border-foreground/25 py-6 sm:py-8 lg:grid-cols-[14rem_minmax(0,1fr)] lg:gap-10"
+            className="grid gap-4 border-t border-foreground/25 py-5 sm:py-8 lg:grid-cols-[14rem_minmax(0,1fr)] lg:gap-10"
           >
             <h3 className="text-lg font-semibold">{category}</h3>
             {/* Celdas con borde de 1 px que se solapan: una rejilla de píxeles */}
-            <ul className="grid grid-cols-2 pl-px pt-px sm:flex sm:flex-wrap">
+            <ul className="flex flex-wrap pl-px pt-px">
               {skills.map((skill) => {
                 const Icon = getTechIcon(skill.name);
                 return (
                   <li
                     key={skill.name}
-                    className="-ml-px -mt-px flex h-24 flex-col sm:w-32 items-center justify-center gap-2 border border-foreground/25 px-2 text-center"
+                    className="-ml-px -mt-px flex h-14 items-center gap-3 border border-foreground/25 px-4 sm:h-24 sm:w-32 sm:flex-col sm:justify-center sm:gap-2 sm:px-2 sm:text-center"
                   >
                     {Icon && (
                       <Icon className="h-7 w-7 text-accent" aria-hidden="true" />

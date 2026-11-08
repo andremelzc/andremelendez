@@ -29,7 +29,7 @@ export default function HomeSection({ profile }: HomeSectionProps) {
   return (
     <section
       id="home"
-      className="relative isolate flex min-h-[100svh] items-center overflow-hidden px-4 pb-14 pt-28 sm:px-8 lg:px-14"
+      className="relative isolate flex min-h-[100svh] items-start overflow-hidden px-4 pb-10 pt-24 sm:px-8 lg:items-center lg:px-14 lg:pb-14 lg:pt-28"
     >
       <PixelField avoidRef={textRef} />
 
