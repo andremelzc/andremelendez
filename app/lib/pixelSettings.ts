@@ -67,7 +67,8 @@ export interface PortraitSettings {
 }
 
 export const PORTRAIT_DEFAULTS: PortraitSettings = {
-  mode: "focus",
+  // Todo pixelado por defecto; "focus" (ventana nítida) sigue disponible en /lab.
+  mode: "pixel",
   cell: 0,
   dither: 0.9,
   focusSize: 0.16,
