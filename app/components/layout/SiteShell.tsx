@@ -1,5 +1,5 @@
 import React from "react";
-import { Archivo, Geist, Geist_Mono } from "next/font/google";
+import { Archivo, Geist } from "next/font/google";
 import "@/app/globals.css";
 import Footer from "@/app/components/layout/Footer";
 import Navbar from "@/app/components/layout/Navbar";
@@ -11,12 +11,8 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-// Voz de display del nombre: extendida y pesada. Eje de ancho (wdth) activo.
+// Voz de display del nombre: extendida y pesada. Eje de ancho (wdth) activo;
+// next/font no permite fijar también el peso cuando se usa un eje.
 const archivo = Archivo({
   variable: "--font-archivo",
   subsets: ["latin"],
@@ -32,7 +28,7 @@ export default function SiteShell({ children }: { children: React.ReactNode }) {
     <html
       lang="es"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} ${archivo.variable} overflow-x-hidden`}
+      className={`${geistSans.variable} ${archivo.variable} overflow-x-hidden`}
     >
       <body className="antialiased">
         <Providers>
