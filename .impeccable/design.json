@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-08T00:00:00.000Z",
+  "title": "Design System: Andre Meléndez Portfolio (sistema heredado)",
+  "extensions": {
+    "colorMeta": {
+      "cherry-accent": { "role": "primary", "displayName": "Cereza", "canonical": "#b93737", "tonalRamp": ["#471212", "#6b1d1d", "#922c2c", "#b93737", "#d64545", "#e36d6d", "#ec9b9b", "#f9e1e1"] },
+      "cherry-accent-dark": { "role": "primary", "displayName": "Cereza vivo", "canonical": "#d64545", "tonalRamp": ["#471212", "#6b1d1d", "#922c2c", "#b93737", "#d64545", "#e36d6d", "#ec9b9b", "#f9e1e1"] },
+      "cherry-soft": { "role": "primary", "displayName": "Cereza velado", "canonical": "#f9e1e1", "tonalRamp": ["#922c2c", "#b93737", "#d64545", "#e36d6d", "#ec9b9b", "#f4c7c7", "#f9e1e1", "#fdf4f4"] },
+      "cherry-ink": { "role": "primary", "displayName": "Cereza tinta", "canonical": "#922c2c", "tonalRamp": ["#471212", "#6b1d1d", "#922c2c", "#b93737", "#d64545", "#e36d6d", "#ec9b9b", "#f4c7c7"] },
+      "cherry-glow": { "role": "primary", "displayName": "Cereza brillo", "canonical": "#ec9b9b", "tonalRamp": ["#922c2c", "#b93737", "#d64545", "#e36d6d", "#ec9b9b", "#f4c7c7", "#f9e1e1", "#fdf4f4"] },
+      "cream-ground": { "role": "neutral", "displayName": "Crema nácar", "canonical": "#fffcf9", "tonalRamp": ["#6b4b26", "#9e6e38", "#c78f4d", "#e3af6a", "#f4c88d", "#fbe5cc", "#fff8f0", "#fffcf9"] },
+      "cream-muted": { "role": "neutral", "displayName": "Crema cálida", "canonical": "#fdf0e3", "tonalRamp": ["#6b4b26", "#9e6e38", "#c78f4d", "#e3af6a", "#f8d7ad", "#fbe5cc", "#fdf0e3", "#fff8f0"] },
+      "midnight-ink": { "role": "neutral", "displayName": "Casi negro", "canonical": "#191919", "tonalRamp": ["#0b0b0b", "#141414", "#191919", "#1f1f1f", "#333333", "#666666", "#999999", "#e5e5e5"] },
+      "midnight-border": { "role": "neutral", "displayName": "Gris medio", "canonical": "#999999", "tonalRamp": ["#191919", "#333333", "#666666", "#808080", "#999999", "#cccccc", "#e5e5e5", "#f5f5f5"] },
+      "midnight-ground": { "role": "neutral", "displayName": "Negro profundo", "canonical": "#0b0b0b", "tonalRamp": ["#000000", "#0b0b0b", "#141414", "#191919", "#1f1f1f", "#333333", "#666666", "#999999"] },
+      "midnight-muted": { "role": "neutral", "displayName": "Casi negro atenuado", "canonical": "#191919", "tonalRamp": ["#0b0b0b", "#141414", "#191919", "#1f1f1f", "#333333", "#666666", "#999999", "#cccccc"] },
+      "midnight-line": { "role": "neutral", "displayName": "Negro línea", "canonical": "#1f1f1f", "tonalRamp": ["#0b0b0b", "#141414", "#191919", "#1f1f1f", "#333333", "#666666", "#999999", "#cccccc"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Nombre en el hero, 700." },
+      "headline": { "displayName": "Headline", "purpose": "Rol en cereza sobre el nombre, 600." },
+      "title": { "displayName": "Title", "purpose": "Título de proyecto en tarjeta." },
+      "body": { "displayName": "Body", "purpose": "Biografía y descripciones, con opacidad /80 a /90." },
+      "label": { "displayName": "Label", "purpose": "Etiqueta de disponibilidad en mayúsculas con tracking." }
+    },
+    "shadows": [
+      { "name": "card", "value": "0 25px 50px -12px rgba(0,0,0,0.25)", "purpose": "Tarjetas de proyecto en reposo (shadow-2xl)." },
+      { "name": "button-hover", "value": "0 10px 15px -3px rgba(25,25,25,0.25)", "purpose": "Botones en hover." },
+      { "name": "nav-indicator", "value": "0 4px 20px rgba(0,0,0,0.3)", "purpose": "Indicador deslizante del navbar." }
+    ],
+    "motion": [
+      { "name": "nav-indicator-ease", "value": "cubic-bezier(0.34, 1.56, 0.64, 1)", "purpose": "Desplazamiento del indicador del navbar, 500ms." },
+      { "name": "hover-standard", "value": "300ms ease-out", "purpose": "Escala, sombra y degradado en botones." },
+      { "name": "card-hover", "value": "500ms", "purpose": "Elevación y brillo de tarjetas." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Botón principal: fondo casi negro, texto crema y halo cereza en hover.",
+      "html": "<button class=\"ds-btn-primary\">Descargar CV</button>",
+      "css": ".ds-btn-primary { background: #191919; color: #fffcf9; padding: 12px 24px; border: none; border-radius: 8px; font-size: 16px; font-weight: 500; cursor: pointer; transition: all 300ms ease-out; } .ds-btn-primary:hover { transform: scale(1.05); box-shadow: 0 10px 15px -3px rgba(25,25,25,0.25); } .ds-btn-primary:focus-visible { outline: 2px solid #b93737; outline-offset: 2px; }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Botón secundario con borde translúcido y degradado suave en hover.",
+      "html": "<button class=\"ds-btn-outline\">Contacto</button>",
+      "css": ".ds-btn-outline { background: transparent; color: #191919; padding: 12px 24px; border: 1px solid rgba(153,153,153,0.5); border-radius: 8px; font-size: 16px; font-weight: 500; cursor: pointer; transition: all 300ms ease-out; } .ds-btn-outline:hover { transform: scale(1.05); border-color: #999999; background: linear-gradient(to right, rgba(253,240,227,0.2), rgba(253,240,227,0.3), rgba(253,240,227,0.2)); box-shadow: 0 10px 15px -3px rgba(185,55,55,0.1); } .ds-btn-outline:focus-visible { outline: 2px solid #b93737; outline-offset: 2px; }"
+    },
+    {
+      "name": "Availability Pill",
+      "kind": "chip",
+      "refersTo": "cherry-accent",
+      "description": "Etiqueta de disponibilidad con punto que pulsa.",
+      "html": "<div class=\"ds-pill\"><span class=\"ds-pill-dot\"></span><span class=\"ds-pill-text\">Disponible para proyectos</span></div>",
+      "css": ".ds-pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(185,55,55,0.1); border: 1px solid rgba(185,55,55,0.3); border-radius: 9999px; padding: 8px 24px; transition: all 300ms; } .ds-pill:hover { background: rgba(185,55,55,0.15); border-color: rgba(185,55,55,0.4); } .ds-pill-dot { width: 8px; height: 8px; border-radius: 9999px; background: #b93737; animation: ds-pulse 2s cubic-bezier(0.4,0,0.6,1) infinite; } .ds-pill-text { color: #b93737; font-size: 14px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; transition: letter-spacing 300ms; } .ds-pill:hover .ds-pill-text { letter-spacing: 0.1em; } @keyframes ds-pulse { 50% { opacity: 0.5; } }"
+    },
+    {
+      "name": "Tech Badge",
+      "kind": "chip",
+      "refersTo": "tech-badge",
+      "description": "Etiqueta de tecnología en cereza velado.",
+      "html": "<span class=\"ds-badge\"><svg width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><circle cx=\"12\" cy=\"12\" r=\"9\"/></svg>Next.js</span>",
+      "css": ".ds-badge { display: inline-flex; align-items: center; gap: 8px; background: #f9e1e1; color: #922c2c; border-radius: 9999px; padding: 4px 12px; font-size: 14px; font-weight: 500; }"
+    },
+    {
+      "name": "Project Card",
+      "kind": "card",
+      "refersTo": "project-card",
+      "description": "Tarjeta de proyecto con degradado translúcido, borde que vira a cereza y elevación en hover.",
+      "html": "<div class=\"ds-card\"><h3 class=\"ds-card-title\">Nombre del proyecto</h3><p class=\"ds-card-text\">Descripción breve del proyecto y su alcance.</p></div>",
+      "css": ".ds-card { background: linear-gradient(135deg, rgba(253,240,227,0.5), rgba(255,252,249,0.3), rgba(253,240,227,0.5)); border: 1px solid rgba(153,153,153,0.5); border-radius: 24px; padding: 24px; color: #191919; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); transition: all 500ms; } .ds-card:hover { transform: translateY(-4px) scale(1.02); border-color: rgba(185,55,55,0.3); } .ds-card-title { margin: 0; font-size: 24px; font-weight: 700; } .ds-card-text { margin: 8px 0 0; font-size: 16px; line-height: 1.625; opacity: 0.8; }"
+    },
+    {
+      "name": "Glass Navbar",
+      "kind": "nav",
+      "refersTo": "cream-ground",
+      "description": "Píldora de cristal con indicador blanco deslizante.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-link ds-nav-active\">Home</a><a class=\"ds-nav-link\">Proyectos</a><a class=\"ds-nav-link\">Habilidades</a><a class=\"ds-nav-link\">Contacto</a></nav>",
+      "css": ".ds-nav { display: inline-flex; gap: 8px; padding: 10px; border-radius: 16px; backdrop-filter: blur(40px); border: 1px solid rgba(255,255,255,0.2); background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1)); } .ds-nav-link { padding: 8px 16px; border-radius: 12px; color: #191919; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 500ms cubic-bezier(0.34,1.56,0.64,1); } .ds-nav-active { background: rgba(255,255,255,0.8); box-shadow: 0 4px 20px rgba(0,0,0,0.3); } .ds-nav-link:focus-visible { outline: 2px solid #b93737; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "La Vitrina Esmerilada",
+    "overview": "Todo flota detrás de cristal. La página es un fondo crema (o negro, en oscuro) con halos de color desenfocados y en movimiento detrás, y sobre ellos tarjetas, navbar y bloque de texto de presentación con backdrop-blur, bordes translúcidos y brillos que reaccionan al pasar el ratón. Un único acento, el cereza, se reparte por todas partes con luz y degradados.",
+    "keyCharacteristics": [
+      "Cristal esmerilado en navbar, tarjetas y bloque de biografía.",
+      "Nueve halos circulares desenfocados como fondo fijo, cinco de ellos animados.",
+      "Un acento cereza con resplandor y degradados accent/10 a accent/30.",
+      "Hover reactivo en casi todo: scale-105, sombra y cambio de degradado.",
+      "Composición centrada, una columna, foto circular.",
+      "Tema claro y oscuro con la misma paleta invertida."
+    ],
+    "rules": [
+      { "name": "The Single Accent Rule", "body": "Todo lo que no es neutro es cereza. No hay segundo color de acento; la variedad viene de la opacidad y del degradado, no del tono.", "section": "colors" },
+      { "name": "The Weight-Not-Face Rule", "body": "La jerarquía se construye con tamaño y peso dentro de Geist; no se introduce una segunda familia.", "section": "typography" },
+      { "name": "The Frosted-Layer Rule", "body": "Toda superficie flotante lleva backdrop-blur y un borde translúcido; nada flota sobre fondo opaco.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do usar cereza (#b93737 en claro, #d64545 en oscuro) como único acento y mantener la inversión crema/negro entre temas.",
+      "Do respetar prefers-reduced-motion, como ya hace el scroll suave.",
+      "Do conservar la paleta cereza, crema y negro en cualquier rediseño: es el compromiso de marca."
+    ],
+    "donts": [
+      "Don't apilar cristal, degradado, halo y escala en un mismo elemento: es el exceso que este sistema ya muestra.",
+      "Don't usar los halos de fondo animados (animate-pulse, animate-bounce, animate-ping) como decoración; son cinco elementos animados de forma permanente.",
+      "Don't tomar la composición centrada con foto circular como estructura a conservar; es el estado anterior."
+    ]
+  }
+}
