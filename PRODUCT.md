@@ -24,6 +24,7 @@ Proyectos reales y completos: trabajos de punta a punta que el visitante puede v
 - Los datos de contacto viven en el documento `profile` de Sanity: `email`, `github`, `linkedin` y los archivos `cvSpanish` y `cvEnglish`. `app/data/urls.ts` y `/public` guardan copias de respaldo que solo se usan si falta el campo.
 - Despliegue en Vercel: andremelendez.vercel.app.
 - Hay páginas de detalle por proyecto en `/projects/[slug]`; no todos los proyectos tienen (`hasDetails`).
+- Los metadatos (título, descripción, Open Graph, Twitter, enlace canónico) salen del perfil de Sanity y de `app/lib/metadata.ts`; la imagen para compartir se genera en `app/(frontend)/opengraph-image.tsx`. La dirección pública se toma de `NEXT_PUBLIC_SITE_URL` o, en Vercel, del dominio de producción. Hay `robots.txt` y `sitemap.xml`, y datos estructurados `Person` en la portada.
 - Existe una ruta `/lab`, solo en desarrollo (404 en producción), para ajustar en vivo los efectos de píxeles.
 
 ## Capabilities and Constraints
