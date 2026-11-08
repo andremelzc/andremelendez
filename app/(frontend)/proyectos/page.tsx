@@ -4,12 +4,17 @@ import Link from "next/link";
 import { HiArrowLeft } from "react-icons/hi";
 import ProjectIndex from "@/app/components/projects/ProjectIndex";
 import SectionHeader from "@/app/components/ui/SectionHeader";
-import { getAllProjects } from "@/app/lib/sanity";
+import { buildMetadata } from "@/app/lib/metadata";
+import { getAllProjects, getProfile } from "@/app/lib/sanity";
 
-export const metadata: Metadata = {
-  title: "Catálogo de proyectos | Andre Melendez",
-  description: "El catálogo completo de mis proyectos de desarrollo de software.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const profile = await getProfile();
+  return buildMetadata(profile, {
+    title: "Catálogo de proyectos",
+    description: "El catálogo completo de mis proyectos de desarrollo de software.",
+    path: "/proyectos",
+  });
+}
 
 export const revalidate = 60;
 

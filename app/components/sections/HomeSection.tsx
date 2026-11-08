@@ -3,18 +3,11 @@ import { HiOutlineDownload, HiOutlineMail } from "react-icons/hi";
 import Button from "@/app/components/ui/Button";
 import PixelField from "@/app/components/ui/PixelField";
 import { getCvLinks } from "@/app/lib/cv";
+import { splitDisplayName } from "@/app/lib/name";
 import { Profile } from "@/app/types/profile";
 
 interface HomeSectionProps {
   profile: Profile;
-}
-
-/** Nombre de pila y primer apellido para el titular ("Andre" / "Meléndez"). */
-function splitDisplayName(fullName: string): [string, string] {
-  const words = fullName.trim().split(/\s+/);
-  if (words.length < 2) return [words[0] ?? "", ""];
-  const surname = words.length >= 3 ? words[words.length - 2] : words[1];
-  return [words[0], surname];
 }
 
 export default function HomeSection({ profile }: HomeSectionProps) {

@@ -3,7 +3,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getProjectBySlug } from "@/app/lib/sanity";
+import { getProfile, getProjectBySlug } from "@/app/lib/sanity";
+import { buildMetadata, summarize } from "@/app/lib/metadata";
 import { splitProjectTitle } from "@/app/lib/projectTitle";
 import { PortableText, PortableTextComponents } from "@portabletext/react";
 import Button from "@/app/components/ui/Button";
@@ -57,13 +58,19 @@ interface ProjectPageProps {
 
 export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const project = await getProjectBySlug(slug);
-  if (!project) return { title: "Proyecto no encontrado | Andre Melendez" };
+  const [project, profile] = await Promise.all([getProjectBySlug(slug), getProfile()]);
+  if (!project) {
+    return { title: "Proyecto no encontrado" };
+  }
   const { name, descriptor } = splitProjectTitle(project.title);
-  return {
-    title: `${name} | Andre Melendez`,
-    description: [descriptor, project.description].filter(Boolean).join(". ").slice(0, 160),
-  };
+  // Solo imágenes reales de Sanity: el marcador local (/test.png) no sirve para compartir.
+  const image = project.primaryImage?.startsWith("http") ? [project.primaryImage] : undefined;
+  return buildMetadata(profile, {
+    title: name,
+    description: summarize([descriptor, project.description].filter(Boolean).join(". ")),
+    path: `/projects/${slug}`,
+    images: image,
+  });
 }
 
 export default async function ProjectDetailPage({ params }: ProjectPageProps) {
