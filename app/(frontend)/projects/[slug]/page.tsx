@@ -1,4 +1,5 @@
 import React from "react";
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -54,6 +55,17 @@ interface ProjectPageProps {
   }>;
 }
 
+export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const project = await getProjectBySlug(slug);
+  if (!project) return { title: "Proyecto no encontrado | Andre Melendez" };
+  const { name, descriptor } = splitProjectTitle(project.title);
+  return {
+    title: `${name} | Andre Melendez`,
+    description: [descriptor, project.description].filter(Boolean).join(". ").slice(0, 160),
+  };
+}
+
 export default async function ProjectDetailPage({ params }: ProjectPageProps) {
   const { slug } = await params;
   const project = await getProjectBySlug(slug);
@@ -77,7 +89,7 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
     <article className="px-4 pb-24 pt-28 font-sans sm:px-8 lg:px-14">
       <Link
         href="/#proyectos"
-        className="inline-flex items-center gap-2 border-b border-foreground/40 pb-1 text-sm font-medium transition-colors duration-150 hover:border-accent hover:text-accent"
+        className="hit-area inline-flex items-center gap-2 border-b border-foreground/40 pb-1 text-sm font-medium transition-colors duration-150 hover:border-accent hover:text-accent-ink"
       >
         <HiArrowLeft aria-hidden="true" />
         Volver a proyectos
