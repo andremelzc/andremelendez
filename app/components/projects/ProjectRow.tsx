@@ -45,17 +45,40 @@ export default function ProjectRow({ project }: ProjectRowProps) {
 
   const meta = [project.role, project.year].filter(Boolean).join(" · ");
 
+  // Solo el título, la miniatura y "Ver detalle" llevan al detalle. Los dos
+  // últimos repiten el destino del título, así que se ocultan al teclado y a los
+  // lectores de pantalla para no duplicar el enlace.
+  const duplicate = { tabIndex: -1, "aria-hidden": true } as const;
+
   return (
-    <li className="group relative grid gap-5 border-t border-foreground/25 py-5 sm:py-8 lg:grid-cols-[13rem_minmax(0,1fr)_14rem] lg:gap-10">
-      <div className="relative h-36 w-full overflow-hidden sm:h-48 lg:aspect-[16/10] lg:h-auto border border-foreground/25 bg-muted transition-colors duration-150 group-hover:border-accent lg:w-52">
-        <Image
-          src={project.primaryImage}
-          alt=""
-          fill
-          sizes="(min-width: 1024px) 13rem, 100vw"
-          className="object-cover"
-        />
-      </div>
+    <li className="grid gap-5 border-t border-foreground/25 py-5 sm:py-8 lg:grid-cols-[13rem_minmax(0,1fr)_14rem] lg:gap-10">
+      {detailHref ? (
+        <Link
+          href={detailHref}
+          {...duplicate}
+          className="group/thumb block h-36 w-full sm:h-48 lg:h-auto lg:w-52"
+        >
+          <div className="relative h-full w-full overflow-hidden border border-foreground/25 bg-muted transition-colors duration-150 group-hover/thumb:border-accent lg:aspect-[16/10]">
+            <Image
+              src={project.primaryImage}
+              alt=""
+              fill
+              sizes="(min-width: 1024px) 13rem, 100vw"
+              className="object-cover"
+            />
+          </div>
+        </Link>
+      ) : (
+        <div className="relative h-36 w-full overflow-hidden border border-foreground/25 bg-muted sm:h-48 lg:aspect-[16/10] lg:h-auto lg:w-52">
+          <Image
+            src={project.primaryImage}
+            alt=""
+            fill
+            sizes="(min-width: 1024px) 13rem, 100vw"
+            className="object-cover"
+          />
+        </div>
+      )}
 
       <div className="flex min-w-0 flex-col gap-3">
         <h3
@@ -65,7 +88,7 @@ export default function ProjectRow({ project }: ProjectRowProps) {
           {detailHref ? (
             <Link
               href={detailHref}
-              className="transition-colors duration-150 after:absolute after:inset-0 hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
+              className="transition-colors duration-150 hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
             >
               {name}
             </Link>
@@ -85,7 +108,7 @@ export default function ProjectRow({ project }: ProjectRowProps) {
 
       <div className="flex flex-col gap-3 lg:items-end lg:text-right">
         {meta && <p className="text-sm text-foreground/70">{meta}</p>}
-        <div className="relative z-10 flex flex-wrap gap-x-5 gap-y-2 lg:justify-end">
+        <div className="flex flex-wrap gap-x-5 gap-y-2 lg:justify-end">
           {external.map((link) => (
             <a
               key={link.label}
@@ -100,13 +123,14 @@ export default function ProjectRow({ project }: ProjectRowProps) {
           ))}
         </div>
         {detailHref && (
-          <span
-            aria-hidden="true"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-accent"
+          <Link
+            href={detailHref}
+            {...duplicate}
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-accent underline-offset-4 hover:underline"
           >
             Ver detalle
-            <HiOutlineArrowRight />
-          </span>
+            <HiOutlineArrowRight aria-hidden="true" />
+          </Link>
         )}
       </div>
     </li>
