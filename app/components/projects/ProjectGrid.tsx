@@ -4,12 +4,10 @@ import ProjectCard from "@/app/components/projects/ProjectCard";
 import ComingSoonCard from "@/app/components/projects/ComingSoonCard";
 
 export default function ProjectGrid({ projects }: ProjectGridProps) {
-  const featuredProjects = projects
-    .filter((project) => project.featured)
-    .slice(0, 2);
-  const regularProjects = projects
-    .filter((project) => !project.featured)
-    .slice(0, 4);
+  // Se muestran todos los proyectos; antes se recortaba a 2 destacados y
+  // 4 regulares y el resto desaparecía sin aviso.
+  const featuredProjects = projects.filter((project) => project.featured);
+  const regularProjects = projects.filter((project) => !project.featured);
   return (
     <div className="flex flex-col gap-6 sm:gap-8 lg:gap-8 w-full">
       {projects.length > 0 ? (
@@ -41,7 +39,7 @@ export default function ProjectGrid({ projects }: ProjectGridProps) {
           </div>
         </>
       ) : (
-        <div className="relative bg-gradient-to-br from-midnight-800 via-midnight-900 to-midnight-800 border border-midnight-600/50 rounded-3xl shadow-2xl text-background flex flex-col w-full h-full hover:shadow-3xl transition-all duration-300">
+        <div className="relative bg-gradient-to-br from-midnight-800 via-midnight-900 to-midnight-800 border border-midnight-600/50 rounded-3xl shadow-2xl text-background flex flex-col w-full h-full transition-all duration-300">
           <div className="absolute inset-0 bg-gradient-to-br from-foreground/10 via-transparent to-foreground/5 rounded-3xl pointer-events-none" />
           <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-midnight-500/40 to-transparent" />
           <div className="text-center py-12 px-8">

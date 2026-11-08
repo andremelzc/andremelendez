@@ -87,7 +87,7 @@ export default function SkillsClient({ initialSkills }: SkillsClientProps) {
           </div>
         </div>
       </div>
-      <div className="group w-full max-w-xs sm:max-w-sm md:max-w-lg lg:max-w-xl xl:max-w-2xl mx-auto bg-gradient-to-br from-muted/50 via-background/30 to-muted/50 border border-border/50 rounded-2xl sm:rounded-3xl p-2 shadow-2xl transition-all duration-500 hover:shadow-3xl hover:border-accent/30 transform-gpu hover:scale-[1.02] hover:-translate-y-1 relative">
+      <div className="group w-full max-w-xs sm:max-w-sm md:max-w-lg lg:max-w-xl xl:max-w-2xl mx-auto bg-gradient-to-br from-muted/50 via-background/30 to-muted/50 border border-border/50 rounded-2xl sm:rounded-3xl p-2 shadow-2xl transition-all duration-500 hover:border-accent/30 transform-gpu hover:scale-[1.02] hover:-translate-y-1 relative">
         {/* Efectos internos sutiles */}
         <div className="absolute inset-0 bg-gradient-to-br from-foreground/5 via-transparent to-foreground/5 rounded-2xl sm:rounded-3xl pointer-events-none" />
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />

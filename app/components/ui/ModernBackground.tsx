@@ -24,9 +24,6 @@ export default function ModernBackground() {
       {/* Círculo flotante - inferior centro - Reducido en móvil */}
       <div className="absolute bottom-10 left-1/4 w-28 h-28 sm:bottom-16 sm:left-1/3 sm:w-40 sm:h-40 lg:bottom-20 lg:w-52 lg:h-52 bg-gradient-to-tl from-cherry-400/5 to-accent/5 rounded-full blur-lg sm:blur-xl opacity-35 animate-pulse" 
            style={{ animationDelay: '3s' }} />
-      
-      {/* Elemento decorativo - superior centro - Oculto en móvil pequeño */}
-      <div className="hidden xs:block absolute top-5 left-1/2 transform -translate-x-1/2 w-24 h-24 sm:top-8 sm:w-32 sm:h-32 lg:top-10 lg:w-40 lg:h-40 bg-gradient-to-br from-accent/7 to-cherry-300/4 rounded-full blur-md sm:blur-lg opacity-45" />
 
       {/* Gradiente sutil de overlay */}
       

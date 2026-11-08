@@ -25,8 +25,8 @@ export default function ProjectCard({
     role,
     teamSize,
     year,
-    hasDetails = true,
-    slug = "hola",
+    hasDetails = false,
+    slug,
   },
 }: ProjectCardProps) {
   // La imagen primaria siempre es la principal que se muestra
@@ -36,7 +36,7 @@ export default function ProjectCard({
 
   return (
     <div className="group relative h-full">
-      <div className="relative bg-gradient-to-br from-muted/50 via-background/30 to-muted/50 border border-border/50 rounded-2xl md:rounded-3xl shadow-2xl text-foreground flex flex-col w-full h-full hover:shadow-3xl transition-all duration-500 hover:border-accent/30 transform-gpu group-hover:scale-[1.02] group-hover:-translate-y-1">
+      <div className="relative bg-gradient-to-br from-muted/50 via-background/30 to-muted/50 border border-border/50 rounded-2xl md:rounded-3xl shadow-2xl text-foreground flex flex-col w-full h-full transition-all duration-500 hover:border-accent/30 transform-gpu group-hover:scale-[1.02] group-hover:-translate-y-1">
         {/* Efectos internos sutiles */}
         <div className="absolute inset-0 bg-gradient-to-br from-foreground/5 via-transparent to-foreground/5 rounded-2xl md:rounded-3xl pointer-events-none" />
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />
@@ -240,8 +240,8 @@ export default function ProjectCard({
                   iconPosition="left"
                   className="text-xs md:text-sm px-2 md:px-3 py-1.5 md:py-2"
                 >
-                  <span className="hidden xs:inline">Visitar Sitio Real</span>
-                  <span className="xs:hidden">Sitio</span>
+                  <span className="hidden sm:inline">Visitar Sitio Real</span>
+                  <span className="sm:hidden">Sitio</span>
                 </Button>
               )}
               {demoUrl && !liveUrl && (
@@ -254,8 +254,8 @@ export default function ProjectCard({
                   iconPosition="left"
                   className="text-xs md:text-sm px-2 md:px-3 py-1.5 md:py-2"
                 >
-                  <span className="hidden xs:inline">Ver Demo</span>
-                  <span className="xs:hidden">Demo</span>
+                  <span className="hidden sm:inline">Ver Demo</span>
+                  <span className="sm:hidden">Demo</span>
                 </Button>
               )}
               {codeUrl && (
@@ -268,8 +268,8 @@ export default function ProjectCard({
                   iconPosition="left"
                   className="text-xs md:text-sm px-2 md:px-3 py-1.5 md:py-2"
                 >
-                  <span className="hidden xs:inline">Ver Código</span>
-                  <span className="xs:hidden">Código</span>
+                  <span className="hidden sm:inline">Ver Código</span>
+                  <span className="sm:hidden">Código</span>
                 </Button>
               )}
             </div>

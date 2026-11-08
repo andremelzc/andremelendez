@@ -3,38 +3,24 @@
 import React, { useState } from "react";
 import Button from "@/app/components/ui/Button";
 import ProjectGrid from "@/app/components/projects/ProjectGrid";
-import ProjectGridSkeleton from "@/app/components/projects/ProjectGridSkeleton";
-import { Project, ProjectCategory } from "@/app/types/projects";
-import { getProjectsByCategory } from "@/app/lib/sanity";
+import { Project } from "@/app/types/projects";
 
 interface ProjectClientProps {
   initialProjects: Project[];
 }
 
 export default function ProjectClient({ initialProjects }: ProjectClientProps) {
-  const [projects, setProjects] = useState<Project[]>(initialProjects)
   const [activeFilter, setActiveFilter] = useState<string>("Todos");
-  const [loading, setLoading] = useState(false);
 
-  const handleFilter = async (category: string) => {
-    setLoading(true);
+  // El filtrado es local: ya tenemos todos los proyectos, no hace falta
+  // volver a consultar Sanity desde el navegador.
+  const projects =
+    activeFilter === "Todos"
+      ? initialProjects
+      : initialProjects.filter((project) => project.category === activeFilter);
+
+  const handleFilter = (category: string) => {
     setActiveFilter(category);
-
-    try {
-      if (category === "Todos") {
-        setProjects(initialProjects);
-      } else {
-        const filteredProjects = await getProjectsByCategory(
-          category as ProjectCategory
-        );
-        setProjects(filteredProjects);
-      }
-    } catch (error) {
-      console.error("Error filtering projects:", error);
-      setProjects(initialProjects);
-    } finally {
-      setLoading(false);
-    }
   };
 
   return (
@@ -57,7 +43,6 @@ export default function ProjectClient({ initialProjects }: ProjectClientProps) {
               variant={activeFilter === "Todos" ? "primary" : "outline"}
               pressed={activeFilter === "Todos"}
               onClick={() => handleFilter("Todos")}
-              disabled={loading}
             >
               Todos
             </Button>
@@ -67,7 +52,6 @@ export default function ProjectClient({ initialProjects }: ProjectClientProps) {
               }
               pressed={activeFilter === "Desarrollo Web"}
               onClick={() => handleFilter("Desarrollo Web")}
-              disabled={loading}
             >
               Desarrollo web
             </Button>
@@ -77,7 +61,6 @@ export default function ProjectClient({ initialProjects }: ProjectClientProps) {
               }
               pressed={activeFilter === "Desarrollo Móvil"}
               onClick={() => handleFilter("Desarrollo Móvil")}
-              disabled={loading}
             >
               Desarrollo móvil
             </Button>
@@ -85,7 +68,6 @@ export default function ProjectClient({ initialProjects }: ProjectClientProps) {
               variant={activeFilter === "Otros" ? "primary" : "outline"}
               pressed={activeFilter === "Otros"}
               onClick={() => handleFilter("Otros")}
-              disabled={loading}
             >
               Otros
             </Button>
@@ -95,11 +77,7 @@ export default function ProjectClient({ initialProjects }: ProjectClientProps) {
 
       {/* Grid de proyectos */}
       <div className="transition-all duration-300">
-        {loading ? (
-          <ProjectGridSkeleton count={4} featuredCount={2} />
-        ) : (
-          <ProjectGrid projects={projects} />
-        )}
+        <ProjectGrid projects={projects} />
       </div>
     </>
   );
