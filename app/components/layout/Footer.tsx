@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import PixelField from "@/app/components/ui/PixelField";
+import { getCvLinks } from "@/app/lib/cv";
 import { socialUrls } from "@/app/data/urls";
 import { getProfile } from "@/app/lib/sanity";
 
@@ -19,8 +20,7 @@ export default async function Footer() {
   const email = profile.email || socialUrls.email;
   const linkedinUrl = profile.linkedin || socialUrls.linkedin;
   const githubUrl = profile.github || socialUrls.github;
-  const cvUrl =
-    profile.cvSpanish || profile.cvEnglish || "/cv_andre_melendez_español.pdf";
+  const cv = getCvLinks(profile);
 
   return (
     <footer className="border-t border-foreground/25">
@@ -83,12 +83,23 @@ export default async function Footer() {
             )}
             <li>
               <a
-                href={cvUrl}
+                href={cv.es}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={linkClass}
               >
-                CV
+                CV (español)
+              </a>
+            </li>
+            <li>
+              <a
+                href={cv.en}
+                target="_blank"
+                rel="noopener noreferrer"
+                lang="en"
+                className={linkClass}
+              >
+                CV (English)
               </a>
             </li>
           </ul>

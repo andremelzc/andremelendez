@@ -3,6 +3,7 @@ import React, { useRef } from "react";
 import { HiOutlineDownload, HiOutlineMail } from "react-icons/hi";
 import Button from "@/app/components/ui/Button";
 import PixelField from "@/app/components/ui/PixelField";
+import { getCvLinks } from "@/app/lib/cv";
 import { Profile } from "@/app/types/profile";
 
 interface HomeSectionProps {
@@ -20,9 +21,7 @@ function splitDisplayName(fullName: string): [string, string] {
 export default function HomeSection({ profile }: HomeSectionProps) {
   const textRef = useRef<HTMLDivElement>(null);
 
-  // CV en español si existe, si no el de inglés, o el local
-  const cvUrl =
-    profile.cvSpanish || profile.cvEnglish || "/cv_andre_melendez_español.pdf";
+  const cv = getCvLinks(profile);
 
   const [firstName, surname] = splitDisplayName(profile.fullName);
 
@@ -70,16 +69,30 @@ export default function HomeSection({ profile }: HomeSectionProps) {
 
           <div className="flex flex-col gap-5">
             <div className="flex flex-col gap-3 sm:flex-row">
-              <Button
-                href={cvUrl}
-                newTab
-                variant="primary"
-                size="md"
-                icon={<HiOutlineDownload className="h-5 w-5" />}
-                iconPosition="left"
-              >
-                Descargar CV
-              </Button>
+              {/* CV en español, con el de inglés pegado al lado */}
+              <div className="flex">
+                <Button
+                  href={cv.es}
+                  newTab
+                  variant="primary"
+                  size="md"
+                  icon={<HiOutlineDownload className="h-5 w-5" />}
+                  iconPosition="left"
+                  className="flex-1"
+                >
+                  Descargar CV (ES)
+                </Button>
+                <Button
+                  href={cv.en}
+                  newTab
+                  variant="outline"
+                  size="md"
+                  ariaLabel="Descargar CV en inglés"
+                  className="-ml-px"
+                >
+                  EN
+                </Button>
+              </div>
               <Button
                 href="#contacto"
                 variant="outline"

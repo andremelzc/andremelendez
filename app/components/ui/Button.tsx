@@ -9,6 +9,8 @@ interface ButtonProps {
   newTab?: boolean;
   /** Estado de un botón de alternancia o filtro (aria-pressed). */
   pressed?: boolean;
+  /** Nombre accesible cuando el texto visible es una abreviatura (también como title). */
+  ariaLabel?: string;
   variant?: "primary" | "secondary" | "outline" | "ghost";
   size?: "sm" | "md" | "lg" | "xl";
   disabled?: boolean;
@@ -25,6 +27,7 @@ export default function Button({
   href,
   newTab = false,
   pressed,
+  ariaLabel,
   variant = "primary",
   size = "md",
   disabled = false,
@@ -125,7 +128,13 @@ export default function Button({
     // abiertos en pestaña nueva): <a>.
     if (!newTab && (href.startsWith("/") || href.startsWith("#"))) {
       return (
-        <Link href={href} className={classes} onClick={onClick}>
+        <Link
+          href={href}
+          className={classes}
+          onClick={onClick}
+          aria-label={ariaLabel}
+          title={ariaLabel}
+        >
           {content}
         </Link>
       );
@@ -135,6 +144,8 @@ export default function Button({
         href={href}
         className={classes}
         onClick={onClick}
+        aria-label={ariaLabel}
+        title={ariaLabel}
         {...(newTab ? { target: "_blank", rel: "noopener noreferrer" } : {})}
       >
         {content}
@@ -146,6 +157,8 @@ export default function Button({
     <button
       type="button"
       aria-pressed={pressed}
+      aria-label={ariaLabel}
+      title={ariaLabel}
       className={classes}
       onClick={onClick}
       disabled={disabled || loading}

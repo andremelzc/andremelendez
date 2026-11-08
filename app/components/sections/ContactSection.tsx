@@ -3,6 +3,7 @@ import { BsGithub, BsLinkedin } from "react-icons/bs";
 import { HiOutlineDownload } from "react-icons/hi";
 import PixelPortrait from "@/app/components/ui/PixelPortrait";
 import SectionHeader from "@/app/components/ui/SectionHeader";
+import { getCvLinks } from "@/app/lib/cv";
 import { socialUrls } from "@/app/data/urls";
 import { Profile } from "@/app/types/profile";
 
@@ -17,8 +18,7 @@ export default function ContactSection({ profile }: ContactSectionProps) {
   const linkedinUrl = profile.linkedin || socialUrls.linkedin;
   const githubUrl = profile.github || socialUrls.github;
   const email = profile.email || socialUrls.email;
-  const cvUrl =
-    profile.cvSpanish || profile.cvEnglish || "/cv_andre_melendez_español.pdf";
+  const cv = getCvLinks(profile);
 
   return (
     <section id="contacto" className="px-4 py-12 sm:px-8 sm:py-20 lg:px-14 lg:py-28">
@@ -67,13 +67,25 @@ export default function ContactSection({ profile }: ContactSectionProps) {
             )}
             <li>
               <a
-                href={cvUrl}
+                href={cv.es}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={secondaryLink}
               >
                 <HiOutlineDownload aria-hidden="true" />
-                Descargar CV
+                CV en español
+              </a>
+            </li>
+            <li>
+              <a
+                href={cv.en}
+                target="_blank"
+                rel="noopener noreferrer"
+                lang="en"
+                className={secondaryLink}
+              >
+                <HiOutlineDownload aria-hidden="true" />
+                CV in English
               </a>
             </li>
           </ul>
