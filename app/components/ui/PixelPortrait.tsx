@@ -25,7 +25,7 @@ interface PixelPortraitProps {
 
 // Dónde está la cara dentro de la foto completa (0-1). El foco en reposo
 // gira alrededor de este punto para que la cara se vaya descubriendo sola.
-const FACE = { x: 0.57, y: 0.47 };
+const FACE = { x: 0.52, y: 0.42 };
 
 const BAYER_4X4 = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
 
@@ -164,7 +164,7 @@ export default function PixelPortrait({
       const height = wrap.clientHeight;
       if (!width || !height) return;
       const wanted = settingsRef.current.cell;
-      cell = wanted > 0 ? wanted : width < 340 ? 5 : 6;
+      cell = wanted > 0 ? wanted : width < 340 ? 4 : 5;
       cols = Math.ceil(width / cell);
       rows = Math.ceil(height / cell);
       canvas.width = cols;

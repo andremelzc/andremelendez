@@ -53,7 +53,7 @@ export type PortraitMode = "focus" | "pixel" | "photo";
 
 export interface PortraitSettings {
   mode: PortraitMode;
-  /** Lado de la celda en px. 0 = automático (6 en escritorio, 5 en pantallas pequeñas). */
+  /** Lado de la celda en px. 0 = automático (5 en escritorio, 4 en pantallas pequeñas). */
   cell: number;
   /** Fuerza del tramado (0 = bandas de color planas, 1,2 = mucho grano). */
   dither: number;
