@@ -1,17 +1,13 @@
 "use client";
 
 import { useEffect, useRef, type RefObject } from "react";
+import { clamp01, readPalette, smooth } from "@/app/lib/pixelPalette";
 
 interface PixelFieldProps {
   /** Elemento cuyo recuadro (más un margen) queda libre de celdas. */
   avoidRef?: RefObject<HTMLElement | null>;
   className?: string;
 }
-
-type RGB = readonly [number, number, number];
-
-const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
-const smooth = (t: number) => t * t * (3 - 2 * t);
 
 /** Hash entero 2D → [0, 1]. Determinista: no usa Math.random. */
 function hash2(x: number, y: number): number {
@@ -33,53 +29,6 @@ function valueNoise(x: number, y: number): number {
   const top = a + (b - a) * xf;
   const bottom = c + (d - c) * xf;
   return top + (bottom - top) * yf;
-}
-
-function parseColor(raw: string, fallback: RGB): RGB {
-  const v = raw.trim();
-  if (v.startsWith("#")) {
-    let hex = v.slice(1);
-    if (hex.length === 3) {
-      hex = hex
-        .split("")
-        .map((c) => c + c)
-        .join("");
-    }
-    const n = parseInt(hex.slice(0, 6), 16);
-    if (!Number.isNaN(n)) return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
-  }
-  const m = v.match(/rgba?\(\s*(\d+)[,\s]+(\d+)[,\s]+(\d+)/);
-  if (m) return [Number(m[1]), Number(m[2]), Number(m[3])];
-  return fallback;
-}
-
-/**
- * Cinco pasos: suelo, cereza claro, cereza, cereza oscuro y negro. En tema
- * oscuro el orden se invierte para que las celdas "calientes" sean las más
- * claras y el extremo vacío siga siendo el fondo de la página.
- */
-function readPalette(): number[] {
-  const root = document.documentElement;
-  const dark = root.classList.contains("dark");
-  const cs = getComputedStyle(root);
-  const get = (name: string, fallback: RGB) =>
-    parseColor(cs.getPropertyValue(name), fallback);
-
-  const ground = get("--background", dark ? [11, 11, 11] : [255, 252, 249]);
-  const cream = get("--color-cream-50", [255, 252, 249]);
-  const ink = get("--color-midnight-900", [11, 11, 11]);
-  const cherryLight = get("--color-cherry-200", [244, 199, 199]);
-  const accent = get("--accent", dark ? [214, 69, 69] : [185, 55, 55]);
-  const cherryDark = get("--color-cherry-800", [107, 29, 29]);
-
-  const steps: RGB[] = dark
-    ? [ground, cherryDark, accent, cherryLight, cream]
-    : [ground, cherryLight, accent, cherryDark, ink];
-
-  // ABGR en little-endian, listo para escribir en un Uint32Array.
-  return steps.map(
-    ([r, g, b]) => ((255 << 24) | (b << 16) | (g << 8) | r) >>> 0,
-  );
 }
 
 /**
