@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Archivo, Geist, Geist_Mono } from "next/font/google";
 import "@/app/globals.css";
 import Navbar from "@/app/components/layout/Navbar";
+import CursorPixels from "@/app/components/ui/CursorPixels";
 import Footer from "@/app/components/layout/Footer";
 import { Providers } from "@/app/providers";
 
@@ -41,6 +42,7 @@ export default function FrontendLayout({
       <body className="antialiased">
         <Providers>
           <Navbar />
+          <CursorPixels />
           <main className="w-full">{children}</main>
           <Footer />
         </Providers>

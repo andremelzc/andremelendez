@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import PixelField from "@/app/components/ui/PixelField";
 import PixelPortrait from "@/app/components/ui/PixelPortrait";
 import {
@@ -11,6 +11,11 @@ import {
   type PortraitMode,
   type PortraitSettings,
 } from "@/app/lib/pixelSettings";
+import {
+  TRAIL_DEFAULTS,
+  setTrailSettings,
+  type TrailSettings,
+} from "@/app/lib/trailStore";
 
 interface LabClientProps {
   photo: string;
@@ -95,6 +100,7 @@ const PALETTES: { value: PixelPalette; label: string }[] = [
 export default function LabClient({ photo, name }: LabClientProps) {
   const [field, setField] = useState<FieldSettings>(FIELD_DEFAULTS);
   const [portrait, setPortrait] = useState<PortraitSettings>(PORTRAIT_DEFAULTS);
+  const [trail, setTrailState] = useState<TrailSettings>(TRAIL_DEFAULTS);
   const [fieldKey, setFieldKey] = useState(0);
   const [copied, setCopied] = useState(false);
   const textRef = useRef<HTMLDivElement>(null);
@@ -104,7 +110,15 @@ export default function LabClient({ photo, name }: LabClientProps) {
   const setP = <K extends keyof PortraitSettings>(key: K, value: PortraitSettings[K]) =>
     setPortrait((prev) => ({ ...prev, [key]: value }));
 
-  const json = JSON.stringify({ field, portrait }, null, 2);
+  // La estela vive en el layout: se maneja por el almacén compartido y se
+  // restablece al salir del laboratorio.
+  const setT = <K extends keyof TrailSettings>(key: K, value: TrailSettings[K]) => {
+    setTrailState((prev) => ({ ...prev, [key]: value }));
+    setTrailSettings({ [key]: value } as Partial<TrailSettings>);
+  };
+  useEffect(() => () => setTrailSettings(TRAIL_DEFAULTS), []);
+
+  const json = JSON.stringify({ field, portrait, trail }, null, 2);
 
   const copy = async () => {
     try {
@@ -178,6 +192,32 @@ export default function LabClient({ photo, name }: LabClientProps) {
             <p className="mt-3 text-foreground/80">El campo deja libre este recuadro.</p>
           </div>
         </div>
+      </section>
+
+      {/* ---- Estela de toda la página ---- */}
+      <section className="mt-16 grid gap-8 border-t border-foreground/25 pt-12 lg:grid-cols-[22rem_minmax(0,1fr)]">
+        <div className="flex flex-col gap-5">
+          <h2 className="text-lg font-semibold">Estela del cursor (toda la página)</h2>
+          <label className="flex items-center gap-2 text-sm">
+            <input
+              type="checkbox"
+              checked={trail.enabled}
+              onChange={(e) => setT("enabled", e.target.checked)}
+              className="accent-[var(--accent)]"
+            />
+            Activada
+          </label>
+          <Slider label="Tamaño de celda" value={trail.cell} min={6} max={40} step={2} onChange={(v) => setT("cell", v)} />
+          <Slider label="Radio de la mancha (celdas)" value={trail.size} min={0.5} max={6} step={0.1} onChange={(v) => setT("size", v)} />
+          <Slider label="Duración (más alto = dura más)" value={trail.fade} min={0.8} max={0.99} step={0.01} onChange={(v) => setT("fade", v)} />
+          <Slider label="Opacidad máxima" value={trail.alpha} min={0.1} max={1} step={0.05} onChange={(v) => setT("alpha", v)} />
+          <Choice label="Paleta" value={trail.palette} options={PALETTES} onChange={(v) => setT("palette", v)} />
+        </div>
+        <p className="max-w-[48ch] text-foreground/70">
+          Esta es la estela que ves al mover el ratón por cualquier parte de la página. Pasa el
+          cursor por aquí y por el resto del laboratorio para probarla; los cambios se aplican al
+          instante.
+        </p>
       </section>
 
       {/* ---- Retrato ---- */}
