@@ -26,13 +26,13 @@ section[id] {
   scroll-margin-top: 5rem; /* 80px para compensar navbar */
 }
 
-:root {
-  --background: var(--color-cream-50);
-  --foreground: var(--color-midnight-700);
-  --accent: var(--color-cherry-600);
-  --muted: var(--color-cream-200);
-  --border: var(--color-midnight-300);
+/* La clase `.dark` (next-themes) también activa la variante `dark:` */
+@custom-variant dark (&:where(.dark, .dark *));
 
+/* Paleta cereza / crema / negro: una única definición. `static` emite todas
+   las variables aunque ninguna utilidad las use, porque los colores
+   semánticos de abajo las referencian con var(). */
+@theme static {
   /* Cherry */
   --color-cherry-50: #fdf4f4;
   --color-cherry-100: #f9e1e1;
@@ -44,18 +44,6 @@ section[id] {
   --color-cherry-700: #922c2c;
   --color-cherry-800: #6b1d1d;
   --color-cherry-900: #471212;
-
-  /* Deep Red */
-  --color-deepred-50: #fbf6f6;
-  --color-deepred-100: #f4e2e2;
-  --color-deepred-200: #e9c6c6;
-  --color-deepred-300: #d89999;
-  --color-deepred-400: #c66c6c;
-  --color-deepred-500: #a53636;
-  --color-deepred-600: #832a2a;
-  --color-deepred-700: #661f1f;
-  --color-deepred-800: #4b1515;
-  --color-deepred-900: #2e0d0d;
 
   /* Midnight */
   --color-midnight-50: #f5f5f5;
@@ -82,63 +70,13 @@ section[id] {
   --color-cream-900: #6b4b26;
 }
 
-@theme inline {
-  /* Variables base */
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-accent: var(--accent);
-  --color-muted: var(--muted);
-  --color-border: var(--border);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-
-  /* Cherry */
-  --color-cherry-50: var(--color-cherry-50);
-  --color-cherry-100: var(--color-cherry-100);
-  --color-cherry-200: var(--color-cherry-200);
-  --color-cherry-300: var(--color-cherry-300);
-  --color-cherry-400: var(--color-cherry-400);
-  --color-cherry-500: var(--color-cherry-500);
-  --color-cherry-600: var(--color-cherry-600);
-  --color-cherry-700: var(--color-cherry-700);
-  --color-cherry-800: var(--color-cherry-800);
-  --color-cherry-900: var(--color-cherry-900);
-
-  /* Deep Red */
-  --color-deepred-50: var(--color-deepred-50);
-  --color-deepred-100: var(--color-deepred-100);
-  --color-deepred-200: var(--color-deepred-200);
-  --color-deepred-300: var(--color-deepred-300);
-  --color-deepred-400: var(--color-deepred-400);
-  --color-deepred-500: var(--color-deepred-500);
-  --color-deepred-600: var(--color-deepred-600);
-  --color-deepred-700: var(--color-deepred-700);
-  --color-deepred-800: var(--color-deepred-800);
-  --color-deepred-900: var(--color-deepred-900);
-
-  /* Midnight */
-  --color-midnight-50: var(--color-midnight-50);
-  --color-midnight-100: var(--color-midnight-100);
-  --color-midnight-200: var(--color-midnight-200);
-  --color-midnight-300: var(--color-midnight-300);
-  --color-midnight-400: var(--color-midnight-400);
-  --color-midnight-500: var(--color-midnight-500);
-  --color-midnight-600: var(--color-midnight-600);
-  --color-midnight-700: var(--color-midnight-700);
-  --color-midnight-800: var(--color-midnight-800);
-  --color-midnight-900: var(--color-midnight-900);
-
-  /* Cream */
-  --color-cream-50: var(--color-cream-50);
-  --color-cream-100: var(--color-cream-100);
-  --color-cream-200: var(--color-cream-200);
-  --color-cream-300: var(--color-cream-300);
-  --color-cream-400: var(--color-cream-400);
-  --color-cream-500: var(--color-cream-500);
-  --color-cream-600: var(--color-cream-600);
-  --color-cream-700: var(--color-cream-700);
-  --color-cream-800: var(--color-cream-800);
-  --color-cream-900: var(--color-cream-900);
+/* Colores semánticos: son lo único que cambia entre tema claro y oscuro */
+:root {
+  --background: var(--color-cream-50);
+  --foreground: var(--color-midnight-700);
+  --accent: var(--color-cherry-600);
+  --muted: var(--color-cream-200);
+  --border: var(--color-midnight-300);
 }
 
 .dark {
@@ -147,91 +85,20 @@ section[id] {
   --accent: var(--color-cherry-500);
   --muted: var(--color-midnight-700);
   --border: var(--color-midnight-600);
+}
 
-    /* Cherry */
-  --color-cherry-50: #fdf4f4;
-  --color-cherry-100: #f9e1e1;
-  --color-cherry-200: #f4c7c7;
-  --color-cherry-300: #ec9b9b;
-  --color-cherry-400: #e36d6d;
-  --color-cherry-500: #d64545;
-  --color-cherry-600: #b93737;
-  --color-cherry-700: #922c2c;
-  --color-cherry-800: #6b1d1d;
-  --color-cherry-900: #471212;
-
-  /* Deep Red */
-  --color-deepred-50: #fbf6f6;
-  --color-deepred-100: #f4e2e2;
-  --color-deepred-200: #e9c6c6;
-  --color-deepred-300: #d89999;
-  --color-deepred-400: #c66c6c;
-  --color-deepred-500: #a53636;
-  --color-deepred-600: #832a2a;
-  --color-deepred-700: #661f1f;
-  --color-deepred-800: #4b1515;
-  --color-deepred-900: #2e0d0d;
-
-  /* Midnight */
-  --color-midnight-50: #f5f5f5;
-  --color-midnight-100: #e5e5e5;
-  --color-midnight-200: #cccccc;
-  --color-midnight-300: #999999;
-  --color-midnight-400: #666666;
-  --color-midnight-500: #333333;
-  --color-midnight-600: #1f1f1f;
-  --color-midnight-700: #191919;
-  --color-midnight-800: #141414;
-  --color-midnight-900: #0b0b0b;
-
-  /* Cream */
-  --color-cream-50: #fffcf9;
-  --color-cream-100: #fff8f0;
-  --color-cream-200: #fdf0e3;
-  --color-cream-300: #fbe5cc;
-  --color-cream-400: #f8d7ad;
-  --color-cream-500: #f4c88d;
-  --color-cream-600: #e3af6a;
-  --color-cream-700: #c78f4d;
-  --color-cream-800: #9e6e38;
-  --color-cream-900: #6b4b26;
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans), Arial, sans-serif;
-}
-
-/* Clases para truncar texto */
-.line-clamp-1 {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 1;
-  line-clamp: 1;
-}
-
-.line-clamp-2 {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-}
-
-.line-clamp-3 {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-  line-clamp: 3;
-}
-
-.line-clamp-4 {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 4;
-  line-clamp: 4;
 }
