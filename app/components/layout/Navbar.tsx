@@ -113,7 +113,7 @@ export default function Navbar() {
                 className={getLinkClass("home")}
                 ref={setLinkRef("home")}
               >
-                Home
+                Inicio
               </Link>
             </li>
             <li>
@@ -191,7 +191,7 @@ export default function Navbar() {
               className={getMobileLinkClass("home")}
               onClick={closeMobileMenu}
             >
-              Home
+              Inicio
             </Link>
             <Link
               href="/#proyectos"

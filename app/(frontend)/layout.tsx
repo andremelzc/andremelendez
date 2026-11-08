@@ -28,7 +28,7 @@ export default function FrontendLayout({
 }) {
   return (
     <html
-      lang="en"
+      lang="es"
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} overflow-x-hidden`}
     >

@@ -1,6 +1,5 @@
 import React from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProjectBySlug } from "@/app/lib/sanity";
 import { PortableText, PortableTextComponents } from "@portabletext/react";
@@ -57,17 +56,16 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
 
       {/* Botón de retroceso */}
       <div className="max-w-6xl mx-auto mb-8 sm:mb-12">
-        <Link href="/#proyectos">
-          <Button
-            variant="outline"
-            size="sm"
-            icon={<HiArrowLeft />}
-            iconPosition="left"
-            className="backdrop-blur-md"
-          >
-            Volver a proyectos
-          </Button>
-        </Link>
+        <Button
+          href="/#proyectos"
+          variant="outline"
+          size="sm"
+          icon={<HiArrowLeft />}
+          iconPosition="left"
+          className="backdrop-blur-md"
+        >
+          Volver a proyectos
+        </Button>
       </div>
 
       <article className="max-w-6xl mx-auto flex flex-col gap-8 sm:gap-12">
@@ -192,84 +190,59 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
               {/* Enlaces de Acción */}
               <div className="flex flex-col gap-3">
                 {project.liveUrl && (
-                  <a
+                  <Button
                     href={project.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full"
+                    newTab
+                    variant="primary"
+                    icon={<HiOutlineExternalLink />}
+                    className="w-full justify-center"
                   >
-                    <Button
-                      variant="primary"
-                      icon={<HiOutlineExternalLink />}
-                      className="w-full justify-center"
-                    >
-                      Sitio en Producción
-                    </Button>
-                  </a>
+                    Sitio en Producción
+                  </Button>
                 )}
                 {project.demoUrl && !project.liveUrl && (
-                  <a
+                  <Button
                     href={project.demoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full"
+                    newTab
+                    variant="outline"
+                    icon={<HiOutlineExternalLink />}
+                    className="w-full justify-center"
                   >
-                    <Button
-                      variant="outline"
-                      icon={<HiOutlineExternalLink />}
-                      className="w-full justify-center"
-                    >
-                      Ver Demo
-                    </Button>
-                  </a>
+                    Ver Demo
+                  </Button>
                 )}
                 {project.codeUrl && (
-                  <a
+                  <Button
                     href={project.codeUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full"
+                    newTab
+                    variant="outline"
+                    icon={<HiOutlineCode />}
+                    className="w-full justify-center"
                   >
-                    <Button
-                      variant="outline"
-                      icon={<HiOutlineCode />}
-                      className="w-full justify-center"
-                    >
-                      Repositorio de Código
-                    </Button>
-                  </a>
+                    Repositorio de Código
+                  </Button>
                 )}
                 {project.designUrl && (
-                  <a
+                  <Button
                     href={project.designUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full"
+                    newTab
+                    variant="outline"
+                    icon={<SiFigma />}
+                    className="w-full justify-center"
                   >
-                    <Button
-                      variant="outline"
-                      icon={<SiFigma />}
-                      className="w-full justify-center"
-                    >
-                      Diseño en Figma
-                    </Button>
-                  </a>
+                    Diseño en Figma
+                  </Button>
                 )}
                 {project.videoUrl && (
-                  <a
+                  <Button
                     href={project.videoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full"
+                    newTab
+                    variant="outline"
+                    icon={<SiLoom />}
+                    className="w-full justify-center"
                   >
-                    <Button
-                      variant="outline"
-                      icon={<SiLoom />}
-                      className="w-full justify-center"
-                    >
-                      Presentación en Video
-                    </Button>
-                  </a>
+                    Presentación en Video
+                  </Button>
                 )}
               </div>
             </div>

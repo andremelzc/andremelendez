@@ -1,7 +1,12 @@
 import React from "react";
+import Link from "next/link";
 
 interface ButtonProps {
   children: React.ReactNode;
+  /** Si se indica, se renderiza un enlace en lugar de un botón. */
+  href?: string;
+  /** Abre el enlace en una pestaña nueva (solo con href). */
+  newTab?: boolean;
   variant?: "primary" | "secondary" | "outline" | "ghost";
   size?: "sm" | "md" | "lg" | "xl";
   disabled?: boolean;
@@ -15,6 +20,8 @@ interface ButtonProps {
 
 export default function Button({
   children,
+  href,
+  newTab = false,
   variant = "primary",
   size = "md",
   disabled = false,
@@ -73,12 +80,10 @@ export default function Button({
   const flexDir = isVertical ? "flex-col" : "flex-row";
   const gap = size === "sm" ? "gap-1" : size === "lg" ? "gap-3" : "gap-2";
 
-  return (
-    <button
-      className={`${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${disabledClasses} ${className}`}
-      onClick={onClick}
-      disabled={disabled || loading}
-    >
+  const classes = `${baseClasses} ${variantClasses[variant]} ${sizeClasses[size]} ${disabledClasses} ${className}`;
+
+  const content = (
+    <>
       {glowEffect}
       <span
         className={`flex ${flexDir} items-center justify-center ${gap} w-full relative z-10`}
@@ -114,6 +119,39 @@ export default function Button({
           <span>{icon}</span>
         )}
       </span>
+    </>
+  );
+
+  if (href) {
+    // Rutas internas y anclas: next/link. Resto (http, mailto, archivos
+    // abiertos en pestaña nueva): <a>.
+    if (!newTab && (href.startsWith("/") || href.startsWith("#"))) {
+      return (
+        <Link href={href} className={classes} onClick={onClick}>
+          {content}
+        </Link>
+      );
+    }
+    return (
+      <a
+        href={href}
+        className={classes}
+        onClick={onClick}
+        {...(newTab ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      >
+        {content}
+      </a>
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      className={classes}
+      onClick={onClick}
+      disabled={disabled || loading}
+    >
+      {content}
     </button>
   );
 }

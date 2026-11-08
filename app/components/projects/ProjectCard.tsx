@@ -220,68 +220,57 @@ export default function ProjectCard({
             {/* Botones a la izquierda */}
             <div className="flex gap-2 md:gap-3 flex-wrap">
               {hasDetails && slug && (
-                <a href={`/projects/${slug}`}>
-                  <Button
-                    variant="primary"
-                    size="sm"
-                    iconPosition="left"
-                    className="text-xs md:text-sm px-2 md:px-3 py-1.5 md:py-2"
-                  >
-                    <span>Ver detalle</span>
-                  </Button>
-                </a>
+                <Button
+                  href={`/projects/${slug}`}
+                  variant="primary"
+                  size="sm"
+                  iconPosition="left"
+                  className="text-xs md:text-sm px-2 md:px-3 py-1.5 md:py-2"
+                >
+                  <span>Ver detalle</span>
+                </Button>
               )}
               {liveUrl && (
-                <a
+                <Button
                   href={liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(e) => e.stopPropagation()}
+                  newTab
+                  variant="primary"
+                  size="sm"
+                  icon={<HiOutlineExternalLink />}
+                  iconPosition="left"
+                  className="text-xs md:text-sm px-2 md:px-3 py-1.5 md:py-2"
                 >
-                  <Button
-                    variant="primary"
-                    size="sm"
-                    icon={<HiOutlineExternalLink />}
-                    iconPosition="left"
-                    className="text-xs md:text-sm px-2 md:px-3 py-1.5 md:py-2"
-                  >
-                    <span className="hidden xs:inline">Visitar Sitio Real</span>
-                    <span className="xs:hidden">Sitio</span>
-                  </Button>
-                </a>
+                  <span className="hidden xs:inline">Visitar Sitio Real</span>
+                  <span className="xs:hidden">Sitio</span>
+                </Button>
               )}
               {demoUrl && !liveUrl && (
-                <a
+                <Button
                   href={demoUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={(e) => e.stopPropagation()}
+                  newTab
+                  variant="secondary"
+                  size="sm"
+                  icon={<HiOutlineExternalLink />}
+                  iconPosition="left"
+                  className="text-xs md:text-sm px-2 md:px-3 py-1.5 md:py-2"
                 >
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    icon={<HiOutlineExternalLink />}
-                    iconPosition="left"
-                    className="text-xs md:text-sm px-2 md:px-3 py-1.5 md:py-2"
-                  >
-                    <span className="hidden xs:inline">Ver Demo</span>
-                    <span className="xs:hidden">Demo</span>
-                  </Button>
-                </a>
+                  <span className="hidden xs:inline">Ver Demo</span>
+                  <span className="xs:hidden">Demo</span>
+                </Button>
               )}
               {codeUrl && (
-                <a href={codeUrl} target="_blank" rel="noopener noreferrer">
-                  <Button
-                    variant="secondary"
-                    size="sm"
-                    icon={<HiOutlineCode />}
-                    iconPosition="left"
-                    className="text-xs md:text-sm px-2 md:px-3 py-1.5 md:py-2"
-                  >
-                    <span className="hidden xs:inline">Ver Código</span>
-                    <span className="xs:hidden">Código</span>
-                  </Button>
-                </a>
+                <Button
+                  href={codeUrl}
+                  newTab
+                  variant="secondary"
+                  size="sm"
+                  icon={<HiOutlineCode />}
+                  iconPosition="left"
+                  className="text-xs md:text-sm px-2 md:px-3 py-1.5 md:py-2"
+                >
+                  <span className="hidden xs:inline">Ver Código</span>
+                  <span className="xs:hidden">Código</span>
+                </Button>
               )}
             </div>
 

@@ -2,7 +2,6 @@
 import React from "react";
 import Image from "next/image";
 import Button from "@/app/components/ui/Button";
-import { scrollToContact } from "@/app/lib/utils";
 import { Profile } from "@/app/types/profile";
 
 interface HomeSectionProps {
@@ -10,11 +9,9 @@ interface HomeSectionProps {
 }
 
 export default function HomeSection({ profile }: HomeSectionProps) {
-  const handleDownloadCV = () => {
-    // Descarga la versión en español si existe, si no la de inglés, o la local
-    const cvUrl = profile.cvSpanish || profile.cvEnglish || "/cv_andre_melendez_español.pdf";
-    window.open(cvUrl, "_blank");
-  };
+  // CV en español si existe, si no el de inglés, o el local
+  const cvUrl =
+    profile.cvSpanish || profile.cvEnglish || "/cv_andre_melendez_español.pdf";
 
   return (
     <section
@@ -33,9 +30,9 @@ export default function HomeSection({ profile }: HomeSectionProps) {
           </div>
           {/* Títulos */}
           <div className="flex flex-col gap-1 sm:gap-2 lg:gap-1">
-            <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-3xl text-accent font-semibold">
+            <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-3xl text-accent font-semibold">
               {profile.title}
-            </h2>
+            </p>
             <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-5xl font-bold leading-tight">
               {profile.fullName}
             </h1>
@@ -78,7 +75,8 @@ export default function HomeSection({ profile }: HomeSectionProps) {
                 <Button
                   variant="primary"
                   size="md"
-                  onClick={handleDownloadCV}
+                  href={cvUrl}
+                  newTab
                   icon={
                     <svg
                       className="w-4 h-4 sm:w-5 sm:h-5"
@@ -101,7 +99,7 @@ export default function HomeSection({ profile }: HomeSectionProps) {
                 <Button
                   variant="outline"
                   size="md"
-                  onClick={scrollToContact}
+                  href="#contacto"
                   icon={
                     <svg
                       className="w-4 h-4 sm:w-5 sm:h-5"
