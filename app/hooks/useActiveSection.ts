@@ -23,8 +23,11 @@ export function useActiveSection() {
         });
       },
       {
-        threshold: 0.3, // Necesita 30% visible
-        rootMargin: "-20% 0px -20% 0px", // Detecta cuando está en el centro
+        // Una "línea" fina en el centro de la pantalla: la sección que la
+        // cruza es la activa. Con un umbral por porcentaje, las secciones muy
+        // altas (proyectos) nunca llegaban a ser la activa.
+        threshold: 0,
+        rootMargin: "-45% 0px -54% 0px",
       }
     );
 
