@@ -114,6 +114,7 @@ export default function PixelField({
     let lastDraw = 0;
     let lastTime = 0;
     let introStart: number | null = null;
+    let introArmed = true; // la entrada en ola se dispara al verse por primera vez
     let nextRipple = 0.8;
     const ripples: Ripple[] = [];
     const pointer = { x: 0, y: 0, tx: 0, ty: 0, strength: 0, active: false };
@@ -363,6 +364,12 @@ export default function PixelField({
 
     const intersection = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting;
+      // La entrada en ola empieza cuando el campo se ve por primera vez: así
+      // también se nota en el pie, que al cargar la página está fuera de pantalla.
+      if (visible && introArmed) {
+        introArmed = false;
+        introStart = null;
+      }
     });
     intersection.observe(wrap);
 

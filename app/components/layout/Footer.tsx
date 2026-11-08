@@ -107,9 +107,9 @@ export default async function Footer() {
         </div>
       </div>
 
-      {/* Eco estático del campo del hero: cierra la página */}
-      <div className="relative h-24">
-        <PixelField still />
+      {/* El campo del hero, animado, cierra la página */}
+      <div className="relative h-32 sm:h-40">
+        <PixelField />
       </div>
 
       <div className="border-t border-foreground/25 px-4 py-4 text-sm text-foreground/70 sm:px-8 lg:px-14">
