@@ -11,15 +11,17 @@ import { Project } from "@/app/types/projects";
 
 interface ProjectRowProps {
   project: Project;
+  /** Muestra la categoría junto al rol y el año (útil cuando hay filtro). */
+  showCategory?: boolean;
 }
 
 /**
  * Una fila del índice de proyectos: miniatura, nombre grande, descriptor,
- * tecnologías en texto plano y enlaces. Si el proyecto tiene detalle, toda la
- * fila es clicable (el título lleva el enlace); si no, solo sus enlaces
- * externos (sitio, demo, código).
+ * tecnologías en texto plano y enlaces. Si el proyecto tiene detalle, llevan a
+ * él el título, la miniatura y "Ver detalle" (el resto de la fila no es
+ * clicable); si no, solo sus enlaces externos (sitio, demo, código).
  */
-export default function ProjectRow({ project }: ProjectRowProps) {
+export default function ProjectRow({ project, showCategory = false }: ProjectRowProps) {
   const { name, descriptor } = splitProjectTitle(project.title);
   const detailHref =
     project.hasDetails && project.slug ? `/projects/${project.slug}` : null;
@@ -107,6 +109,9 @@ export default function ProjectRow({ project }: ProjectRowProps) {
       </div>
 
       <div className="flex flex-col gap-3 lg:items-end lg:text-right">
+        {showCategory && project.category && (
+          <p className="text-sm font-medium text-foreground">{project.category}</p>
+        )}
         {meta && <p className="text-sm text-foreground/70">{meta}</p>}
         <div className="flex flex-wrap gap-x-5 gap-y-2 lg:justify-end">
           {external.map((link) => (
