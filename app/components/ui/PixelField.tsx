@@ -2,13 +2,23 @@
 
 import { useEffect, useRef, type RefObject } from "react";
 import { clamp01, readPalette, smooth } from "@/app/lib/pixelPalette";
+import { FIELD_DEFAULTS, type FieldSettings } from "@/app/lib/pixelSettings";
 
 interface PixelFieldProps {
   /** Elemento cuyo recuadro (más un margen) queda libre de celdas. */
   avoidRef?: RefObject<HTMLElement | null>;
   /** Dibuja un único fotograma: sin animación ni reacción al cursor. */
   still?: boolean;
+  /** Ajustes del efecto (ver lib/pixelSettings). Lo que falte usa el valor por defecto. */
+  settings?: Partial<FieldSettings>;
   className?: string;
+}
+
+interface Ripple {
+  x: number;
+  y: number;
+  t0: number;
+  amp: number;
 }
 
 /** Hash entero 2D → [0, 1]. Determinista: no usa Math.random. */
@@ -33,22 +43,49 @@ function valueNoise(x: number, y: number): number {
   return top + (bottom - top) * yf;
 }
 
+const RIPPLE_SPEED = 13; // celdas por segundo
+const RIPPLE_LIFE = 2.4; // segundos
+
 /**
- * Campo de celdas cuadradas que se enfría hacia el texto y se calienta bajo
- * el cursor. Es decorativo: no contiene información ni recibe eventos.
+ * Campo de celdas cuadradas que se enfría hacia el texto. Es decorativo: no
+ * contiene información ni recibe eventos.
  *
- * - Un canvas de una celda por píxel, escalado sin suavizado (barato).
- * - Se pausa fuera de pantalla y con la pestaña oculta.
- * - Con `prefers-reduced-motion` dibuja un único fotograma estático.
+ * Capas de movimiento (todas se pueden ajustar o apagar):
+ *  - flujo de ruido de fondo;
+ *  - centelleo de celdas que cambian de paso;
+ *  - un barrido diagonal periódico;
+ *  - ondas que nacen solas y se expanden;
+ *  - mancha y estela bajo el cursor, y onda al hacer clic o tocar;
+ *  - entrada en ola al cargar.
+ *
+ * Se pausa fuera de pantalla y con la pestaña oculta. Con
+ * `prefers-reduced-motion` (o `still`) dibuja un único fotograma estático.
  */
 export default function PixelField({
   avoidRef,
   still = false,
+  settings,
   className = "",
 }: PixelFieldProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
+
+  const merged: FieldSettings = { ...FIELD_DEFAULTS, ...settings };
+  const settingsRef = useRef<FieldSettings>(merged);
+  const apiRef = useRef<{ relayout: () => void; recolor: () => void } | null>(null);
+
+  // Los ajustes se leen en cada fotograma desde la ref: cambiarlos no
+  // reinicia el efecto, salvo el tamaño de celda y la paleta.
+  useEffect(() => {
+    settingsRef.current = merged;
+  });
+  useEffect(() => {
+    apiRef.current?.relayout();
+  }, [merged.cell]);
+  useEffect(() => {
+    apiRef.current?.recolor();
+  }, [merged.palette]);
 
   useEffect(() => {
     const wrap = wrapRef.current;
@@ -69,12 +106,16 @@ export default function PixelField({
     let mask = new Float32Array(0); // banda diagonal × zona libre de texto
     let free = new Float32Array(0); // 0 sobre el texto, 1 lejos de él
     let jitter = new Float32Array(0); // dispersión fija de los bordes
-    let colors = readPalette();
+    let heat = new Float32Array(0); // calor acumulado por el cursor (estela)
+    let colors = readPalette(settingsRef.current.palette);
 
     let visible = true;
     let raf = 0;
     let lastDraw = 0;
     let lastTime = 0;
+    let introStart: number | null = null;
+    let nextRipple = 0.8;
+    const ripples: Ripple[] = [];
     const pointer = { x: 0, y: 0, tx: 0, ty: 0, strength: 0, active: false };
 
     const layout = () => {
@@ -82,7 +123,8 @@ export default function PixelField({
       const height = wrap.clientHeight;
       if (!width || !height) return;
 
-      cell = width < 640 ? 12 : 16;
+      const wanted = settingsRef.current.cell;
+      cell = wanted > 0 ? wanted : width < 640 ? 12 : 16;
       cols = Math.ceil(width / cell);
       rows = Math.ceil(height / cell);
 
@@ -112,6 +154,7 @@ export default function PixelField({
       mask = new Float32Array(cols * rows);
       free = new Float32Array(cols * rows);
       jitter = new Float32Array(cols * rows);
+      heat = new Float32Array(cols * rows);
       for (let y = 0; y < rows; y++) {
         for (let x = 0; x < cols; x++) {
           const i = y * cols + x;
@@ -132,20 +175,73 @@ export default function PixelField({
       }
     };
 
-    const draw = (t: number) => {
+    const spawnRipple = (x: number, y: number, t: number, amp: number) => {
+      ripples.push({ x, y, t0: t, amp });
+      if (ripples.length > 6) ripples.shift();
+    };
+
+    const draw = (t: number, motion: boolean) => {
       if (!image) return;
       lastTime = t;
-      const tx = t * 0.06;
-      const ty = t * 0.035;
-      const strength = pointer.strength;
-      const sigma2 = 2 * 4 * 4;
-      const hot = strength > 0.01;
+      const S = settingsRef.current;
+      if (introStart === null) introStart = t;
+
+      // Todo el movimiento depende de `motion`: apagado = fotograma estático.
+      const m = motion ? 1 : 0;
+      const tx = t * 0.06 * S.drift * m;
+      const ty = t * 0.035 * S.drift * m;
+      const shimmer = S.shimmer * m;
+      const scan = S.scan * m;
+      const shStep = Math.floor(t * 7) * m;
+      const introT = S.intro && motion ? (t - introStart) / 1.7 : 99;
+
+      // Barrido: una cresta diagonal que cruza el campo cada ~20 s.
+      const front = ((t * 0.09) % 1.8) - 0.25;
+
+      // Ondas espontáneas dentro de la zona visible.
+      if (motion && S.ripples > 0 && t >= nextRipple) {
+        for (let tries = 0; tries < 14; tries++) {
+          const rx = Math.floor(Math.random() * cols);
+          const ry = Math.floor(Math.random() * rows);
+          if (mask[ry * cols + rx] > 0.35) {
+            spawnRipple(rx, ry, t, 0.5);
+            break;
+          }
+        }
+        nextRipple = t + (1.4 + Math.random() * 2.4) / S.ripples;
+      }
+      while (ripples.length && t - ripples[0].t0 > RIPPLE_LIFE) ripples.shift();
+
+      // Estela: el calor del cursor se acumula y se apaga por fotograma.
+      const decay = 0.74 + 0.22 * S.trail;
+      const splat = motion && pointer.strength > 0.02;
+      const sigma = Math.max(1, S.pointerRadius);
+      const inv = 1 / (2 * sigma * sigma);
+      const reach = Math.ceil(sigma * 3);
+      if (splat) {
+        const px = Math.round(pointer.x);
+        const py = Math.round(pointer.y);
+        for (let y = Math.max(0, py - reach); y < Math.min(rows, py + reach + 1); y++) {
+          for (let x = Math.max(0, px - reach); x < Math.min(cols, px + reach + 1); x++) {
+            const dx = x - pointer.x;
+            const dy = y - pointer.y;
+            const i = y * cols + x;
+            heat[i] = Math.min(
+              1.2,
+              heat[i] + Math.exp(-(dx * dx + dy * dy) * inv) * 0.55 * pointer.strength * free[i],
+            );
+          }
+        }
+      }
 
       for (let y = 0; y < rows; y++) {
+        const ny = y / rows;
         for (let x = 0; x < cols; x++) {
           const i = y * cols + x;
           const w = mask[i];
+          const nx = x / cols;
           let v = 0;
+
           if (w > 0.001) {
             const sx = x * 0.09 + tx;
             const sy = y * 0.09 - ty;
@@ -153,13 +249,41 @@ export default function PixelField({
               0.6 * valueNoise(sx, sy) +
               0.3 * valueNoise(sx * 2.1 + 13.7, sy * 2.1 + 4.2) +
               0.1 * valueNoise(sx * 4.3 + 7.1, sy * 4.3 + 1.3);
-            v = n * w * 1.0 + jitter[i] * w;
+            v = n * w + jitter[i] * w;
+
+            if (shimmer > 0) {
+              const s = hash2(x * 3 + shStep * 17, y * 5 + shStep * 31) - 0.5;
+              v += s * 0.28 * shimmer * Math.sqrt(w);
+            }
+            if (scan > 0) {
+              const d = nx * 0.65 + ny * 0.75 - front;
+              v += Math.exp(-(d * d) / (2 * 0.05 * 0.05)) * 0.34 * scan * w;
+            }
           }
-          if (hot) {
-            const dx = x - pointer.x;
-            const dy = y - pointer.y;
-            v += Math.exp(-(dx * dx + dy * dy) / sigma2) * 0.8 * strength * free[i];
+
+          for (let r = 0; r < ripples.length; r++) {
+            const rp = ripples[r];
+            const age = t - rp.t0;
+            const dx = x - rp.x;
+            const dy = y - rp.y;
+            const d = Math.sqrt(dx * dx + dy * dy) - age * RIPPLE_SPEED;
+            v += Math.exp(-(d * d) / 5.8) * (1 - age / RIPPLE_LIFE) * rp.amp * free[i];
           }
+
+          const h = heat[i];
+          if (h > 0.003) {
+            v += h;
+            heat[i] = h * decay;
+          } else if (h !== 0) {
+            heat[i] = 0;
+          }
+
+          if (introT < 2.2) {
+            const phase = (nx + ny) * 0.5;
+            const rev = clamp01((introT * 1.5 - (1 - phase)) / 0.3);
+            v *= rev;
+          }
+
           const level = v < 0.22 ? 0 : v < 0.42 ? 1 : v < 0.62 ? 2 : v < 0.8 ? 3 : 4;
           pixels[i] = colors[level];
         }
@@ -171,20 +295,19 @@ export default function PixelField({
       raf = requestAnimationFrame(tick);
       if (!visible || document.hidden) return;
 
-      pointer.strength += ((pointer.active ? 1 : 0) - pointer.strength) * 0.12;
-      pointer.x += (pointer.tx - pointer.x) * 0.25;
-      pointer.y += (pointer.ty - pointer.y) * 0.25;
+      pointer.strength += ((pointer.active ? 1 : 0) - pointer.strength) * 0.14;
+      pointer.x += (pointer.tx - pointer.x) * 0.3;
+      pointer.y += (pointer.ty - pointer.y) * 0.3;
 
-      const busy = pointer.active || pointer.strength > 0.02;
-      if (now - lastDraw < (busy ? 33 : 66)) return;
+      if (now - lastDraw < 1000 / Math.max(10, settingsRef.current.fps)) return;
       lastDraw = now;
-      draw(now / 1000);
+      draw(now / 1000, true);
     };
 
     const start = () => {
       cancelAnimationFrame(raf);
       if (isStatic()) {
-        draw(0);
+        draw(0, false);
       } else {
         raf = requestAnimationFrame(tick);
       }
@@ -208,14 +331,32 @@ export default function PixelField({
         }
       }
     };
+    const onDown = (event: PointerEvent) => {
+      if (isStatic()) return;
+      const r = wrap.getBoundingClientRect();
+      if (
+        event.clientX < r.left ||
+        event.clientX > r.right ||
+        event.clientY < r.top ||
+        event.clientY > r.bottom
+      ) {
+        return;
+      }
+      // Un toque o un clic lanza una onda fuerte desde ese punto.
+      spawnRipple(
+        (event.clientX - r.left) / cell,
+        (event.clientY - r.top) / cell,
+        lastTime || performance.now() / 1000,
+        0.95,
+      );
+    };
     const onLeave = () => {
       pointer.active = false;
     };
 
     const resize = new ResizeObserver(() => {
       layout();
-      if (isStatic()) draw(0);
-      else draw(lastTime);
+      draw(lastTime, !isStatic());
     });
     resize.observe(wrap);
     if (avoidRef?.current) resize.observe(avoidRef.current);
@@ -225,29 +366,41 @@ export default function PixelField({
     });
     intersection.observe(wrap);
 
+    const recolor = () => {
+      colors = readPalette(settingsRef.current.palette);
+      draw(lastTime, !isStatic());
+    };
     // Recoloreo al cambiar de tema (next-themes alterna la clase `dark`).
-    const theme = new MutationObserver(() => {
-      colors = readPalette();
-      draw(lastTime);
-    });
+    const theme = new MutationObserver(recolor);
     theme.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ["class"],
     });
 
+    apiRef.current = {
+      relayout: () => {
+        layout();
+        draw(lastTime, !isStatic());
+      },
+      recolor,
+    };
+
     layout();
     start();
 
     window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("pointerdown", onDown, { passive: true });
     document.documentElement.addEventListener("pointerleave", onLeave);
     reduceMotion.addEventListener("change", start);
 
     return () => {
       cancelAnimationFrame(raf);
+      apiRef.current = null;
       resize.disconnect();
       intersection.disconnect();
       theme.disconnect();
       window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerdown", onDown);
       document.documentElement.removeEventListener("pointerleave", onLeave);
       reduceMotion.removeEventListener("change", start);
     };

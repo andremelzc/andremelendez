@@ -1,20 +1,25 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
-  clamp01,
   isDarkTheme,
   pack,
   readPaletteRGB,
   smooth,
-  type RGB,
+  clamp01,
 } from "@/app/lib/pixelPalette";
+import {
+  PORTRAIT_DEFAULTS,
+  type PortraitSettings,
+} from "@/app/lib/pixelSettings";
 
 interface PixelPortraitProps {
   /** URL de la foto (Sanity o local). */
   src: string;
   alt: string;
+  /** Ajustes del efecto (ver lib/pixelSettings). Lo que falte usa el valor por defecto. */
+  settings?: Partial<PortraitSettings>;
   className?: string;
 }
 
@@ -31,16 +36,42 @@ function sampleUrl(src: string) {
 
 /**
  * Retrato en celdas: la foto se reduce a la paleta de cinco pasos con
- * tramado ordenado y se "enfoca" (se descubre la foto nítida de debajo)
- * alrededor del cursor. Sin cursor, el foco recorre la cara despacio.
+ * tramado ordenado. Tiene tres modos:
+ *
+ *  - focus: pixelada, con una ventana nítida que sigue al cursor (o recorre
+ *    la cara sola en reposo);
+ *  - pixel: todo pixelado, sin zona nítida; el cursor calienta las celdas y
+ *    el tramado "hierve";
+ *  - photo: solo la foto, sin efecto.
  *
  * Se usa la foto completa, sin recortar. La foto nítida es la base
- * accesible; el canvas es solo decoración.
+ * accesible; el canvas es solo decoración. La foto no se muestra hasta que
+ * el canvas la cubre, para evitar un destello sin pixelar.
  */
-export default function PixelPortrait({ src, alt, className = "" }: PixelPortraitProps) {
+export default function PixelPortrait({
+  src,
+  alt,
+  settings,
+  className = "",
+}: PixelPortraitProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const sample = sampleUrl(src);
+  const [ready, setReady] = useState(false);
+
+  const merged: PortraitSettings = { ...PORTRAIT_DEFAULTS, ...settings };
+  const settingsRef = useRef<PortraitSettings>(merged);
+  const apiRef = useRef<{ relayout: () => void; recolor: () => void } | null>(null);
+
+  useEffect(() => {
+    settingsRef.current = merged;
+  });
+  useEffect(() => {
+    apiRef.current?.relayout();
+  }, [merged.cell]);
+  useEffect(() => {
+    apiRef.current?.recolor();
+  }, [merged.palette]);
 
   useEffect(() => {
     const wrap = wrapRef.current;
@@ -51,16 +82,17 @@ export default function PixelPortrait({ src, alt, className = "" }: PixelPortrai
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-    let cell = 8;
+    let cell = 6;
     let cols = 0;
     let rows = 0;
     let image: ImageData | null = null;
     let pixels = new Uint32Array(0);
     let luminance = new Float32Array(0); // 0-1, normalizada por percentiles
-    let levels = new Uint8Array(0); // paso de la paleta por celda
+    let tone = new Float32Array(0); // 0 = suelo … 1 = paso más intenso
     let source: HTMLImageElement | null = null;
-    let ramp: RGB[] = readPaletteRGB();
-    let rgb: number[] = ramp.map((c) => pack(c, 0));
+    let rgb: number[] = readPaletteRGB(settingsRef.current.palette).map((c) =>
+      pack(c, 0),
+    );
     let dark = isDarkTheme();
 
     let visible = true;
@@ -84,9 +116,7 @@ export default function PixelPortrait({ src, alt, className = "" }: PixelPortrai
       const scale = Math.max(cols / iw, rows / ih);
       const sw = cols / scale;
       const sh = rows / scale;
-      const sx = (iw - sw) * 0.5;
-      const sy = (ih - sh) * 0.5;
-      octx.drawImage(source, sx, sy, sw, sh, 0, 0, cols, rows);
+      octx.drawImage(source, (iw - sw) * 0.5, (ih - sh) * 0.5, sw, sh, 0, 0, cols, rows);
       const data = octx.getImageData(0, 0, cols, rows).data;
 
       const raw = new Float32Array(cols * rows);
@@ -115,25 +145,17 @@ export default function PixelPortrait({ src, alt, className = "" }: PixelPortrai
       for (let i = 0; i < raw.length; i++) {
         luminance[i] = clamp01((raw[i] - lo) / range);
       }
-      buildLevels();
+      buildTone();
     };
 
-    /** Tono → paso de la paleta, con tramado ordenado 4×4. */
-    const buildLevels = () => {
-      levels = new Uint8Array(cols * rows);
-      for (let y = 0; y < rows; y++) {
-        for (let x = 0; x < cols; x++) {
-          const i = y * cols + x;
-          // Tema claro: lo oscuro de la foto es tinta. Tema oscuro: lo claro es luz.
-          // La curva aclara los tonos medios (la piel) para que la cara se
-          // distinga del pelo y la ropa oscuros.
-          const tone = dark
-            ? Math.pow(luminance[i], 0.8)
-            : Math.pow(1 - luminance[i], 1.5);
-          const threshold = BAYER_4X4[(y & 3) * 4 + (x & 3)] / 16 - 0.5;
-          const pos = tone * 4 + threshold * 0.9;
-          levels[i] = Math.max(0, Math.min(4, Math.round(pos)));
-        }
+    /** Tema claro: lo oscuro de la foto es tinta. Tema oscuro: lo claro es luz.
+     *  La curva aclara los tonos medios (la piel) para separar cara y ropa. */
+    const buildTone = () => {
+      tone = new Float32Array(luminance.length);
+      for (let i = 0; i < luminance.length; i++) {
+        tone[i] = dark
+          ? Math.pow(luminance[i], 0.8)
+          : Math.pow(1 - luminance[i], 1.5);
       }
     };
 
@@ -141,7 +163,8 @@ export default function PixelPortrait({ src, alt, className = "" }: PixelPortrai
       const width = wrap.clientWidth;
       const height = wrap.clientHeight;
       if (!width || !height) return;
-      cell = width < 340 ? 5 : 6;
+      const wanted = settingsRef.current.cell;
+      cell = wanted > 0 ? wanted : width < 340 ? 5 : 6;
       cols = Math.ceil(width / cell);
       rows = Math.ceil(height / cell);
       canvas.width = cols;
@@ -156,11 +179,22 @@ export default function PixelPortrait({ src, alt, className = "" }: PixelPortrai
     };
 
     const draw = (t: number, still: boolean) => {
-      if (!image || levels.length !== cols * rows) return;
+      const S = settingsRef.current;
+      if (S.mode === "photo") {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        return;
+      }
+      if (!image || tone.length !== cols * rows) return;
       lastTime = t;
 
-      const idleX = cols * (FACE.x + 0.2 * Math.sin(t * 0.45));
-      const idleY = rows * (FACE.y + 0.14 * Math.sin(t * 0.33 + 1.2));
+      // El tramado "hierve": la matriz de umbrales se desplaza con el tiempo.
+      const phase = still ? 0 : Math.floor(t * S.boil * 8);
+      const dither = S.dither;
+
+      // Foco (modo focus): sigue al cursor o recorre la cara en reposo.
+      const k = S.idle;
+      const idleX = cols * (FACE.x + 0.2 * Math.sin(t * 0.45 * k));
+      const idleY = rows * (FACE.y + 0.14 * Math.sin(t * 0.33 * k + 1.2));
       const targetX = still ? cols * FACE.x : pointer.active ? pointer.x : idleX;
       const targetY = still ? rows * FACE.y : pointer.active ? pointer.y : idleY;
       const targetS = still ? 0.9 : pointer.active ? 1 : 0.8;
@@ -168,17 +202,36 @@ export default function PixelPortrait({ src, alt, className = "" }: PixelPortrai
       focus.y += (targetY - focus.y) * (still ? 1 : 0.18);
       focus.strength += (targetS - focus.strength) * (still ? 1 : 0.12);
 
-      const sigma = Math.max(cols, rows * 0.8) * 0.16;
+      const focusMode = S.mode === "focus";
+      const sigma = Math.max(cols, rows * 0.8) * S.focusSize;
       const inv = 1 / (2 * sigma * sigma);
+      // En modo pixel el cursor calienta las celdas cercanas.
+      const heatSigma = Math.max(3, cols * 0.07);
+      const heatInv = 1 / (2 * heatSigma * heatSigma);
+      const heating = !focusMode && !still && pointer.active;
 
       for (let y = 0; y < rows; y++) {
         for (let x = 0; x < cols; x++) {
           const i = y * cols + x;
-          const dx = x - focus.x;
-          const dy = y - focus.y;
-          const f = Math.exp(-(dx * dx + dy * dy) * inv) * focus.strength;
-          const alpha = Math.round(255 * (1 - smooth(clamp01(f * 1.25))));
-          pixels[i] = ((alpha << 24) | rgb[levels[i]]) >>> 0;
+
+          let tt = tone[i];
+          if (heating) {
+            const dx = x - pointer.x;
+            const dy = y - pointer.y;
+            tt += Math.exp(-(dx * dx + dy * dy) * heatInv) * 0.55;
+          }
+          const threshold =
+            BAYER_4X4[((y + phase) & 3) * 4 + ((x + phase * 3) & 3)] / 16 - 0.5;
+          const level = Math.max(0, Math.min(4, Math.round(tt * 4 + threshold * dither)));
+
+          let alpha = 255;
+          if (focusMode) {
+            const dx = x - focus.x;
+            const dy = y - focus.y;
+            const f = Math.exp(-(dx * dx + dy * dy) * inv) * focus.strength;
+            alpha = Math.round(255 * (1 - smooth(clamp01(f * 1.25))));
+          }
+          pixels[i] = ((alpha << 24) | rgb[level]) >>> 0;
         }
       }
       ctx.putImageData(image, 0, 0);
@@ -229,8 +282,12 @@ export default function PixelPortrait({ src, alt, className = "" }: PixelPortrai
     photo.onload = () => {
       source = photo;
       sampleImage();
-      if (reduceMotion.matches) draw(0, true);
+      draw(lastTime, reduceMotion.matches);
+      // Hasta aquí la foto nítida estaba oculta: ya hay canvas que la cubre.
+      setReady(true);
     };
+    // Si la foto no carga, se muestra tal cual en vez de quedar oculta.
+    photo.onerror = () => setReady(true);
     photo.src = sample;
 
     const resize = new ResizeObserver(() => {
@@ -244,17 +301,25 @@ export default function PixelPortrait({ src, alt, className = "" }: PixelPortrai
     });
     intersection.observe(wrap);
 
-    const theme = new MutationObserver(() => {
-      ramp = readPaletteRGB();
-      rgb = ramp.map((c) => pack(c, 0));
+    const recolor = () => {
+      rgb = readPaletteRGB(settingsRef.current.palette).map((c) => pack(c, 0));
       dark = isDarkTheme();
-      if (luminance.length) buildLevels();
+      if (luminance.length) buildTone();
       draw(lastTime, reduceMotion.matches);
-    });
+    };
+    const theme = new MutationObserver(recolor);
     theme.observe(document.documentElement, {
       attributes: true,
       attributeFilter: ["class"],
     });
+
+    apiRef.current = {
+      relayout: () => {
+        layout();
+        draw(lastTime, reduceMotion.matches);
+      },
+      recolor,
+    };
 
     layout();
     start();
@@ -265,7 +330,9 @@ export default function PixelPortrait({ src, alt, className = "" }: PixelPortrai
 
     return () => {
       cancelAnimationFrame(raf);
+      apiRef.current = null;
       photo.onload = null;
+      photo.onerror = null;
       resize.disconnect();
       intersection.disconnect();
       theme.disconnect();
@@ -274,6 +341,8 @@ export default function PixelPortrait({ src, alt, className = "" }: PixelPortrai
       reduceMotion.removeEventListener("change", start);
     };
   }, [sample]);
+
+  const showImage = ready || merged.mode === "photo";
 
   return (
     <div
@@ -286,7 +355,9 @@ export default function PixelPortrait({ src, alt, className = "" }: PixelPortrai
         fill
         priority
         sizes="(min-width: 1024px) 30vw, 90vw"
-        className="object-cover"
+        className={`pixel-portrait-img object-cover transition-opacity duration-300 ${
+          showImage ? "opacity-100" : "opacity-0"
+        }`}
       />
       <canvas
         ref={canvasRef}
@@ -294,6 +365,10 @@ export default function PixelPortrait({ src, alt, className = "" }: PixelPortrai
         className="pointer-events-none absolute left-0 top-0 block"
         style={{ imageRendering: "pixelated" }}
       />
+      {/* Sin JavaScript no hay canvas: se muestra la foto tal cual. */}
+      <noscript>
+        <style>{".pixel-portrait-img{opacity:1!important}"}</style>
+      </noscript>
     </div>
   );
 }
