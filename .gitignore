@@ -39,3 +39,14 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# claude code (personal)
+.claude/settings.local.json
+
+# impeccable: platform binaries (reinstall with `npx impeccable install`)
+.claude/skills/impeccable/scripts/bin/
+
+# other agent harnesses (not used)
+.agent/
+.gemini/
+.opencode/
