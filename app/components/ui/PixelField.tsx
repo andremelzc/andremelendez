@@ -6,6 +6,8 @@ import { clamp01, readPalette, smooth } from "@/app/lib/pixelPalette";
 interface PixelFieldProps {
   /** Elemento cuyo recuadro (más un margen) queda libre de celdas. */
   avoidRef?: RefObject<HTMLElement | null>;
+  /** Dibuja un único fotograma: sin animación ni reacción al cursor. */
+  still?: boolean;
   className?: string;
 }
 
@@ -39,7 +41,11 @@ function valueNoise(x: number, y: number): number {
  * - Se pausa fuera de pantalla y con la pestaña oculta.
  * - Con `prefers-reduced-motion` dibuja un único fotograma estático.
  */
-export default function PixelField({ avoidRef, className = "" }: PixelFieldProps) {
+export default function PixelField({
+  avoidRef,
+  still = false,
+  className = "",
+}: PixelFieldProps) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
@@ -53,6 +59,7 @@ export default function PixelField({ avoidRef, className = "" }: PixelFieldProps
     if (!ctx) return;
 
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const isStatic = () => still || reduceMotion.matches;
 
     let cell = 16;
     let cols = 0;
@@ -176,7 +183,7 @@ export default function PixelField({ avoidRef, className = "" }: PixelFieldProps
 
     const start = () => {
       cancelAnimationFrame(raf);
-      if (reduceMotion.matches) {
+      if (isStatic()) {
         draw(0);
       } else {
         raf = requestAnimationFrame(tick);
@@ -184,7 +191,7 @@ export default function PixelField({ avoidRef, className = "" }: PixelFieldProps
     };
 
     const onMove = (event: PointerEvent) => {
-      if (reduceMotion.matches) return;
+      if (isStatic()) return;
       const r = wrap.getBoundingClientRect();
       const inside =
         event.clientX >= r.left &&
@@ -207,7 +214,7 @@ export default function PixelField({ avoidRef, className = "" }: PixelFieldProps
 
     const resize = new ResizeObserver(() => {
       layout();
-      if (reduceMotion.matches) draw(0);
+      if (isStatic()) draw(0);
       else draw(lastTime);
     });
     resize.observe(wrap);
@@ -244,7 +251,7 @@ export default function PixelField({ avoidRef, className = "" }: PixelFieldProps
       document.documentElement.removeEventListener("pointerleave", onLeave);
       reduceMotion.removeEventListener("change", start);
     };
-  }, [avoidRef]);
+  }, [avoidRef, still]);
 
   return (
     <div

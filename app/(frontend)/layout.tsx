@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Archivo, Geist, Geist_Mono } from "next/font/google";
 import "@/app/globals.css";
 import Navbar from "@/app/components/layout/Navbar";
-import Divisor from "@/app/components/ui/Divisor";
 import Footer from "@/app/components/layout/Footer";
 import { Providers } from "@/app/providers";
 
@@ -43,7 +42,6 @@ export default function FrontendLayout({
         <Providers>
           <Navbar />
           <main className="w-full">{children}</main>
-          <Divisor />
           <Footer />
         </Providers>
       </body>

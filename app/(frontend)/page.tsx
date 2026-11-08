@@ -12,10 +12,7 @@ export default async function Home() {
       <HomeSection profile={profile} />
       <ProjectsSection />
       <SkillsSection />
-      {/* Hasta que se rediseñe, Contacto conserva su espaciado anterior. */}
-      <div className="mx-auto flex max-w-7xl flex-col items-center px-8 pb-20 sm:px-20">
-        <ContactSection profile={profile} />
-      </div>
+      <ContactSection profile={profile} />
     </div>
   );
 }
