@@ -30,7 +30,7 @@ El portafolio está desarrollado con las siguientes tecnologías:
 ├── public/             # Archivos estáticos y activos
 ├── next.config.ts      # Configuración de Next.js
 ├── sanity.config.ts    # Configuración del Studio de Sanity
-└── tailwind.config.ts  # Configuración de estilos y temas
+└── app/globals.css    # Tokens de diseño y tema (Tailwind CSS v4)
 ```
 
 # Clonar el repositorio

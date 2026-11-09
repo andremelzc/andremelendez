@@ -1,45 +1,41 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "@/app/globals.css";
-import Navbar from "@/app/components/layout/Navbar";
-import Divisor from "@/app/components/ui/Divisor";
-import Footer from "@/app/components/layout/Footer";
-import { Providers } from "@/app/providers";
+import type { Metadata, Viewport } from "next";
+import SiteShell from "@/app/components/layout/SiteShell";
+import { defaultDescription, siteUrl } from "@/app/lib/metadata";
+import { shortName } from "@/app/lib/name";
+import { getProfile } from "@/app/lib/sanity";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
-  title: "Andre Melendez | Desarrollador Full-Stack",
-  description: "Portafolio de Andre Ivan Melendez Cava, estudiante de Ingeniería de Software en la UNMSM, especializado en desarrollo web moderno con React, Next.js, TypeScript y tecnologías full-stack.",
+export const viewport: Viewport = {
+  // La barra del navegador en móvil toma el fondo de cada tema.
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#fffcf9" },
+    { media: "(prefers-color-scheme: dark)", color: "#0b0b0b" },
+  ],
+  colorScheme: "light dark",
 };
+
+/**
+ * Metadatos base del sitio. Salen del perfil de Sanity, así que cambiar el
+ * nombre, el rol o la presentación allí actualiza también el título y la
+ * descripción. Cada página añade el suyo con buildMetadata().
+ */
+export async function generateMetadata(): Promise<Metadata> {
+  const profile = await getProfile();
+  const name = shortName(profile.fullName);
+
+  return {
+    metadataBase: new URL(siteUrl),
+    title: { default: `${name} | ${profile.title}`, template: `%s | ${name}` },
+    description: defaultDescription(profile),
+    applicationName: name,
+    authors: [{ name: profile.fullName, url: siteUrl }],
+    creator: profile.fullName,
+  };
+}
 
 export default function FrontendLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} overflow-x-hidden`}
-    >
-      <body className="antialiased">
-        <Providers>
-          <Navbar />
-          <main className="mx-auto max-w-7xl">{children}</main>
-          <Divisor />
-          <Footer />
-        </Providers>
-      </body>
-    </html>
-  );
+  return <SiteShell>{children}</SiteShell>;
 }

@@ -61,7 +61,6 @@ import {
   SiVercel,
   SiNetlify,
   SiCloudflare,
-  SiAmazon,
   SiGooglecloud,
   SiHeroku,
   SiDigitalocean,

@@ -33,12 +33,3 @@ export interface Project {
   longDescription?: unknown; // Portable Text (array of blocks)
   gallery?: string[]; // URLs of images
 }
-
-export interface ProjectCardProps {
-  project: Project;
-}
-
-export interface ProjectGridProps {
-  projects: Project[];
-  limit?: number;
-}

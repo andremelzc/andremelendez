@@ -13,14 +13,15 @@ export default function ThemeToggle() {
   }, []);
 
   if (!mounted) {
-    return <div className="w-10 h-10" />;
+    return <div className="h-11 w-11 sm:h-9 sm:w-9" />;
   }
 
   return (
     <button
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      className="p-2 rounded-xl transition-all duration-300 text-foreground/80 hover:text-foreground hover:bg-foreground/5 dark:hover:bg-white/5 border border-transparent flex items-center justify-center relative z-10"
-      aria-label="Toggle Dark Mode"
+      className="relative z-10 flex h-11 w-11 items-center sm:h-9 sm:w-9 justify-center text-foreground/80 transition-colors duration-150 hover:text-accent-ink"
+      type="button"
+      aria-label={theme === "dark" ? "Cambiar a tema claro" : "Cambiar a tema oscuro"}
     >
       {theme === "dark" ? <FiSun className="w-5 h-5" /> : <FiMoon className="w-5 h-5" />}
     </button>

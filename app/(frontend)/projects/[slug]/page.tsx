@@ -1,11 +1,12 @@
 import React from "react";
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getProjectBySlug } from "@/app/lib/sanity";
+import { getProfile, getProjectBySlug } from "@/app/lib/sanity";
+import { buildMetadata, summarize } from "@/app/lib/metadata";
+import { splitProjectTitle } from "@/app/lib/projectTitle";
 import { PortableText, PortableTextComponents } from "@portabletext/react";
-import ModernBackground from "@/app/components/ui/ModernBackground";
-import TechTag from "@/app/components/ui/TechTag";
 import Button from "@/app/components/ui/Button";
 import {
   HiOutlineExternalLink,
@@ -18,29 +19,58 @@ import { SiFigma, SiLoom } from "react-icons/si";
 const portableTextComponents: PortableTextComponents = {
   block: {
     normal: ({ children }: { children?: React.ReactNode }) => (
-      <p className="text-foreground/80 leading-relaxed mb-4 text-sm md:text-base">
+      <p className="mb-4 max-w-[68ch] text-base leading-relaxed text-foreground/80">
         {children}
       </p>
     ),
     h3: ({ children }: { children?: React.ReactNode }) => (
-      <h3 className="text-lg md:text-xl font-bold text-foreground mt-6 mb-3">
+      <h3 className="mb-3 mt-8 text-lg font-semibold text-foreground md:text-xl">
         {children}
       </h3>
     ),
   },
   list: {
     bullet: ({ children }: { children?: React.ReactNode }) => (
-      <ul className="list-disc pl-5 mb-4 text-foreground/80 flex flex-col gap-2 text-sm md:text-base">
+      <ul className="mb-4 flex max-w-[68ch] list-disc flex-col gap-2 pl-5 text-base text-foreground/80">
         {children}
       </ul>
     ),
   },
 };
 
+/** Título de bloque dentro de la página: regla de 1 px + Archivo. */
+function BlockTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <h2
+      className="border-t border-foreground pt-5 font-display text-[clamp(1.5rem,2.4vw,2rem)] font-extrabold leading-tight tracking-[-0.02em]"
+      style={{ fontStretch: "112%" }}
+    >
+      {children}
+    </h2>
+  );
+}
+
 interface ProjectPageProps {
   params: Promise<{
     slug: string;
   }>;
+}
+
+export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const [project, profile] = await Promise.all([getProjectBySlug(slug), getProfile()]);
+  if (!project) {
+    return { title: "Proyecto no encontrado" };
+  }
+  const { name, descriptor } = splitProjectTitle(project.title);
+  // Solo imágenes reales de Sanity: el marcador local (/test.png) no sirve para compartir.
+  const image = project.primaryImage?.startsWith("http") ? [project.primaryImage] : undefined;
+  return buildMetadata(profile, {
+    title: name,
+    description: summarize([descriptor, project.description].filter(Boolean).join(". ")),
+    path: `/projects/${slug}`,
+    images: image,
+  });
 }
 
 export default async function ProjectDetailPage({ params }: ProjectPageProps) {
@@ -51,256 +81,200 @@ export default async function ProjectDetailPage({ params }: ProjectPageProps) {
     notFound();
   }
 
+  const { name, descriptor } = splitProjectTitle(project.title);
+  const facts = [
+    project.client && { label: "Cliente / Org", value: project.client },
+    project.role && { label: "Rol", value: project.role },
+    project.duration && { label: "Duración", value: project.duration },
+    project.teamSize && {
+      label: "Equipo",
+      value: project.teamSize === "Solo" ? "Proyecto solo" : "Proyecto en equipo",
+    },
+  ].filter(Boolean) as { label: string; value: string }[];
+
   return (
-    <div className="relative font-sans min-h-screen px-6 sm:px-12 md:px-16 lg:px-20 pt-28 sm:pt-32 md:pt-36 pb-32">
-      <ModernBackground />
+    <article className="px-4 pb-24 pt-28 font-sans sm:px-8 lg:px-14">
+      <Link
+        href="/#proyectos"
+        className="hit-area inline-flex items-center gap-2 border-b border-foreground/40 pb-1 text-sm font-medium transition-colors duration-150 hover:border-accent hover:text-accent-ink"
+      >
+        <HiArrowLeft aria-hidden="true" />
+        Volver a proyectos
+      </Link>
 
-      {/* Botón de retroceso */}
-      <div className="max-w-6xl mx-auto mb-8 sm:mb-12 relative z-10">
-        <Link href="/#proyectos" className="inline-block">
-          <Button
-            variant="outline"
-            size="sm"
-            icon={<HiArrowLeft />}
-            iconPosition="left"
-            className="backdrop-blur-md"
-          >
-            Volver a proyectos
-          </Button>
-        </Link>
-      </div>
+      <header className="mt-10 flex flex-col gap-5 border-t border-foreground pt-8 sm:mt-14">
+        <p className="text-sm text-foreground/70">
+          {[project.category, project.year].filter(Boolean).join(" · ")}
+        </p>
+        <h1
+          className="font-display font-extrabold leading-[0.95] tracking-[-0.03em] text-[clamp(2.5rem,8vw,6rem)]"
+          style={{ fontStretch: "112%" }}
+        >
+          {name}
+        </h1>
+        {descriptor && (
+          <p className="max-w-[40ch] text-xl text-foreground/80 sm:text-2xl">
+            {descriptor}
+          </p>
+        )}
+        <p className="max-w-[60ch] text-base leading-relaxed text-foreground/70 sm:text-lg">
+          {project.description}
+        </p>
+      </header>
 
-      <article className="max-w-6xl mx-auto flex flex-col gap-8 sm:gap-12 relative z-10">
-        {/* Hero Section */}
-        <div className="flex flex-col lg:flex-row justify-between items-start gap-6 border-b border-border/40 pb-8 sm:pb-12">
-          <div className="flex flex-col gap-3">
-            <div className="flex gap-2 flex-wrap">
-              <span className="text-xs uppercase tracking-wider font-semibold text-accent bg-accent/15 px-3 py-1 rounded-full border border-accent/25">
-                {project.category}
-              </span>
-              {project.year && (
-                <span className="text-xs uppercase tracking-wider font-semibold text-foreground/60 bg-muted/40 px-3 py-1 rounded-full border border-border/20">
-                  Año {project.year}
-                </span>
-              )}
-            </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground">
-              {project.title}
-            </h1>
-            <p className="text-base sm:text-lg text-foreground/70 max-w-2xl leading-relaxed">
-              {project.description}
-            </p>
-          </div>
-        </div>
-
-        {/* Dos columnas de contenido */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-          {/* Columna Izquierda: Información técnica */}
-          <div className="lg:col-span-7 flex flex-col gap-8">
-            {/* Descripción detallada */}
-            {project.longDescription ? (
-              <div className="bg-gradient-to-br from-muted/30 via-background/25 to-muted/30 border border-border/40 rounded-2xl p-6 md:p-8 shadow-xl backdrop-blur-sm">
-                <h2 className="text-xl md:text-2xl font-bold text-foreground mb-4">
-                  Sobre el proyecto
-                </h2>
+      <div className="mt-14 grid grid-cols-1 gap-14 lg:grid-cols-12 lg:gap-16">
+        {/* Columna principal */}
+        <div className="flex flex-col gap-14 lg:col-span-7">
+          {project.longDescription ? (
+            <section className="flex flex-col gap-6">
+              <BlockTitle>Sobre el proyecto</BlockTitle>
+              <div>
                 <PortableText
-                  value={project.longDescription as unknown as Parameters<typeof PortableText>[0]["value"]}
+                  value={
+                    project.longDescription as unknown as Parameters<
+                      typeof PortableText
+                    >[0]["value"]
+                  }
                   components={portableTextComponents}
                 />
               </div>
-            ) : null}
+            </section>
+          ) : null}
 
-            {/* Logros Clave / Highlights */}
-            {project.highlights && project.highlights.length > 0 && (
-              <div className="bg-gradient-to-br from-muted/30 via-background/25 to-muted/30 border border-border/40 rounded-2xl p-6 md:p-8 shadow-xl backdrop-blur-sm">
-                <h2 className="text-xl md:text-2xl font-bold text-foreground mb-4">
-                  Logros Técnicos Destacados
-                </h2>
-                <ul className="flex flex-col gap-3">
-                  {project.highlights.map((highlight, idx) => (
-                    <li
-                      key={idx}
-                      className="flex items-start gap-3 text-foreground/80 leading-relaxed text-sm md:text-base"
-                    >
-                      <span className="flex-shrink-0 w-5 h-5 rounded-full bg-accent/15 border border-accent/30 text-accent flex items-center justify-center mt-0.5 font-bold text-xs">
-                        ✓
-                      </span>
-                      {highlight}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
-
-          {/* Columna Derecha: Sidebar de Metadatos y Galería */}
-          <div className="lg:col-span-5 flex flex-col gap-8">
-            {/* Ficha Técnica Card */}
-            <div className="bg-gradient-to-br from-muted/40 via-background/30 to-muted/40 border border-border/50 rounded-2xl p-6 md:p-8 shadow-2xl backdrop-blur-md relative group overflow-hidden">
-              <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-              <h2 className="text-lg md:text-xl font-bold text-foreground mb-6">
-                Ficha Técnica
-              </h2>
-
-              <div className="flex flex-col gap-4 mb-6">
-                {project.client && (
-                  <div className="flex justify-between items-center border-b border-border/30 pb-3">
-                    <span className="text-sm text-foreground/50">Cliente / Org</span>
-                    <span className="text-sm font-semibold text-foreground">
-                      {project.client}
-                    </span>
-                  </div>
-                )}
-                {project.role && (
-                  <div className="flex justify-between items-center border-b border-border/30 pb-3">
-                    <span className="text-sm text-foreground/50">Rol</span>
-                    <span className="text-sm font-semibold text-accent">
-                      {project.role}
-                    </span>
-                  </div>
-                )}
-                {project.duration && (
-                  <div className="flex justify-between items-center border-b border-border/30 pb-3">
-                    <span className="text-sm text-foreground/50">Duración</span>
-                    <span className="text-sm font-semibold text-foreground">
-                      {project.duration}
-                    </span>
-                  </div>
-                )}
-                {project.teamSize && (
-                  <div className="flex justify-between items-center border-b border-border/30 pb-3">
-                    <span className="text-sm text-foreground/50">Equipo</span>
-                    <span className="text-sm font-semibold text-foreground">
-                      {project.teamSize === "Solo" ? "Proyecto Solo" : "Proyecto en Equipo"}
-                    </span>
-                  </div>
-                )}
-              </div>
-
-              {/* Tecnologías */}
-              <div className="mb-8">
-                <h3 className="text-sm font-semibold text-foreground/60 mb-3">
-                  Tecnologías Utilizadas
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {project.technologies.map((tech) => (
-                    <TechTag key={tech} tech={tech} variant="badge" size="sm" />
-                  ))}
-                </div>
-              </div>
-
-              {/* Enlaces de Acción */}
-              <div className="flex flex-col gap-3">
-                {project.liveUrl && (
-                  <a
-                    href={project.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full"
+          {project.highlights && project.highlights.length > 0 && (
+            <section className="flex flex-col gap-6">
+              <BlockTitle>Logros técnicos</BlockTitle>
+              <ul className="flex flex-col gap-4">
+                {project.highlights.map((highlight, idx) => (
+                  <li
+                    key={idx}
+                    className="flex max-w-[68ch] items-start gap-4 text-base leading-relaxed text-foreground/80"
                   >
-                    <Button
-                      variant="primary"
-                      icon={<HiOutlineExternalLink />}
-                      className="w-full justify-center"
-                    >
-                      Sitio en Producción
-                    </Button>
-                  </a>
-                )}
-                {project.demoUrl && !project.liveUrl && (
-                  <a
-                    href={project.demoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full"
-                  >
-                    <Button
-                      variant="outline"
-                      icon={<HiOutlineExternalLink />}
-                      className="w-full justify-center"
-                    >
-                      Ver Demo
-                    </Button>
-                  </a>
-                )}
-                {project.codeUrl && (
-                  <a
-                    href={project.codeUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full"
-                  >
-                    <Button
-                      variant="outline"
-                      icon={<HiOutlineCode />}
-                      className="w-full justify-center"
-                    >
-                      Repositorio de Código
-                    </Button>
-                  </a>
-                )}
-                {project.designUrl && (
-                  <a
-                    href={project.designUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full"
-                  >
-                    <Button
-                      variant="outline"
-                      icon={<SiFigma />}
-                      className="w-full justify-center"
-                    >
-                      Diseño en Figma
-                    </Button>
-                  </a>
-                )}
-                {project.videoUrl && (
-                  <a
-                    href={project.videoUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full"
-                  >
-                    <Button
-                      variant="outline"
-                      icon={<SiLoom />}
-                      className="w-full justify-center"
-                    >
-                      Presentación en Video
-                    </Button>
-                  </a>
-                )}
-              </div>
-            </div>
-
-            {/* Galería de Capturas */}
-            {project.gallery && project.gallery.length > 0 && (
-              <div className="flex flex-col gap-4">
-                <h2 className="text-xl font-bold text-foreground">
-                  Galería de Capturas
-                </h2>
-                <div className="grid grid-cols-1 gap-4">
-                  {project.gallery.map((image, idx) => (
-                    <div
-                      key={idx}
-                      className="relative group/gallery overflow-hidden rounded-2xl border border-border/40 bg-muted/20 aspect-video hover:border-accent/40 transition-all duration-500 shadow-lg"
-                    >
-                      <div className="absolute inset-0 bg-black/10 z-10 transition-opacity duration-300 group-hover/gallery:opacity-0" />
-                      <Image
-                        src={image}
-                        alt={`${project.title} screenshot ${idx + 1}`}
-                        fill
-                        className="object-cover transition-transform duration-700 group-hover/gallery:scale-105"
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </div>
+                    {/* Una celda de la rejilla como viñeta */}
+                    <span
+                      aria-hidden="true"
+                      className="mt-2 h-2.5 w-2.5 shrink-0 bg-accent"
+                    />
+                    {highlight}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
         </div>
-      </article>
-    </div>
+
+        {/* Columna lateral: ficha, enlaces y galería */}
+        <div className="flex flex-col gap-14 lg:col-span-5">
+          <section className="flex flex-col gap-6">
+            <BlockTitle>Ficha técnica</BlockTitle>
+
+            {facts.length > 0 && (
+              <dl className="flex flex-col">
+                {facts.map((fact) => (
+                  <div
+                    key={fact.label}
+                    className="flex items-baseline justify-between gap-6 border-b border-foreground/25 py-3"
+                  >
+                    <dt className="text-sm text-foreground/70">{fact.label}</dt>
+                    <dd className="text-right text-sm font-semibold">{fact.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            )}
+
+            {project.technologies.length > 0 && (
+              <div className="flex flex-col gap-2">
+                <h3 className="text-sm font-semibold text-foreground/70">
+                  Tecnologías
+                </h3>
+                <p className="text-base leading-relaxed">
+                  {project.technologies.join(" · ")}
+                </p>
+              </div>
+            )}
+
+            <div className="flex flex-col gap-3">
+              {project.liveUrl && (
+                <Button
+                  href={project.liveUrl}
+                  newTab
+                  variant="primary"
+                  icon={<HiOutlineExternalLink />}
+                  className="w-full justify-center"
+                >
+                  Sitio en producción
+                </Button>
+              )}
+              {project.demoUrl && !project.liveUrl && (
+                <Button
+                  href={project.demoUrl}
+                  newTab
+                  variant="outline"
+                  icon={<HiOutlineExternalLink />}
+                  className="w-full justify-center"
+                >
+                  Ver demo
+                </Button>
+              )}
+              {project.codeUrl && (
+                <Button
+                  href={project.codeUrl}
+                  newTab
+                  variant="outline"
+                  icon={<HiOutlineCode />}
+                  className="w-full justify-center"
+                >
+                  Repositorio de código
+                </Button>
+              )}
+              {project.designUrl && (
+                <Button
+                  href={project.designUrl}
+                  newTab
+                  variant="outline"
+                  icon={<SiFigma />}
+                  className="w-full justify-center"
+                >
+                  Diseño en Figma
+                </Button>
+              )}
+              {project.videoUrl && (
+                <Button
+                  href={project.videoUrl}
+                  newTab
+                  variant="outline"
+                  icon={<SiLoom />}
+                  className="w-full justify-center"
+                >
+                  Presentación en video
+                </Button>
+              )}
+            </div>
+          </section>
+
+          {project.gallery && project.gallery.length > 0 && (
+            <section className="flex flex-col gap-6">
+              <BlockTitle>Galería</BlockTitle>
+              <div className="grid grid-cols-1 gap-4">
+                {project.gallery.map((image, idx) => (
+                  <div
+                    key={idx}
+                    className="relative aspect-video overflow-hidden border border-foreground/25 bg-muted"
+                  >
+                    <Image
+                      src={image}
+                      alt={`${project.title}: captura ${idx + 1}`}
+                      fill
+                      sizes="(min-width: 1024px) 40vw, 90vw"
+                      className="object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+        </div>
+      </div>
+    </article>
   );
 }

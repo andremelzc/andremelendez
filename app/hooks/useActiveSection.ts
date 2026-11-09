@@ -1,9 +1,15 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
+/**
+ * Sección que cruza el centro de la pantalla. Es null fuera de una página con
+ * secciones (por ejemplo, el detalle de un proyecto): ahí no se marca nada.
+ */
 export function useActiveSection() {
-  const [activeSection, setActiveSection] = useState("home");
+  const pathname = usePathname();
+  const [activeSection, setActiveSection] = useState<string | null>(null);
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -12,6 +18,8 @@ export function useActiveSection() {
 
   useEffect(() => {
     if (!isMounted || typeof window === 'undefined') return;
+    // Al cambiar de página se parte de cero; el observador marca la sección.
+    setActiveSection(null);
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -23,8 +31,11 @@ export function useActiveSection() {
         });
       },
       {
-        threshold: 0.3, // Necesita 30% visible
-        rootMargin: "-20% 0px -20% 0px", // Detecta cuando está en el centro
+        // Una "línea" fina en el centro de la pantalla: la sección que la
+        // cruza es la activa. Con un umbral por porcentaje, las secciones muy
+        // altas (proyectos) nunca llegaban a ser la activa.
+        threshold: 0,
+        rootMargin: "-45% 0px -54% 0px",
       }
     );
 
@@ -34,7 +45,7 @@ export function useActiveSection() {
     sections.forEach((section) => observer.observe(section));
 
     return () => observer.disconnect();
-  }, [isMounted]);
+  }, [isMounted, pathname]);
 
   return activeSection;
 }

@@ -1,4 +1,6 @@
-import { groq } from "next-sanity";
+import "server-only";
+// Ver sanity/lib/client.ts: no se importa de la raíz de next-sanity.
+import groq from "groq";
 import { client } from "@/sanity/lib/client";
 import {
   Project,
